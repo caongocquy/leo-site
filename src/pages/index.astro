@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import AtlasArt from '../components/AtlasArt.astro';
+import Icon from '../components/Icon.astro';
 import { expertise, site, stack } from '../data/site';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
@@ -21,26 +22,42 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
       </div>
       <div class="hero-notes"><span>React Native & native</span><span>Mobile architecture</span><span>Open source</span></div>
     </div>
-    <div class="hero-visual" aria-label="Illustrative mobile screen alongside a code editor" role="img">
-      <div class="visual-overline"><span>DESIGN × ENGINEERING</span><span class="visual-overline-status">● BUILT WITH INTENT</span></div>
-      <div class="visual-ring" aria-hidden="true"></div>
-      <div class="code-window" aria-hidden="true">
-        <div class="code-title"><span class="window-lights">● ● ●</span> craft.ts</div>
-        <div class="code-lines"><span><b class="purple">type</b> Craft = &#123;</span><span>&nbsp; platform: <b class="mint">'mobile'</b>;</span><span>&nbsp; focus: <b class="mint">'quality'</b>;</span><span>&#125;;</span><span class="code-gap"></span><span><b class="purple">export const</b> <b class="blue">build</b> = () =&gt; (&#123;</span><span>&nbsp; experience: <b class="mint">'native-first'</b>,</span><span>&nbsp; mindset: <b class="mint">'open-source'</b>,</span><span>&nbsp; impact: <b class="mint">'developer DX'</b>,</span><span>&#125;);</span></div>
+    <div class="hero-visual" aria-label="Illustration of React Native OTP component and a mobile verification screen" role="img">
+      <div class="visual-overline"><span>ENGINEERED FOR MOBILE</span><span class="visual-overline-status">iOS <i></i> ANDROID</span></div>
+      <div class="hero-art-stage" aria-hidden="true">
+        <div class="hero-code-card">
+          <div class="code-title"><span class="window-lights"><i></i><i></i><i></i></span><span>VerifyPhone.tsx</span><span class="code-language">TSX</span></div>
+          <div class="code-lines">
+            <span class="code-keyword">import <span class="code-text">{ OtpInput }</span> from</span>
+            <span class="code-string">  '@leo-showdar/react-native-otp-input-kit';</span>
+            <span class="code-gap"></span>
+            <span class="code-keyword">export function <span class="code-function">VerifyPhone</span>() {</span>
+            <span class="code-text">  return (</span>
+            <span class="code-text">    &lt;OtpInput</span>
+            <span class="code-string">      length={6}</span>
+            <span class="code-string">      autoFocus</span>
+            <span class="code-string">      onComplete={verify}</span>
+            <span class="code-text">    /&gt;</span>
+            <span class="code-text">  );</span>
+            <span class="code-text">}</span>
+          </div>
+          <div class="code-status"><span class="status-led"></span> REACT NATIVE · TYPESCRIPT</div>
+        </div>
+        <div class="hero-phone" aria-hidden="true">
+          <div class="hero-phone-screen">
+            <div class="hero-phone-island"></div>
+            <div class="hero-phone-header"><span>9:41</span><span>▂ ▰</span></div>
+            <div class="verify-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+            <span class="verify-step">SECURE VERIFICATION</span>
+            <strong>Enter your code.</strong>
+            <p>We sent a 6-digit verification code to your phone.</p>
+            <div class="verify-cells"><span>3</span><span>8</span><span>2</span><span class="verify-caret"></span><span></span><span></span></div>
+            <div class="verify-resend">Resend in <b>00:28</b></div>
+            <div class="verify-action">Continue <span>→</span></div>
+          </div>
+        </div>
       </div>
-      <div class="phone-shell" aria-hidden="true"><div class="phone-face">
-        <div class="phone-island"></div>
-        <div class="app-top"><strong>orbit<span>.</span></strong><span>✧</span></div>
-        <div class="app-greeting">Welcome back</div>
-        <div class="app-heading">Build with clarity.</div>
-        <div class="app-subtitle">Your ideas, in motion.</div>
-        <div class="phone-chart"><span style="height:36%"></span><span style="height:55%"></span><span style="height:47%"></span><span style="height:76%"></span><span style="height:64%"></span><span style="height:89%"></span><span style="height:78%"></span><span style="height:96%"></span></div>
-        <div class="app-section-title">Today's focus</div>
-        <div class="app-row"><span class="app-icon">✧</span><div><strong>Product experience</strong><small>Design & performance</small></div><span>↗</span></div>
-        <div class="app-row"><span class="app-icon">⌘</span><div><strong>Developer tools</strong><small>Build & share</small></div><span>↗</span></div>
-        <div class="app-bottom-nav">⌂ <span>▧</span> <span>◎</span></div>
-      </div></div>
-      <span class="visual-footnote">// illustrative interface exploration</span>
+      <div class="visual-footnote"><span>REAL COMPONENT · OPEN SOURCE</span><span>01 / 04</span></div>
     </div>
   </section>
 
@@ -49,7 +66,7 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
     <div class="expertise-grid">
       {expertise.map((item) => (
         <article class="expertise-card">
-          <div class="expertise-card-top"><span class="expertise-icon" aria-hidden="true">{item.icon}</span><span class="index-number">{item.number}</span></div>
+          <div class="expertise-card-top"><span class="expertise-icon"><Icon name={item.icon} size={27} /></span><span class="index-number">{item.number}</span></div>
           <h3>{item.title}</h3><p>{item.description}</p>
           <div class="mini-tags">{item.tags.map((tag) => <span>{tag}</span>)}</div>
         </article>

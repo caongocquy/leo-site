@@ -1,0 +1,49 @@
+---
+interface Props {
+  variant: 'graph' | 'route' | 'otp' | 'spark';
+}
+const { variant } = Astro.props;
+---
+<div class={`project-visual visual-${variant}`} aria-hidden="true">
+  {variant === 'graph' && (
+    <svg viewBox="0 0 360 144" fill="none" class="project-graphic">
+      <path class="graphic-link" d="M68 78 143 44 218 81 297 47M143 44l7 66 68-29m0 0 73 37M150 110l141 8" />
+      <rect class="graphic-node" x="30" y="57" width="76" height="42" rx="8"/>
+      <rect class="graphic-node" x="109" y="24" width="71" height="39" rx="8"/>
+      <rect class="graphic-node graphic-node-accent" x="183" y="62" width="78" height="40" rx="8"/>
+      <rect class="graphic-node" x="270" y="26" width="66" height="40" rx="8"/>
+      <rect class="graphic-node" x="113" y="93" width="76" height="39" rx="8"/>
+      <rect class="graphic-node" x="269" y="102" width="67" height="33" rx="8"/>
+      <text x="68" y="76" text-anchor="middle">file.ts</text><text class="graphic-sub" x="68" y="89" text-anchor="middle">ENTRY</text>
+      <text x="144" y="47" text-anchor="middle">symbol</text>
+      <text class="graphic-accent-text" x="222" y="86" text-anchor="middle">impact</text>
+      <text x="303" y="49" text-anchor="middle">MCP</text>
+      <text x="151" y="116" text-anchor="middle">calls()</text>
+      <text x="303" y="122" text-anchor="middle">index</text>
+    </svg>
+  )}
+  {variant === 'route' && (
+    <svg viewBox="0 0 360 144" fill="none" class="project-graphic">
+      <rect class="graphic-node" x="19" y="50" width="92" height="46" rx="9"/><text x="65" y="68" text-anchor="middle">OpenCode</text><text x="65" y="82" class="graphic-sub" text-anchor="middle">REQUEST</text>
+      <path class="graphic-link graphic-link-live" d="M111 73h32"/><path class="graphic-link graphic-link-live" d="m135 67 8 6-8 6"/>
+      <rect class="graphic-node graphic-node-accent" x="145" y="40" width="105" height="66" rx="10"/><text x="197" y="69" class="graphic-accent-text" text-anchor="middle">Router</text><text x="197" y="84" class="graphic-accent-sub" text-anchor="middle">AUTO FALLBACK</text>
+      <path class="graphic-link" d="M250 73h23m0 0V32m0 41v39M273 32h20m-20 40h20m-20 40h20"/>
+      <rect class="graphic-node" x="294" y="18" width="53" height="28" rx="7"/><rect class="graphic-node" x="294" y="58" width="53" height="28" rx="7"/><rect class="graphic-node" x="294" y="98" width="53" height="28" rx="7"/>
+      <text class="graphic-sub" x="320" y="35" text-anchor="middle">01</text><text class="graphic-sub" x="320" y="75" text-anchor="middle">02</text><text class="graphic-sub" x="320" y="115" text-anchor="middle">03</text>
+      <circle cx="273" cy="73" r="4" class="graphic-dot"/>
+    </svg>
+  )}
+  {variant === 'otp' && (
+    <div class="otp-visual">
+      <div class="otp-visual-label">ACCOUNT VERIFICATION</div>
+      <div class="otp-visual-inputs"><span>3</span><span>8</span><span>2</span><span class="otp-active">|</span><span></span><span></span></div>
+      <div class="otp-visual-hint">Resend code in <strong>00:28</strong></div>
+    </div>
+  )}
+  {variant === 'spark' && (
+    <div class="splash-visual">
+      <div class="splash-preview"><div class="splash-orbit"><span>L.</span></div><div class="splash-preview-caption">App launch · iOS / Android</div></div>
+      <div class="splash-timeline"><span>ANIMATION</span><div class="splash-progress"><i></i></div><span>00:01.8</span></div>
+    </div>
+  )}
+</div>

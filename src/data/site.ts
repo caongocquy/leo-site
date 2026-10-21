@@ -10,21 +10,21 @@ export const site = {
 export const expertise = [
   {
     number: '01',
-    icon: '▣',
+    icon: 'mobile',
     title: 'Mobile engineering',
     description: 'Production-grade React Native applications, platform integration, and thoughtful cross-platform interfaces.',
     tags: ['React Native', 'Flutter', 'iOS / Android'],
   },
   {
     number: '02',
-    icon: '⌁',
+    icon: 'layers',
     title: 'Architecture & performance',
     description: 'Readable boundaries, predictable state, measurable performance, and reliable mobile workflows.',
     tags: ['TypeScript', 'Architecture', 'Performance'],
   },
   {
     number: '03',
-    icon: '⌘',
+    icon: 'terminal',
     title: 'Developer experience',
     description: 'Small libraries and ambitious tools that remove friction from how other developers build software.',
     tags: ['Open Source', 'CLI', 'AI tooling'],
