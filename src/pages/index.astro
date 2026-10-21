@@ -17,8 +17,8 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
       <h1 id="hero-title">Engineering <em>better</em> mobile experiences<span class="period">.</span></h1>
       <p class="hero-desc">I build thoughtful mobile apps and the open-source tools behind better development workflows. From native details to code intelligence, I care about making complex things feel simple.</p>
       <div class="hero-actions">
-        <a href="#projects" class="button button-primary">Explore my work <span aria-hidden="true">↗</span></a>
-        <a href={site.github} class="button button-outline" target="_blank" rel="noopener noreferrer">GitHub profile <span aria-hidden="true">↗</span></a>
+        <a href="#projects" class="button button-primary">Explore my work <Icon name="arrow-up-right" size={15} /></a>
+        <a href={site.github} class="button button-outline" target="_blank" rel="noopener noreferrer">GitHub profile <Icon name="arrow-up-right" size={15} /></a>
       </div>
       <div class="hero-notes"><span>React Native & native</span><span>Mobile architecture</span><span>Open source</span></div>
     </div>
@@ -47,13 +47,13 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
           <div class="hero-phone-screen">
             <div class="hero-phone-island"></div>
             <div class="hero-phone-header"><span>9:41</span><span>▂ ▰</span></div>
-            <div class="verify-symbol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+            <div class="verify-symbol"><Icon name="lock" size={21} /></div>
             <span class="verify-step">SECURE VERIFICATION</span>
             <strong>Enter your code.</strong>
             <p>We sent a 6-digit verification code to your phone.</p>
             <div class="verify-cells"><span>3</span><span>8</span><span>2</span><span class="verify-caret"></span><span></span><span></span></div>
             <div class="verify-resend">Resend in <b>00:28</b></div>
-            <div class="verify-action">Continue <span>→</span></div>
+            <div class="verify-action">Continue <Icon name="arrow-right" size={13} /></div>
           </div>
         </div>
       </div>
@@ -83,10 +83,10 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
   </section>
 
   <section id="projects" class="section-block projects-section" aria-labelledby="projects-title">
-    <div class="section-heading-row"><div class="section-intro"><span class="section-eyebrow">03 / SELECTED WORK</span><h2 id="projects-title">Open source, <span>built with purpose.</span></h2><p>Useful experiments and products I build, refine, and share with other developers.</p></div><a class="section-view-all" href="/projects">View all projects <span aria-hidden="true">↗</span></a></div>
+    <div class="section-heading-row"><div class="section-intro"><span class="section-eyebrow">03 / SELECTED WORK</span><h2 id="projects-title">Open source, <span>built with purpose.</span></h2><p>Useful experiments and products I build, refine, and share with other developers.</p></div><a class="section-view-all" href="/projects">View all projects <Icon name="arrow-up-right" size={15} /></a></div>
     {atlas && (
       <article class="featured-project">
-        <div class="featured-body"><div class="featured-eyebrow"><span class="featured-star">✦</span> FEATURED PROJECT / CODE INTELLIGENCE</div><h3>{atlas.data.title}</h3><p>{atlas.data.summary}</p><div class="feature-tags">{atlas.data.tags.slice(0, 3).map((tag) => <span>{tag}</span>)}</div><a class="featured-link" href={`/projects/${atlas.id}/`}>Explore Code Atlas <span aria-hidden="true">↗</span></a></div>
+        <div class="featured-body"><div class="featured-eyebrow"><Icon name="sparkles" size={15} class="featured-star" /> FEATURED PROJECT / CODE INTELLIGENCE</div><h3>{atlas.data.title}</h3><p>{atlas.data.summary}</p><div class="feature-tags">{atlas.data.tags.slice(0, 3).map((tag) => <span>{tag}</span>)}</div><a class="featured-link" href={`/projects/${atlas.id}/`}>Explore Code Atlas <Icon name="arrow-up-right" size={15} /></a></div>
         <AtlasArt />
       </article>
     )}
@@ -94,8 +94,8 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
   </section>
 
   <section id="about" class="about-section top-lined" aria-labelledby="about-title">
-    <div><span class="section-eyebrow">04 / ABOUT ME</span><h2 id="about-title">Mobile by craft.<br /><span>Builder by curiosity.</span></h2><p>I'm Leo, a mobile engineer who enjoys solving the hard parts—architecture, native integrations, performance, and developer experience. My open-source projects are where I turn those lessons into tools other developers can use.</p><a class="about-link" href={site.github} target="_blank" rel="noopener noreferrer">Connect on GitHub <span aria-hidden="true">↗</span></a></div>
-    <div class="toolbox"><span class="section-eyebrow">MY TOOLBOX</span><div class="stack-tags">{stack.map((item) => <span>{item}</span>)}</div><div class="toolbox-note"><span class="toolbox-terminal">➜</span> Always learning. Always building.</div></div>
+    <div><span class="section-eyebrow">04 / ABOUT ME</span><h2 id="about-title">Mobile by craft.<br /><span>Builder by curiosity.</span></h2><p>I'm Leo, a mobile engineer who enjoys solving the hard parts—architecture, native integrations, performance, and developer experience. My open-source projects are where I turn those lessons into tools other developers can use.</p><a class="about-link" href={site.github} target="_blank" rel="noopener noreferrer">Connect on GitHub <Icon name="arrow-up-right" size={15} /></a></div>
+    <div class="toolbox"><span class="section-eyebrow">MY TOOLBOX</span><div class="stack-tags">{stack.map((item) => <span>{item}</span>)}</div><div class="toolbox-note"><Icon name="terminal" size={14} class="toolbox-terminal" /> Always learning. Always building.</div></div>
   </section>
-  <div class="bottom-cta"><div><span>HAVE SOMETHING IN MIND?</span><h2>Let's build something <em>meaningful.</em></h2></div><a href={site.github} target="_blank" rel="noopener noreferrer" class="button button-primary">Find me on GitHub <span aria-hidden="true">↗</span></a></div>
+  <div class="bottom-cta"><div><span>HAVE SOMETHING IN MIND?</span><h2>Let's build something <em>meaningful.</em></h2></div><a href={site.github} target="_blank" rel="noopener noreferrer" class="button button-primary">Find me on GitHub <Icon name="arrow-up-right" size={15} /></a></div>
 </BaseLayout>

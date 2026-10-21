@@ -12,7 +12,8 @@
   "dependencies": {
     "astro": "^7.4.0",
     "tailwindcss": "^4.3.3",
-    "@tailwindcss/vite": "^4.3.3"
+    "@tailwindcss/vite": "^4.3.3",
+    "@lucide/astro": "^1.59.0"
   },
   "devDependencies": {
     "typescript": "^5.9.3",

@@ -1,14 +1,19 @@
 ---
-interface Props {
-  name: 'mobile' | 'layers' | 'terminal' | 'arrow-up-right';
-  size?: number;
-  class?: string;
-}
+import { Smartphone, Layers, Terminal, ArrowUpRight, ArrowRight, ArrowLeft, SunMoon, Sparkles, LockKeyhole } from '@lucide/astro';
+type IconName = 'mobile' | 'layers' | 'terminal' | 'arrow-up-right' | 'arrow-right' | 'arrow-left' | 'sun-moon' | 'sparkles' | 'lock';
+interface Props { name: IconName; size?: number; class?: string; }
 const { name, size = 24, class: className } = Astro.props;
+const icons = {
+  mobile: Smartphone,
+  layers: Layers,
+  terminal: Terminal,
+  'arrow-up-right': ArrowUpRight,
+  'arrow-right': ArrowRight,
+  'arrow-left': ArrowLeft,
+  'sun-moon': SunMoon,
+  sparkles: Sparkles,
+  lock: LockKeyhole,
+} as const;
+const Component = icons[name];
 ---
-<svg class={className} width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-  {name === 'mobile' && <><rect x="6.5" y="2" width="11" height="20" rx="2.5" /><path d="M10 18h4" /></>}
-  {name === 'layers' && <><path d="m12 3 9 5-9 5-9-5 9-5Z" /><path d="m3 12 9 5 9-5" /><path d="m3 16 9 5 9-5" /></>}
-  {name === 'terminal' && <><rect x="2.5" y="4" width="19" height="16" rx="2.5" /><path d="m7 9 3 3-3 3" /><path d="M13 15h4" /></>}
-  {name === 'arrow-up-right' && <><path d="M6 18 18 6" /><path d="M8 6h10v10" /></>}
-</svg>
+<Component size={size} stroke-width={1.75} class={className} aria-hidden="true" focusable="false" />
