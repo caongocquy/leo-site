@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from './ProjectCard.astro';
+import AtlasArt from './AtlasArt.astro';
+import ExpertiseScene from './ExpertiseScene.astro';
+import Icon from './Icon.astro';
+import { expertise, site, stack } from '../data/site';
+import { localeFromPath, localizedPath, ui, projectI18n } from '../i18n/translations';
+const locale = localeFromPath(Astro.url.pathname);
+const t = ui(locale);
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const atlas = projects.find((project) => project.id === 'code-atlas');
+const otherProjects = projects.filter((project) => project.id !== 'code-atlas').slice(0, 4);
+---
+<BaseLayout>
+  <section class="hero section-grid" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="pulse-dot"></span> {t.hello} <span class="eyebrow-rule"></span> {t.occupation}</div>
+      <h1 id="hero-title">{t.heroTitle} <em>{t.heroEmphasis}</em> {t.heroEnd}<span class="period">.</span></h1>
+      <p class="hero-desc">{t.heroDescription}</p>
+      <div class="hero-actions">
+        <a href="#projects" class="button button-primary">{t.exploreWork} <Icon name="arrow-up-right" size={15} /></a>
+        <a href={site.github} class="button button-outline" target="_blank" rel="noopener noreferrer">{t.githubProfile} <Icon name="arrow-up-right" size={15} /></a>
+      </div>
+      <div class="hero-notes"><span>{t.mobileNative}</span><span>{t.mobileArchitecture}</span><span>{t.openSource}</span></div>
+    </div>
+    <div class="hero-visual" aria-label="Illustration of React Native OTP component and a mobile verification screen" role="img">
+      <div class="visual-overline"><span>{t.engineeredForMobile}</span><span class="visual-overline-status">iOS <i></i> ANDROID</span></div>
+      <div class="hero-art-stage" aria-hidden="true">
+        <div class="hero-code-card">
+          <div class="code-title"><span class="window-lights"><i></i><i></i><i></i></span><span>VerifyPhone.tsx</span><span class="code-language">TSX</span></div>
+          <div class="code-lines">
+            <span class="code-keyword">import <span class="code-text">&#123; OtpInput &#125;</span> from</span>
+            <span class="code-string">  '@leo-showdar/react-native-otp-input-kit';</span>
+            <span class="code-gap"></span>
+            <span class="code-keyword">export function <span class="code-function">VerifyPhone</span>() &#123;</span>
+            <span class="code-text">  return (</span>
+            <span class="code-text">    &lt;OtpInput</span>
+            <span class="code-string">      length=&#123;6&#125;</span>
+            <span class="code-string">      autoFocus</span>
+            <span class="code-string">      onComplete=&#123;verify&#125;</span>
+            <span class="code-text">    /&gt;</span>
+            <span class="code-text">  );</span>
+            <span class="code-text">&#125;</span>
+          </div>
+          <div class="code-status"><span class="status-led"></span> REACT NATIVE · TYPESCRIPT</div>
+        </div>
+        <div class="hero-phone" aria-hidden="true">
+          <div class="hero-phone-screen">
+            <div class="hero-phone-island"></div>
+            <div class="hero-phone-header"><span>9:41</span><span>▂ ▰</span></div>
+            <div class="verify-symbol"><Icon name="lock" size={21} /></div>
+            <span class="verify-step">{t.verification}</span>
+            <strong>{t.enterCode}</strong>
+            <p>{t.codeHint}</p>
+            <div class="verify-cells"><span>3</span><span>8</span><span>2</span><span class="verify-caret"></span><span></span><span></span></div>
+            <div class="verify-resend">{t.resend} <b>00:28</b></div>
+            <div class="verify-action">{t.continue} <Icon name="arrow-right" size={13} /></div>
+          </div>
+        </div>
+      </div>
+      <div class="visual-footnote"><span>{t.realComponent}</span><span>01 / 05</span></div>
+    </div>
+  </section>
+
+  <section id="expertise" class="section-block top-lined" aria-labelledby="expertise-title">
+    <div class="section-intro"><span class="section-eyebrow">{t.whatIDo}</span><h2 id="expertise-title">{t.expertiseTitle} <span>{t.expertiseTitleEm}</span></h2><p>{t.expertiseIntro}</p></div>
+    <div class="expertise-grid">
+      {expertise.map((item) => (
+        <article class="expertise-card">
+          <div class="expertise-card-top"><span class="expertise-icon"><Icon name={item.icon} size={27} /></span><span class="index-number">{item.number}</span></div>
+          <ExpertiseScene kind={item.icon} />
+          <h3>{locale === 'vi' ? t[`expertise${item.number.slice(-1)}Title`] : item.title}</h3><p>{locale === 'vi' ? t[`expertise${item.number.slice(-1)}Desc`] : item.description}</p>
+          <div class="mini-tags">{item.tags.map((tag) => <span>{tag}</span>)}</div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="experience" class="section-block experience-section top-lined" aria-labelledby="experience-title">
+    <div class="section-intro"><span class="section-eyebrow">{t.experienceLabel}</span><h2 id="experience-title">{t.experienceTitle} <span>{t.experienceEm}</span></h2><p>{t.experienceIntro}</p></div>
+    <div class="experience-grid">
+      <article class="experience-card"><div class="experience-meta"><span>{t.experience1Label}</span><span>01</span></div><h3>{t.experience1Title}</h3><p>{t.experience1Desc}</p><div class="experience-tech">React Native <i>·</i> TypeScript <i>·</i> Product Engineering</div></article>
+      <article class="experience-card"><div class="experience-meta"><span>{t.experience2Label}</span><span>02</span></div><h3>{t.experience2Title}</h3><p>{t.experience2Desc}</p><div class="experience-tech">Swift <i>·</i> Kotlin <i>·</i> UI Performance</div></article>
+    </div>
+  </section>
+
+  <section id="projects" class="section-block projects-section" aria-labelledby="projects-title">
+    <div class="section-heading-row"><div class="section-intro"><span class="section-eyebrow">{t.selectedWork}</span><h2 id="projects-title">{t.projectsTitle} <span>{t.projectsEm}</span></h2><p>{t.projectsIntro}</p></div><a class="section-view-all" href={localizedPath("/projects",locale)}>{t.viewAllProjects} <Icon name="arrow-up-right" size={15} /></a></div>
+    {atlas && (
+      <a class="featured-project" href={localizedPath(`/projects/${atlas.id}/`,locale)} aria-label={`${t.exploreAtlas}: ${atlas.data.title}`}>
+        <div class="featured-body"><div class="featured-eyebrow"><Icon name="sparkles" size={15} class="featured-star" /> {t.featuredProject}</div><h3>{atlas.data.title}</h3><p>{projectI18n(atlas,locale).summary}</p><div class="feature-tags">{atlas.data.tags.slice(0, 3).map((tag) => <span>{tag}</span>)}</div><span class="featured-link">{t.exploreAtlas} <Icon name="arrow-up-right" size={15} /></span></div>
+        <AtlasArt />
+      </a>
+    )}
+    <div class="projects-grid">{otherProjects.map((project) => <ProjectCard project={project} />)}</div>
+  </section>
+
+  <section id="about" class="about-section top-lined" aria-labelledby="about-title">
+    <div><span class="section-eyebrow">{t.aboutLabel}</span><h2 id="about-title">{t.aboutTitle}<br /><span>{t.aboutTitleEm}</span></h2><p>{t.aboutText}</p><a class="about-link" href={site.github} target="_blank" rel="noopener noreferrer">{t.connectGithub} <Icon name="arrow-up-right" size={15} /></a></div>
+    <div class="toolbox"><span class="section-eyebrow">{t.toolbox}</span><div class="stack-tags">{stack.map((item) => <span>{item}</span>)}</div><div class="toolbox-note"><Icon name="terminal" size={14} class="toolbox-terminal" /> {t.alwaysLearning}</div></div>
+  </section>
+  <div class="bottom-cta"><div><span>{t.ctaPrompt}</span><h2>{t.ctaTitle} <em>{t.ctaEm}</em></h2></div><a href={site.github} target="_blank" rel="noopener noreferrer" class="button button-primary">{t.findGithub} <Icon name="arrow-up-right" size={15} /></a></div>
+</BaseLayout>
