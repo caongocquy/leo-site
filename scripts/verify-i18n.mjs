@@ -15,7 +15,7 @@ for (const [locale, prefix, nav, intro] of [
   assert.ok(home.includes(nav), `${locale}: missing translated navigation`);
 
   const list = html(`${prefix}projects/index.html`);
-  assert.ok(list.includes(locale === 'vi' ? 'Công cụ AI' : 'Code & AI'), `${locale}: project list untranslated`);
+  assert.ok(list.includes(locale === 'vi' ? 'Công cụ AI' : 'DEVELOPER TOOLS'), `${locale}: project list untranslated`);
 
   for (const slug of projects) {
     const page = html(`${prefix}projects/${slug}/index.html`);
@@ -25,5 +25,6 @@ for (const [locale, prefix, nav, intro] of [
     assert.ok(page.includes(locale === 'vi' ? 'Vì sao mình xây dựng?' : 'Why I built it'), `${locale} ${slug}: article untranslated`);
   }
 }
-assert.ok(html('vi/404.html').includes('Không tìm thấy trang'), 'Vietnamese 404 missing');
+const vietnamese404 = (() => { try { return html('vi/404/index.html'); } catch { return html('vi/404.html'); } })();
+assert.ok(vietnamese404.includes('Không tìm thấy trang'), 'Vietnamese 404 missing');
 console.log('i18n: 2 locales × homepage, project list and all 5 details verified.');
