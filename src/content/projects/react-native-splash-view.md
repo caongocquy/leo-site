@@ -13,6 +13,13 @@ tags:
   - Lottie
 repository: https://github.com/caongocquy/react-native-splash-view
 packageUrl: https://www.npmjs.com/package/@leo-showdar/react-native-splash-view
+screenshots:
+  - src: /images/splash-view-upwork.webp
+    kind: concept
+    alt: "Promotional concept of React Native Splash View on iOS and Android phone mockups"
+    altVi: "Hình minh họa quảng bá React Native Splash View trên thiết bị iOS và Android mô phỏng"
+    caption: "Splash View — promotional concept"
+    captionVi: "Splash View — hình minh họa quảng bá"
 demoCommands:
   - "npm install @leo-showdar/react-native-splash-view"
 highlights:

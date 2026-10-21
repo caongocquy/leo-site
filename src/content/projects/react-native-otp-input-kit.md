@@ -12,6 +12,13 @@ tags:
   - UI Components
 repository: https://github.com/caongocquy/react-native-otp-input-kit
 packageUrl: https://www.npmjs.com/package/@leo-showdar/react-native-otp-input-kit
+screenshots:
+  - src: /images/otp-input-kit-upwork.webp
+    kind: concept
+    alt: "Promotional concept of the React Native OTP Input Kit with a verification screen mockup"
+    altVi: "Hình minh họa quảng bá React Native OTP Input Kit với màn hình xác minh mô phỏng"
+    caption: "OTP Input Kit — promotional concept"
+    captionVi: "OTP Input Kit — hình minh họa quảng bá"
 demoCommands:
   - "npm install @leo-showdar/react-native-otp-input-kit"
 highlights:
