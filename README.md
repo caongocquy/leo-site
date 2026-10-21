@@ -72,3 +72,16 @@ The interactive pattern is independently implemented with credit to the original
 - Expertise uses a compact bento layout inspired by Lucian #214; graphic scenes are presentational, with a static layout and reduced-motion support.
 - Project CLI demos combine Lucian #008 copy feedback and #272 package-manager tabs with the previous #229 walkthrough. Package manager choice is remembered locally. Global Yarn commands explicitly refer to **Yarn Classic (v1)**, not modern Yarn.
 - Project galleries use native `<dialog>` lightboxes inspired by Lucian #061, only when public repository screenshots are present in optional `screenshots` frontmatter. Images are loaded from the original public repository; mobile component previews are not fabricated.
+
+## English / Vietnamese
+
+The default English URLs remain unchanged. Vietnamese pages are served statically under `/vi/`, including `/vi/projects/` and each `/vi/projects/<id>/`. The language picker uses 🇬🇧 / 🇻🇳 links and keeps the current page when switching. No runtime translation library, browser-language redirects, or tracking cookies are needed.
+
+- English UI and Vietnamese UI: `src/i18n/translations.ts`
+- Original English project articles: `src/content/projects/*.md`
+- Vietnamese project summaries, highlights and article sections: `src/i18n/translations.ts`
+- Changes to project claims should be reflected in both locales.
+
+## Promotional artwork
+
+The `screenshots` content field optionally supports `kind: concept` and translated labels (`altVi`, `captionVi`). Any Upwork promotional mockup **must** have `kind: concept`, never be represented as an actual in-app screenshot. Place files under `public/images/`, serve locally and prefer compressed WebP over the original large PNGs.
