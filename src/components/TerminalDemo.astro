@@ -1,4 +1,6 @@
 ---
+import Icon from './Icon.astro';
+
 interface Props {
   title: string;
   commands: string[];
@@ -45,16 +47,16 @@ const { title, commands, highlights, repository } = Astro.props;
     <div class="demo-controls">
       <div class="demo-controls-left">
         <button type="button" class="demo-button" data-demo-replay aria-label={`Replay ${title} terminal animation`}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/></svg>
+          <Icon name="replay" size={14} />
           Replay
         </button>
         <button type="button" class="demo-button" data-demo-copy aria-label={`Copy ${title} commands`}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+          <Icon name="copy" size={14} />
           Copy commands
         </button>
       </div>
       <button type="button" class="demo-button demo-button-primary" data-demo-preview aria-expanded="false" aria-controls="demo-project-preview">
-        Feature preview <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+        Feature preview <Icon name="chevron-right" size={14} />
       </button>
     </div>
     <div id="demo-project-preview" class="demo-preview" data-demo-panel hidden>
@@ -197,7 +199,7 @@ const { title, commands, highlights, repository } = Astro.props;
       if (!panel) return;
       panel.hidden = !panel.hidden;
       preview.setAttribute('aria-expanded', String(!panel.hidden));
-      if (!panel.hidden) panel.scrollIntoView({ block: 'nearest', behavior: reduced.matches ? 'instant' : 'smooth' });
+      if (!panel.hidden) panel.scrollIntoView({ block: 'nearest', behavior: reduced.matches ? 'auto' : 'smooth' });
     });
     reduced.addEventListener('change', () => {
       if (reduced.matches) complete();
