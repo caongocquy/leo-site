@@ -20,14 +20,16 @@ for (const slug of slugs) {
   }
   assert.ok(html.includes('data-demo-copy'), `${slug}: missing copy action`);
   assert.ok(html.includes('demo-copy-done'), `${slug}: missing copied check feedback`);
+  const hasGallery = /<div\b[^>]*\bdata-project-gallery\b/.test(html);
+  const hasLightbox = /<dialog\b[^>]*\bdata-project-lightbox\b/.test(html);
   if (slug in expectedGallery) {
-    assert.ok(html.includes('data-project-gallery'), `${slug}: missing screenshot gallery`);
-    assert.ok(html.includes('data-project-lightbox'), `${slug}: missing native dialog lightbox`);
+    assert.ok(hasGallery, `${slug}: missing screenshot gallery`);
+    assert.ok(hasLightbox, `${slug}: missing native dialog lightbox`);
     for (const file of expectedGallery[slug]) {
       assert.ok(html.includes(file), `${slug}: missing authentic screenshot ${file}`);
     }
   } else {
-    assert.ok(!html.includes('data-project-gallery'), `${slug}: should not show gallery without public screenshots`);
+    assert.ok(!hasGallery, `${slug}: should not show gallery without public screenshots`);
   }
 }
 
