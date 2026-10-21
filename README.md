@@ -34,7 +34,7 @@ Edit `src/content/projects/*.md` to update project information or add a new proj
 - Site copy and links: `src/data/site.ts`
 - Colors and responsive layout: `src/styles/global.css`
 - Shared page layout: `src/layouts/BaseLayout.astro`
-- Theme: pre-paint initialization in `BaseLayout.astro`, accessible dropdown behavior in `Header.astro`
+- Theme: pre-paint initialization in `BaseLayout.astro` and accessible animated day/night switch with System reset in `ThemeSwitch.astro`
 
 All published links correspond to public project pages or published package pages. Do not add private client details, unsupported experience claims, or fabricated metrics.
 

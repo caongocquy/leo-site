@@ -84,9 +84,6 @@ svg { display: block; }
 .header-actions { display: flex; gap: 13px; align-items: center; }
 .header-github { display: inline-flex; gap: 9px; align-items: center; border: 1px solid var(--line-accent); border-radius: 9px; padding: 8px 13px; color: var(--text); }
 .header-github svg { width: 16px; height: 16px; }
-.theme-select-wrap { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 9px; position: relative; padding-left: 9px; gap: 3px; background: var(--surface); }
-.theme-select-wrap svg { width: 15px; height: 15px; color: var(--accent); pointer-events: none; }
-.theme-select-wrap select { cursor: pointer; border: 0; min-height: 36px; max-width: 90px; color: var(--text); background: transparent; font-size: 11px; font-weight: 600; padding-right: 4px; outline-offset: 2px; }
 
 /* Shared */
 .button { display: inline-flex; align-items: center; gap: 19px; justify-content: center; padding: 13px 18px; min-height: 46px; font-size: 12px; border-radius: 10px; font-weight: 800; transition: transform .18s, border-color .18s, background-color .18s; }
@@ -312,8 +309,6 @@ svg { display: block; }
   .brand-text small { font-size: 8px; }
   .header-github { padding: 8px; }
   .header-github span { display: none; }
-  .theme-select-wrap { padding-left: 6px; }
-  .theme-select-wrap select { max-width: 80px; }
   .header-nav { overflow-x: auto; }
   .header-nav a { font-size: 11px; white-space: nowrap; }
   .hero { padding-top: 65px; gap: 35px; padding-bottom: 69px; }
