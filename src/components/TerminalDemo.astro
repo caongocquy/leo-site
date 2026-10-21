@@ -1,14 +1,17 @@
 ---
 import Icon from './Icon.astro';
+import { ui, type Locale } from '../i18n/translations';
 
 interface Props {
   title: string;
   commands: string[];
   highlights: string[];
   repository: string;
+  locale?: Locale;
 }
 
-const { title, commands, highlights, repository } = Astro.props;
+const { title, commands, highlights, repository, locale = 'en' } = Astro.props;
+const t = ui(locale);
 const first = commands[0] ?? '';
 const isGlobal = first.startsWith('npm install -g ');
 const packageName = first.replace(/^npm install(?: -g)? /, '');
@@ -26,21 +29,21 @@ const managerCommands = [
 <section class="terminal-showcase" aria-labelledby="terminal-demo-title">
   <div class="terminal-heading">
     <div>
-      <span class="section-eyebrow">INTERACTIVE WALKTHROUGH</span>
-      <h2 id="terminal-demo-title">Start with a command<span class="period">.</span></h2>
-      <p>Explore the setup flow for {title}. This is a visual guide—no commands are executed.</p>
+      <span class="section-eyebrow">{t.terminalEyebrow}</span>
+      <h2 id="terminal-demo-title">{t.terminalTitle}<span class="period">.</span></h2>
+      <p>{t.terminalIntroA} {title}. {t.terminalIntroB}</p>
     </div>
-    <span class="terminal-heading-label">CLI / QUICK START</span>
+    <span class="terminal-heading-label">{t.terminalQuick}</span>
   </div>
-  <div class="demo-shell" data-terminal-demo>
+  <div class="demo-shell" data-terminal-demo data-label-ready={t.terminalReady} data-label-typing={t.terminalTyping} data-label-copy={t.copyCommands} data-label-copied={t.copied} data-label-copy-success={t.copySuccess} data-label-copy-failed={t.copyFailed}>
     <div class="demo-window">
       <div class="demo-toolbar" aria-hidden="true">
         <span class="demo-dots"><i></i><i></i><i></i></span>
         <span>terminal / {title.toLowerCase().replaceAll(' ', '-')}</span>
-        <span class="demo-toolbar-tag">GUIDED PREVIEW</span>
+        <span class="demo-toolbar-tag">{t.terminalGuided}</span>
       </div>
-      <div class="demo-manager" role="group" aria-label="Choose package manager">
-        <span class="demo-manager-label">INSTALL WITH</span>
+      <div class="demo-manager" role="group" aria-label={locale === "vi" ? "Chọn trình quản lý package" : "Choose package manager"}>
+        <span class="demo-manager-label">{t.terminalInstallWith}</span>
         <div class="demo-manager-tabs">
           {managerCommands.map((manager) => (
             <button type="button" data-install-manager={manager.id} data-install-command={manager.command} aria-pressed={manager.id === 'npm'} class="demo-manager-tab" title={manager.id === 'yarn' && isGlobal ? 'Yarn Classic (v1) only for global installs' : undefined}>{manager.label}</button>
@@ -53,39 +56,39 @@ const managerCommands = [
             <span class="demo-prompt">$</span><code data-demo-command>{command}</code>
           </div>
         ))}
-        <div class="demo-instruction"># Follow the README for full setup and platform requirements.</div>
+        <div class="demo-instruction">{t.terminalReadme}</div>
       </div>
       <div class="demo-window-footer">
-        <span class="demo-led"></span><span data-demo-status>Commands ready to copy</span>
-        <span class="demo-window-label">NO COMMANDS EXECUTED</span>
+        <span class="demo-led"></span><span data-demo-status>{t.terminalReady}</span>
+        <span class="demo-window-label">{t.terminalNoRun}</span>
       </div>
       <div class="demo-progress" aria-hidden="true"><div data-demo-progress></div></div>
     </div>
     <div class="demo-controls">
       <div class="demo-controls-left">
-        <button type="button" class="demo-button" data-demo-replay aria-label={`Replay ${title} terminal animation`}>
+        <button type="button" class="demo-button" data-demo-replay aria-label={`${t.replay}: ${title}`}>
           <Icon name="replay" size={14} />
-          Replay
+          {t.replay}
         </button>
-        <button type="button" class="demo-button" data-demo-copy aria-label={`Copy ${title} commands`}>
+        <button type="button" class="demo-button" data-demo-copy aria-label={`${t.copyCommands}: ${title}`}>
           <span class="demo-copy-ready"><Icon name="copy" size={14} /></span>
           <span class="demo-copy-done"><Icon name="check" size={14} /></span>
-          <span class="demo-copy-label">Copy commands</span>
+          <span class="demo-copy-label">{t.copyCommands}</span>
         </button>
       </div>
       <button type="button" class="demo-button demo-button-primary" data-demo-preview aria-expanded="false" aria-controls="demo-project-preview">
-        Feature preview <Icon name="chevron-right" size={14} />
+        {t.featurePreview} <Icon name="chevron-right" size={14} />
       </button>
     </div>
     <div id="demo-project-preview" class="demo-preview" data-demo-panel hidden>
       <div>
-        <span class="demo-preview-kicker">WHAT IT DOES</span>
+        <span class="demo-preview-kicker">{t.whatItDoes}</span>
         <strong>{title}</strong>
         <ul>{highlights.slice(0, 3).map((highlight) => <li>{highlight}</li>)}</ul>
       </div>
-      <a href={repository} target="_blank" rel="noopener noreferrer">View actual source <span aria-hidden="true">↗</span></a>
+      <a href={repository} target="_blank" rel="noopener noreferrer">{t.viewActualSource} <span aria-hidden="true">↗</span></a>
     </div>
-    <p class="visually-hidden">Terminal guide. Commands: {commands.join('; ')}. No commands are run by this demo.</p>
+    <p class="visually-hidden">Terminal guide. Commands: {commands.join('; ')}. {t.terminalAccessible}</p>
     <p class="visually-hidden" aria-live="polite" data-demo-announcement></p>
   </div>
 </section>
@@ -190,7 +193,7 @@ const managerCommands = [
       if (copyReset) clearTimeout(copyReset);
       copy?.removeAttribute('data-copied');
       const label = copy?.querySelector<HTMLElement>('.demo-copy-label');
-      if (label) label.textContent = 'Copy commands';
+      if (label) label.textContent = demo.dataset.labelCopy ?? 'Copy commands';
     };
 
     const setManager = (id: string, animateChange: boolean) => {
@@ -208,7 +211,7 @@ const managerCommands = [
       runId++;
       elements.forEach((element, index) => { element.textContent = commands[index]; });
       if (progress) progress.style.width = '100%';
-      if (status) status.textContent = 'Commands ready to copy';
+      if (status) status.textContent = demo.dataset.labelReady ?? 'Commands ready to copy';
     };
     const sleep = (milliseconds: number) => new Promise<void>((resolve) => setTimeout(resolve, milliseconds));
 
@@ -220,7 +223,7 @@ const managerCommands = [
       const current = ++runId;
       elements.forEach((element) => { element.textContent = ''; });
       if (progress) progress.style.width = '0%';
-      if (status) status.textContent = 'Typing example commands…';
+      if (status) status.textContent = demo.dataset.labelTyping ?? 'Typing example commands…';
       let typed = 0;
       const charCount = Math.max(1, commands.join('').length);
 
@@ -236,7 +239,7 @@ const managerCommands = [
         await sleep(300);
         if (current !== runId) return;
       }
-      if (status) status.textContent = 'Commands ready to copy';
+      if (status) status.textContent = demo.dataset.labelReady ?? 'Commands ready to copy';
     };
 
     managers.forEach((manager) => manager.addEventListener('click', () => setManager(manager.dataset.installManager ?? 'npm', true)));
@@ -244,14 +247,14 @@ const managerCommands = [
     copy?.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(commands.join('\n'));
-        if (announcement) announcement.textContent = 'Commands copied to clipboard.';
+        if (announcement) announcement.textContent = demo.dataset.labelCopySuccess ?? 'Commands copied to clipboard.';
         resetCopied();
         copy?.setAttribute('data-copied', 'true');
         const label = copy?.querySelector<HTMLElement>('.demo-copy-label');
-        if (label) label.textContent = 'Copied!';
+        if (label) label.textContent = demo.dataset.labelCopied ?? 'Copied!';
         copyReset = setTimeout(resetCopied, 1900);
       } catch {
-        if (announcement) announcement.textContent = 'Clipboard unavailable. Select the commands to copy them.';
+        if (announcement) announcement.textContent = demo.dataset.labelCopyFailed ?? 'Clipboard unavailable. Select the commands to copy them.';
       }
     });
     preview?.addEventListener('click', () => {
