@@ -2,21 +2,25 @@
 import type { CollectionEntry } from 'astro:content';
 import ProjectVisual from './ProjectVisual.astro';
 import Icon from './Icon.astro';
+import { localeFromPath, localizedPath, ui, projectI18n } from '../i18n/translations';
 interface Props { project: CollectionEntry<'projects'>; }
 const { project } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
+const t = ui(locale);
+const localized = projectI18n(project,locale);
 ---
-<a class="project-card" href={`/projects/${project.id}/`} aria-label={`View ${project.data.title} project details`}>
+<a class="project-card" href={localizedPath(`/projects/${project.id}/`,locale)} aria-label={`${t.projectDetailsLabel}: ${project.data.title}`}>
   <div class="project-card-media">
     <ProjectVisual variant={project.data.icon} />
     <span class="project-card-open"><Icon name="arrow-up-right" size={16}/></span>
   </div>
   <div class="project-card-content">
-    <span class="project-card-kicker">{project.data.category}</span>
+    <span class="project-card-kicker">{project.data.category === "React Native" ? t.categoryMobile : t.categoryTools}</span>
     <h3>{project.data.title}</h3>
-    <p>{project.data.summary}</p>
+    <p>{localized.summary}</p>
   </div>
   <div class="project-card-bottom">
     <span>{project.data.tags.slice(0, 2).join(' · ')}</span>
-    <span>View project <Icon name="arrow-right" size={13} /></span>
+    <span>{t.viewProject} <Icon name="arrow-right" size={13} /></span>
   </div>
 </a>

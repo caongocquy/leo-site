@@ -1,0 +1,19 @@
+---
+import { localeFromPath, localizedPath, ui } from '../i18n/translations';
+const locale = localeFromPath(Astro.url.pathname);
+const t = ui(locale);
+const path = Astro.url.pathname;
+---
+<nav class="language-switch" aria-label={locale === 'vi' ? 'Ngôn ngữ' : 'Language'}>
+  <a href={localizedPath(path, 'en')} lang="en" aria-label={t.switchEnglish} aria-current={locale === 'en' ? 'page' : undefined} title="English">🇬🇧</a>
+  <a href={localizedPath(path, 'vi')} lang="vi" aria-label={t.switchVietnamese} aria-current={locale === 'vi' ? 'page' : undefined} title="Tiếng Việt">🇻🇳</a>
+</nav>
+<style>
+  .language-switch { display: inline-flex; flex: 0 0 auto; align-items: center; gap: 3px; border: 1px solid var(--line); border-radius: 9px; padding: 3px; background: var(--surface); }
+  .language-switch a { display: grid; place-items: center; width: 29px; height: 28px; border-radius: 6px; font-size: 17px; line-height: 1; text-decoration: none; filter: grayscale(.55); opacity: .63; transition: filter .15s ease, opacity .15s ease, background-color .15s ease; }
+  .language-switch a:hover, .language-switch a[aria-current="page"] { background: var(--icon-surface); filter: none; opacity: 1; }
+  .language-switch a[aria-current="page"] { box-shadow: inset 0 0 0 1px var(--line-accent); }
+  .language-switch a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  @media(max-width: 560px) { .language-switch { padding: 2px; gap: 1px; } .language-switch a { width: 26px; height: 27px; font-size: 16px; } }
+  @media(prefers-reduced-motion: reduce) { .language-switch a { transition: none; } }
+</style>
