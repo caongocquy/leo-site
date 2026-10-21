@@ -8,7 +8,7 @@ import { expertise, site, stack } from '../data/site';
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const atlas = projects.find((project) => project.id === 'code-atlas');
-const otherProjects = projects.filter((project) => project.id !== 'code-atlas').slice(0, 3);
+const otherProjects = projects.filter((project) => project.id !== 'code-atlas').slice(0, 4);
 ---
 <BaseLayout>
   <section class="hero section-grid" aria-labelledby="hero-title">

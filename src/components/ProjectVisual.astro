@@ -1,6 +1,6 @@
 ---
 interface Props {
-  variant: 'graph' | 'route' | 'otp' | 'spark';
+  variant: 'graph' | 'route' | 'skills' | 'otp' | 'spark';
 }
 const { variant } = Astro.props;
 ---
@@ -33,6 +33,16 @@ const { variant } = Astro.props;
       <circle cx="273" cy="73" r="4" class="graphic-dot"/>
     </svg>
   )}
+
+  {variant === 'skills' && (
+    <div class="skills-visual">
+      <div class="skills-route-head"><span class="skills-prompt-mark">→</span> intent: build a feature</div>
+      <div class="skills-route-steps">
+        <span><i>01</i> Understand</span><b>→</b><span><i>02</i> Plan</span><b>→</b><span><i>03</i> Build</span>
+      </div>
+      <div class="skills-route-footer"><span class="skills-route-status"></span> progressive context · agent skills</div>
+    </div>
+  )}
   {variant === 'otp' && (
     <div class="otp-visual">
       <div class="otp-visual-label">ACCOUNT VERIFICATION</div>
@@ -47,3 +57,15 @@ const { variant } = Astro.props;
     </div>
   )}
 </div>
+
+<style>
+  .skills-visual { position: relative; z-index: 1; width: min(90%, 330px); border: 1px solid var(--line-accent); border-radius: 11px; padding: 14px; background: var(--surface); box-shadow: 0 12px 30px var(--shadow); }
+  .skills-route-head { font: 10px 'IBM Plex Mono', ui-monospace, monospace; color: var(--text); display: flex; align-items: center; gap: 9px; border-bottom: 1px solid var(--line-soft); padding-bottom: 12px; }
+  .skills-prompt-mark { color: var(--accent); font-size: 15px; font-weight: 700; }
+  .skills-route-steps { display: flex; align-items: center; gap: 5px; margin: 12px 0; }
+  .skills-route-steps > span { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 0; padding: 10px 3px; border: 1px solid var(--line-accent); background: var(--icon-surface); border-radius: 6px; color: var(--text); font-size: 9px; font-weight: 600; }
+  .skills-route-steps i { font: 9px 'IBM Plex Mono', ui-monospace, monospace; font-style: normal; color: var(--accent); }
+  .skills-route-steps b { color: var(--accent); font-weight: 500; }
+  .skills-route-footer { display: flex; align-items: center; gap: 6px; font: 8px 'IBM Plex Mono', ui-monospace, monospace; color: var(--muted); }
+  .skills-route-status { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+</style>
