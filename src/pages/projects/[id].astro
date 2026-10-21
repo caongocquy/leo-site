@@ -1,25 +1,11 @@
 ---
-import { getCollection, render, type CollectionEntry } from 'astro:content';
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Icon from '../../components/Icon.astro';
-import TerminalDemo from '../../components/TerminalDemo.astro';
-import ProjectGallery from '../../components/ProjectGallery.astro';
-
+import { getCollection, type CollectionEntry } from 'astro:content';
+import ProjectDetailPage from '../../components/ProjectDetailPage.astro';
 interface Props { project: CollectionEntry<'projects'>; }
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
   return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
 }
 const { project } = Astro.props;
-const { Content } = await render(project);
 ---
-<BaseLayout title={`${project.data.title} — Leo`} description={project.data.summary}>
-  <div class="detail-breadcrumb"><a href="/projects"><Icon name="arrow-left" size={14}/> All projects</a><span>/</span><span>{project.data.title}</span></div>
-  <article class="project-detail">
-    <div class="detail-intro"><div class="detail-intro-copy"><span class="section-eyebrow">{project.data.category} / OPEN SOURCE</span><h1>{project.data.title}<span class="period">.</span></h1><h2>{project.data.subtitle}</h2><p>{project.data.summary}</p><div class="detail-actions"><a class="button button-primary" href={project.data.repository} target="_blank" rel="noopener noreferrer">View source on GitHub <Icon name="arrow-up-right" size={15}/></a>{project.data.packageUrl && <a class="button button-outline" href={project.data.packageUrl} target="_blank" rel="noopener noreferrer">npm package <Icon name="arrow-up-right" size={15}/></a>}</div></div><div class="detail-aside"><span class="section-eyebrow">TECHNOLOGIES</span><div class="stack-tags">{project.data.tags.map(tag => <span>{tag}</span>)}</div><div class="detail-aside-footer">Built in the open · Explore the code</div></div></div>
-    <TerminalDemo title={project.data.title} commands={project.data.demoCommands} highlights={project.data.highlights} repository={project.data.repository} />
-    <ProjectGallery title={project.data.title} screenshots={project.data.screenshots ?? []} />
-    <div class="detail-body"><div class="detail-article prose"><Content /></div><aside class="detail-highlights"><span class="section-eyebrow">KEY HIGHLIGHTS</span><ul>{project.data.highlights.map((highlight) => <li><Icon name="arrow-up-right" size={14}/>{highlight}</li>)}</ul><a href={project.data.repository} target="_blank" rel="noopener noreferrer">Repository <Icon name="arrow-up-right" size={14}/></a></aside></div>
-  </article>
-  <div class="detail-bottom"><span>More to explore</span><a href="/projects">See all projects <Icon name="arrow-right" size={14}/></a></div>
-</BaseLayout>
+<ProjectDetailPage project={project} />

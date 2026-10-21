@@ -1,0 +1,17 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from './ProjectCard.astro';
+import Icon from './Icon.astro';
+import { localeFromPath, localizedPath, ui } from '../i18n/translations';
+const locale = localeFromPath(Astro.url.pathname);
+const t = ui(locale);
+const projects = (await getCollection('projects')).sort((a,b) => a.data.order - b.data.order);
+const tools = projects.filter((p) => p.data.category === 'AI & Developer Tools');
+const mobile = projects.filter((p) => p.data.category === 'React Native');
+---
+<BaseLayout title={`${t.navProjects} — Leo`} description={t.projectsDescription}>
+  <div class="subpage-hero"><a class="breadcrumb" href={localizedPath("/",locale)}><Icon name="arrow-left" size={14}/> {t.home}</a><span class="section-eyebrow">{t.projectsEyebrow}</span><h1>{t.projectsPageTitle} <em>{t.projectsPageEm}</em></h1><p>{t.projectsPageIntro}</p></div>
+  <section class="project-collection" aria-labelledby="tools-title"><div class="collection-heading"><div><span class="section-eyebrow">{t.devTools}</span><h2 id="tools-title">{t.devToolsTitle}</h2></div><span>{String(tools.length).padStart(2, '0')} {t.countProjects}</span></div><div class="projects-grid collection-grid">{tools.map(project => <ProjectCard project={project} />)}</div></section>
+  <section class="project-collection" aria-labelledby="mobile-title"><div class="collection-heading"><div><span class="section-eyebrow">{t.mobilePackages}</span><h2 id="mobile-title">{t.mobilePackagesTitle}</h2></div><span>{String(mobile.length).padStart(2, '0')} {t.countProjects}</span></div><div class="projects-grid collection-grid">{mobile.map(project => <ProjectCard project={project} />)}</div></section>
+</BaseLayout>

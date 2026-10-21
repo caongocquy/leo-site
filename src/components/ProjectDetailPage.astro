@@ -1,0 +1,22 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from './Icon.astro';
+import TerminalDemo from '../../components/TerminalDemo.astro';
+import ProjectGallery from '../../components/ProjectGallery.astro';
+
+interface Props { project: CollectionEntry<'projects'>; }
+const { project } = Astro.props;
+const localized = projectI18n(project, locale);
+const { Content } = await render(project);
+---
+<BaseLayout title={`${project.data.title} — Leo`} description={localized.summary}>
+  <div class="detail-breadcrumb"><a href={localizedPath("/projects",locale)}><Icon name="arrow-left" size={14}/> {t.allProjects}</a><span>/</span><span>{project.data.title}</span></div>
+  <article class="project-detail">
+    <div class="detail-intro"><div class="detail-intro-copy"><span class="section-eyebrow">{project.data.category === "React Native" ? t.categoryMobile : t.categoryTools} / {t.detailOpenSource}</span><h1>{project.data.title}<span class="period">.</span></h1><h2>{localized.subtitle}</h2><p>{localized.summary}</p><div class="detail-actions"><a class="button button-primary" href={project.data.repository} target="_blank" rel="noopener noreferrer">{t.sourceGithub} <Icon name="arrow-up-right" size={15}/></a>{project.data.packageUrl && <a class="button button-outline" href={project.data.packageUrl} target="_blank" rel="noopener noreferrer">{t.npmPackage} <Icon name="arrow-up-right" size={15}/></a>}</div></div><div class="detail-aside"><span class="section-eyebrow">{t.technology}</span><div class="stack-tags">{project.data.tags.map(tag => <span>{tag}</span>)}</div><div class="detail-aside-footer">{t.builtOpen}</div></div></div>
+    <TerminalDemo title={project.data.title} commands={project.data.demoCommands} highlights={localized.highlights} repository={project.data.repository} locale={locale} />
+    <ProjectGallery title={project.data.title} screenshots={project.data.screenshots ?? []} locale={locale} />
+    <div class="detail-body"><div class="detail-article prose">{locale === "en" ? <Content /> : localized.sections.map(section => <section><h2>{section.heading}</h2>{section.paragraphs.map(paragraph => <p>{paragraph}</p>)}</section>)}</div><aside class="detail-highlights"><span class="section-eyebrow">{t.highlights}</span><ul>{localized.highlights.map((highlight) => <li><Icon name="arrow-up-right" size={14}/>{highlight}</li>)}</ul><a href={project.data.repository} target="_blank" rel="noopener noreferrer">{t.repository} <Icon name="arrow-up-right" size={14}/></a></aside></div>
+  </article>
+  <div class="detail-bottom"><span>{t.moreExplore}</span><a href={localizedPath("/projects",locale)}>{t.seeAll} <Icon name="arrow-right" size={14}/></a></div>
+</BaseLayout>
