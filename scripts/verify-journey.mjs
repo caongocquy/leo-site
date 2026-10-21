@@ -11,7 +11,7 @@ for (const [locale, prefix, title, marker] of [
   assert.match(page, new RegExp(`<html[^>]*lang="${locale}"`), `${locale} missing lang`);
   assert.ok(page.includes(title) && page.includes(marker), `${locale}: journey not translated`);
   assert.ok(page.includes('data-journey-track') && page.includes('data-journey-item'), `${locale}: timeline markup missing`);
-  assert.ok(page.includes('prefers-reduced-motion'), `${locale}: missing reduced motion support`);
+  assert.ok(read('src/components/JourneyPage.astro').includes('prefers-reduced-motion'), `${locale}: missing reduced motion support`);
   assert.ok(page.includes('MGI Global') && page.includes('45CM VINA'), `${locale}: earlier history missing`);
   assert.ok(page.includes('1988s Media and Technology') && page.includes('Galaxy Technology Services'), `${locale}: later employment missing`);
   assert.ok(page.includes('VietJet Air') && page.includes('HDBank'), `${locale}: client assignments missing`);

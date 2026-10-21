@@ -13,7 +13,7 @@ Personal developer portfolio for [Leo](https://github.com/caongocquy): mobile en
 
 ## Local development
 
-Requires Node.js 22.12+.
+Requires Node.js 24 recommended (Astro requires Node.js 22.23.4 or later).
 
 ```bash
 npm install
@@ -96,3 +96,7 @@ Career entries are edited at `src/data/journey.ts`, paired EN/VI:
 - Open-source work in 2026 is a separate milestone from employment; it links to project pages.
 
 Verify any future employment or client-date changes against the CV before updating public entries.
+
+## Toolchain
+
+GitHub Actions and `.node-version` use Node.js 24; Astro 7.4+ requires at least 22.23.4. Run `npm install` and `npm run build` with a supported Node version.
