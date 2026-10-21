@@ -4,7 +4,7 @@ subtitle: Focused verification UI for React Native
 summary: TypeScript OTP inputs, hooks, and resend timers for login, phone verification, and two-step authentication screens.
 category: React Native
 featured: false
-order: 3
+order: 4
 icon: otp
 tags:
   - React Native
