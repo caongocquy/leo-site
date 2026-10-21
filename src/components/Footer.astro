@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import Icon from './Icon.astro';
 ---
 <footer class="site-footer">
   <div>
@@ -8,7 +9,7 @@ import { site } from '../data/site';
   </div>
   <div class="footer-links">
     <a href="/projects">Projects</a>
-    <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub <Icon name="arrow-up-right" size={13}/></a>
     <span>© {new Date().getFullYear()} Leo</span>
   </div>
 </footer>

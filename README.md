@@ -6,6 +6,7 @@ Personal developer portfolio for [Leo](https://github.com/caongocquy): mobile en
 
 - Astro + TypeScript (fully static output)
 - Tailwind CSS v4 via Vite
+- Lucide Astro icons (tree-shaken SVG; no client-side icon runtime)
 - Markdown content collections for projects
 - CSS-first responsive design, accessible Light / Dark / System theme
 - Cloudflare Workers Static Assets (no backend, no SSR adapter)

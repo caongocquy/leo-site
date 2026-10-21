@@ -17,6 +17,6 @@ const { project } = Astro.props;
   </div>
   <div class="project-card-bottom">
     <span>{project.data.tags.slice(0, 2).join(' · ')}</span>
-    <span>View project <span aria-hidden="true">→</span></span>
+    <span>View project <Icon name="arrow-right" size={13} /></span>
   </div>
 </a>

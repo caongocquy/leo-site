@@ -2,12 +2,13 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+import Icon from '../../components/Icon.astro';
 const projects = (await getCollection('projects')).sort((a,b) => a.data.order - b.data.order);
 const tools = projects.filter((p) => p.data.category === 'AI & Developer Tools');
 const mobile = projects.filter((p) => p.data.category === 'React Native');
 ---
 <BaseLayout title="Projects — Leo" description="Open-source projects and developer tools built by Leo, from code intelligence to reusable React Native libraries.">
-  <div class="subpage-hero"><a class="breadcrumb" href="/">← Home</a><span class="section-eyebrow">OPEN SOURCE / SELECTED PROJECTS</span><h1>Building in <em>the open.</em></h1><p>Tools and libraries I make to solve practical engineering problems. Everything here links to source code you can explore.</p></div>
+  <div class="subpage-hero"><a class="breadcrumb" href="/"><Icon name="arrow-left" size={14}/> Home</a><span class="section-eyebrow">OPEN SOURCE / SELECTED PROJECTS</span><h1>Building in <em>the open.</em></h1><p>Tools and libraries I make to solve practical engineering problems. Everything here links to source code you can explore.</p></div>
   <section class="project-collection" aria-labelledby="tools-title"><div class="collection-heading"><div><span class="section-eyebrow">01 / DEVELOPER TOOLS</span><h2 id="tools-title">Code & AI tooling</h2></div><span>{String(tools.length).padStart(2, '0')} PROJECTS</span></div><div class="projects-grid collection-grid">{tools.map(project => <ProjectCard project={project} />)}</div></section>
   <section class="project-collection" aria-labelledby="mobile-title"><div class="collection-heading"><div><span class="section-eyebrow">02 / MOBILE LIBRARIES</span><h2 id="mobile-title">React Native packages</h2></div><span>{String(mobile.length).padStart(2, '0')} PROJECTS</span></div><div class="projects-grid collection-grid">{mobile.map(project => <ProjectCard project={project} />)}</div></section>
 </BaseLayout>

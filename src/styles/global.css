@@ -491,3 +491,12 @@ svg { display: block; }
   .project-card-bottom { margin: auto 20px 0; }
   .atlas-art > svg { padding:0; }
 }
+
+/* Align build-time Lucide icons with text and interactive affordances. */
+.section-view-all, .about-link, .detail-highlights > a, .detail-bottom a, .footer-links a, .breadcrumb, .detail-breadcrumb a { display:inline-flex; align-items:center; gap:6px; }
+.detail-highlights li { align-items:flex-start; }
+.detail-highlights li svg { flex:0 0 auto; margin-top:3px; color:var(--accent); }
+.featured-star { display:inline-block; vertical-align:-3px; margin-right:6px; }
+.toolbox-note { display:flex; align-items:center; gap:6px; }
+.project-card-bottom > span:last-child { display:inline-flex; align-items:center; gap:5px; }
+.button > svg, .featured-link > svg, .section-view-all > svg, .about-link > svg, .header-github > svg:last-child { flex-shrink:0; }
