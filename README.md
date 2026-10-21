@@ -8,7 +8,7 @@ Personal developer portfolio for [Leo](https://github.com/caongocquy): mobile en
 - Tailwind CSS v4 via Vite
 - Lucide Astro icons (tree-shaken SVG; no client-side icon runtime)
 - Markdown content collections for projects
-- CSS-first responsive design, accessible Light / Dark / System theme
+- CSS-first responsive design, accessible Light / Dark theme (system default)
 - Cloudflare Workers Static Assets (no backend, no SSR adapter)
 
 ## Local development
@@ -34,7 +34,7 @@ Edit `src/content/projects/*.md` to update project information or add a new proj
 - Site copy and links: `src/data/site.ts`
 - Colors and responsive layout: `src/styles/global.css`
 - Shared page layout: `src/layouts/BaseLayout.astro`
-- Theme: pre-paint initialization in `BaseLayout.astro` and accessible animated day/night switch with System reset in `ThemeSwitch.astro`
+- Theme: pre-paint initialization in `BaseLayout.astro` and accessible animated day/night switch in `ThemeSwitch.astro` (system default until a manual preference is saved)
 
 All published links correspond to public project pages or published package pages. Do not add private client details, unsupported experience claims, or fabricated metrics.
 
@@ -59,7 +59,7 @@ Add your final site URL to the `site` property in `astro.config.mjs` so canonica
 
 - This is a portfolio, not an application backend. No authentication, database, tracking, or API keys are required.
 - Prefer optimized screenshots with meaningful alt text when adding project visuals.
-- Theme respects `prefers-color-scheme`, persists manual choice where storage is available, and updates when OS theme changes in System mode.
+- Theme respects `prefers-color-scheme`, persists manual choice where storage is available, and tracks OS theme changes only while no manual preference is stored.
 
 ## Project terminal walkthroughs
 

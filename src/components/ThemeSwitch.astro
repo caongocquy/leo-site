@@ -20,14 +20,7 @@
       <span class="sky-moon"><i></i><i></i><i></i></span>
     </span>
   </button>
-  <button
-    id="theme-auto"
-    class="theme-auto"
-    type="button"
-    aria-pressed="false"
-    aria-label="Follow system color theme"
-    title="Follow system color theme"
-  >Auto</button>
+
 </div>
 
 <style>
@@ -69,8 +62,7 @@
   :global(html[data-theme="dark"]) .sky-theme-switch {
     box-shadow: inset 0 2px 5px rgb(0 0 0 / 45%), inset 0 -1px 3px rgb(255 255 255 / 9%), 0 6px 14px -10px rgb(20 24 70 / 80%);
   }
-  .sky-theme-switch:focus-visible,
-  .theme-auto:focus-visible {
+  .sky-theme-switch:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
   }
@@ -173,36 +165,9 @@
   .sky-stars i:nth-child(4) { left: 49px; top: 28px; animation-delay: -1.8s; }
   .sky-stars i:nth-child(5) { left: 8px; top: 25px; animation-delay: -.9s; }
   @keyframes sky-twinkle { 50% { opacity: .35; transform: scale(.6); } }
-  .theme-auto {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 30px;
-    height: 28px;
-    padding: 0 5px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: var(--surface);
-    color: var(--muted);
-    font-size: 9px;
-    font-weight: 650;
-    line-height: 1;
-    cursor: pointer;
-    transition: background-color .15s ease, color .15s ease, border-color .15s ease;
-  }
-  .theme-auto:hover { color: var(--text); border-color: var(--line-accent); }
-  :global(html[data-theme-preference="system"]) .theme-auto {
-    background: var(--soft-accent);
-    border-color: var(--line-accent);
-    color: var(--accent);
-  }
-  @media (max-width: 560px) {
-    .theme-controls { gap: 5px; }
-    .theme-auto { min-width: 30px; padding: 0 5px; }
-  }
   @media (prefers-reduced-motion: reduce) {
     .sky-theme-switch, .sky-theme-switch::before,
-    .sky-halo, .sky-knob, .sky-moon, .sky-clouds, .sky-stars, .theme-auto { transition: none !important; }
+    .sky-halo, .sky-knob, .sky-moon, .sky-clouds, .sky-stars { transition: none !important; }
     .sky-stars i { animation: none !important; }
   }
 </style>
@@ -211,7 +176,6 @@
   type Preference = 'system' | 'dark' | 'light';
   const root = document.documentElement;
   const toggle = document.querySelector<HTMLButtonElement>('#theme-sky-switch');
-  const auto = document.querySelector<HTMLButtonElement>('#theme-auto');
   const scheme = window.matchMedia('(prefers-color-scheme: dark)');
 
   const resolvedTheme = (pref: Preference): 'light' | 'dark' =>
@@ -221,7 +185,6 @@
     const dark = root.dataset.theme === 'dark';
     toggle?.setAttribute('aria-checked', String(dark));
     toggle?.setAttribute('title', dark ? 'Switch to light mode' : 'Switch to dark mode');
-    auto?.setAttribute('aria-pressed', String(root.dataset.themePreference === 'system'));
   };
 
   const setTheme = (pref: Preference) => {
@@ -241,7 +204,6 @@
   toggle?.addEventListener('click', () => {
     setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
   });
-  auto?.addEventListener('click', () => setTheme('system'));
   scheme.addEventListener('change', () => {
     if (root.dataset.themePreference === 'system') setTheme('system');
   });
