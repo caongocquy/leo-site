@@ -4,7 +4,7 @@ subtitle: Native splash transitions, thoughtfully controlled
 summary: Native iOS and Android splash screen views with optional Lottie animation and JavaScript-controlled dismissal.
 category: React Native
 featured: false
-order: 4
+order: 5
 icon: spark
 tags:
   - React Native
