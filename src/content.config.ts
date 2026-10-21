@@ -11,7 +11,7 @@ const projects = defineCollection({
     category: z.enum(['AI & Developer Tools', 'React Native']),
     featured: z.boolean().default(false),
     order: z.number().int(),
-    icon: z.enum(['graph', 'route', 'otp', 'spark']),
+    icon: z.enum(['graph', 'route', 'skills', 'otp', 'spark']),
     tags: z.array(z.string()),
     repository: z.string().url(),
     packageUrl: z.string().url().optional(),
