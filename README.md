@@ -60,3 +60,9 @@ Add your final site URL to the `site` property in `astro.config.mjs` so canonica
 - This is a portfolio, not an application backend. No authentication, database, tracking, or API keys are required.
 - Prefer optimized screenshots with meaningful alt text when adding project visuals.
 - Theme respects `prefers-color-scheme`, persists manual choice where storage is available, and updates when OS theme changes in System mode.
+
+## Project terminal walkthroughs
+
+Each project detail page includes a visual command walkthrough inspired by [Lucian #229](https://lucianlabs.dev/uxui-prompt/#229), adapted to the actual package commands. Edit `demoCommands` in each Markdown frontmatter to maintain the walkthrough. Commands are **not executed** by the portfolio. The terminal is progressive-enhanced: commands are visible with JavaScript disabled, and motion preferences are respected.
+
+The interactive pattern is independently implemented with credit to the original [Lucian UX/UI Prompt project](https://github.com/Seokwoooo/lucian-uxui-prompt), licensed MIT © 2026 Seokwoooo.

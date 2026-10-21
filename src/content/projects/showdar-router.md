@@ -12,6 +12,9 @@ tags:
   - API Gateway
   - CLI
 repository: https://github.com/caongocquy/showdar-router
+demoCommands:
+  - "npm install -g showdar-router"
+  - "showdar-router"
 highlights:
   - OpenAI-compatible local endpoint
   - Ordered provider and model fallback
@@ -26,11 +29,8 @@ Switching models and providers across developer tools can be repetitive and frag
 
 You configure providers and models once, then point compatible clients at the local gateway. The router manages candidate eligibility, fallback order, and recovery behavior.
 
-## Quick start
+## Getting started
 
-```bash
-npm install -g showdar-router
-showdar-router
-```
+Use the terminal walkthrough above to view and copy the setup commands. Run them in the appropriate project directory and consult the repository README for prerequisites.
 
 See the README for supported providers, configuration, and security considerations.

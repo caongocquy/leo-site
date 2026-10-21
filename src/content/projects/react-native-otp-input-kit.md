@@ -12,6 +12,8 @@ tags:
   - UI Components
 repository: https://github.com/caongocquy/react-native-otp-input-kit
 packageUrl: https://www.npmjs.com/package/@leo-showdar/react-native-otp-input-kit
+demoCommands:
+  - "npm install @leo-showdar/react-native-otp-input-kit"
 highlights:
   - Controlled and uncontrolled OTP input
   - Custom styling and error states
@@ -22,10 +24,8 @@ highlights:
 
 OTP flows appear in many mobile products, but details such as focus, error recovery, and countdown timers take time to rebuild consistently.
 
-## Quick start
+## Getting started
 
-```bash
-npm install @leo-showdar/react-native-otp-input-kit
-```
+Use the terminal walkthrough above to view and copy the setup commands. Run them in the appropriate project directory and consult the repository README for prerequisites.
 
 The package includes `OtpInput` and `OtpResendTimer`, along with examples for controlled input and custom styles in its README.

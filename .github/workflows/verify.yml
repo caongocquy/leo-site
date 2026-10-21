@@ -27,3 +27,5 @@ jobs:
           test -f dist/404.html
       - name: Verify featured card semantics
         run: node scripts/verify-featured-link.mjs
+      - name: Verify terminal project demos
+        run: node scripts/verify-terminal-demos.mjs

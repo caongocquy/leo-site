@@ -13,6 +13,10 @@ tags:
   - CLI
 repository: https://github.com/caongocquy/showdar-skills
 packageUrl: https://www.npmjs.com/package/showdar-skills
+demoCommands:
+  - "npm install -g showdar-skills"
+  - "showdar setup"
+  - "showdar doctor"
 highlights:
   - Skill routing by task intent with progressive context loading
   - Reusable workflows for planning, implementing, debugging, testing and review
@@ -27,13 +31,9 @@ Coding agents often need more than a generic system prompt to work effectively i
 
 Showdar provides an interactive setup flow, intent-based routing and reusable skills for stages such as brainstorming, planning, building, testing and reviewing. The package supports multiple coding agents while preserving project-owned conventions.
 
-## Quick start
+## Getting started
 
-```bash
-npm install -g showdar-skills
-showdar setup
-showdar doctor
-```
+Use the terminal walkthrough above to view and copy the setup commands. Run them in the appropriate project directory and consult the repository README for prerequisites.
 
 The project is open source. Experimental agent-behavior evaluation is ongoing; the repository does not claim measured agent-quality improvements.
 

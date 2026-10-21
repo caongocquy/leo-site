@@ -16,6 +16,7 @@ const projects = defineCollection({
     repository: z.string().url(),
     packageUrl: z.string().url().optional(),
     docsUrl: z.string().url().optional(),
+    demoCommands: z.array(z.string().min(1)).min(1).max(4),
     highlights: z.array(z.string()),
   }),
 });

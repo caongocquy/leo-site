@@ -1,6 +1,6 @@
 ---
-import { Smartphone, Layers, Terminal, ArrowUpRight, ArrowRight, ArrowLeft, SunMoon, Sparkles, LockKeyhole } from '@lucide/astro';
-type IconName = 'mobile' | 'layers' | 'terminal' | 'arrow-up-right' | 'arrow-right' | 'arrow-left' | 'sun-moon' | 'sparkles' | 'lock';
+import { Smartphone, Layers, Terminal, ArrowUpRight, ArrowRight, ArrowLeft, SunMoon, Sparkles, LockKeyhole, RotateCcw, Copy, ChevronRight } from '@lucide/astro';
+type IconName = 'mobile' | 'layers' | 'terminal' | 'arrow-up-right' | 'arrow-right' | 'arrow-left' | 'sun-moon' | 'sparkles' | 'lock' | 'replay' | 'copy' | 'chevron-right';
 interface Props { name: IconName; size?: number; class?: string; }
 const { name, size = 24, class: className } = Astro.props;
 const icons = {
@@ -13,6 +13,9 @@ const icons = {
   'sun-moon': SunMoon,
   sparkles: Sparkles,
   lock: LockKeyhole,
+  replay: RotateCcw,
+  copy: Copy,
+  'chevron-right': ChevronRight,
 } as const;
 const Component = icons[name];
 ---

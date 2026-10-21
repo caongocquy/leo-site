@@ -1,0 +1,222 @@
+---
+interface Props {
+  title: string;
+  commands: string[];
+  highlights: string[];
+  repository: string;
+}
+
+const { title, commands, highlights, repository } = Astro.props;
+---
+
+<!-- Inspired by Lucian UX/UI Prompt #229, MIT © 2026 Seokwoooo.
+     Reference: https://lucianlabs.dev/uxui-prompt/#229
+     Original concept adapted for read-only, project-specific commands. -->
+<section class="terminal-showcase" aria-labelledby="terminal-demo-title">
+  <div class="terminal-heading">
+    <div>
+      <span class="section-eyebrow">INTERACTIVE WALKTHROUGH</span>
+      <h2 id="terminal-demo-title">Start with a command<span class="period">.</span></h2>
+      <p>Explore the setup flow for {title}. This is a visual guide—no commands are executed.</p>
+    </div>
+    <span class="terminal-heading-label">CLI / QUICK START</span>
+  </div>
+  <div class="demo-shell" data-terminal-demo>
+    <div class="demo-window">
+      <div class="demo-toolbar" aria-hidden="true">
+        <span class="demo-dots"><i></i><i></i><i></i></span>
+        <span>terminal / {title.toLowerCase().replaceAll(' ', '-')}</span>
+        <span class="demo-toolbar-tag">GUIDED PREVIEW</span>
+      </div>
+      <div class="demo-screen" aria-hidden="true">
+        {commands.map((command) => (
+          <div class="demo-command-row">
+            <span class="demo-prompt">$</span><code data-demo-command>{command}</code>
+          </div>
+        ))}
+        <div class="demo-instruction"># Follow the README for full setup and platform requirements.</div>
+      </div>
+      <div class="demo-window-footer">
+        <span class="demo-led"></span><span data-demo-status>Commands ready to copy</span>
+        <span class="demo-window-label">NO COMMANDS EXECUTED</span>
+      </div>
+      <div class="demo-progress" aria-hidden="true"><div data-demo-progress></div></div>
+    </div>
+    <div class="demo-controls">
+      <div class="demo-controls-left">
+        <button type="button" class="demo-button" data-demo-replay aria-label={`Replay ${title} terminal animation`}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 3v6h6"/></svg>
+          Replay
+        </button>
+        <button type="button" class="demo-button" data-demo-copy aria-label={`Copy ${title} commands`}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+          Copy commands
+        </button>
+      </div>
+      <button type="button" class="demo-button demo-button-primary" data-demo-preview aria-expanded="false" aria-controls="demo-project-preview">
+        Feature preview <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+      </button>
+    </div>
+    <div id="demo-project-preview" class="demo-preview" data-demo-panel hidden>
+      <div>
+        <span class="demo-preview-kicker">WHAT IT DOES</span>
+        <strong>{title}</strong>
+        <ul>{highlights.slice(0, 3).map((highlight) => <li>{highlight}</li>)}</ul>
+      </div>
+      <a href={repository} target="_blank" rel="noopener noreferrer">View actual source <span aria-hidden="true">↗</span></a>
+    </div>
+    <p class="visually-hidden">Terminal guide. Commands: {commands.join('; ')}. No commands are run by this demo.</p>
+    <p class="visually-hidden" aria-live="polite" data-demo-announcement></p>
+  </div>
+</section>
+
+<style>
+  .terminal-showcase { margin-top: 58px; padding-bottom: 64px; border-bottom: 1px solid var(--line-soft); }
+  .terminal-heading { display: flex; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 22px; }
+  .terminal-heading h2 { font-size: clamp(25px, 3vw, 34px); font-weight: 650; letter-spacing: -.035em; line-height: 1.2; margin: 9px 0 8px; }
+  .terminal-heading p { color: var(--muted); font-size: 13px; line-height: 1.7; margin: 0; }
+  .terminal-heading-label { font: 10px 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: .09em; color: var(--muted-soft); white-space: nowrap; }
+  .demo-shell { position: relative; padding: 19px; border: 1px solid var(--feature-border); border-radius: 18px; background: radial-gradient(ellipse at 52% -30%,rgba(var(--accent-rgb),.12),transparent 65%), var(--surface-alt); }
+  .demo-window { border: 1px solid #35444b; border-radius: 12px; background: #0e141b; color: #e0e8e5; overflow: hidden; box-shadow: 0 16px 35px rgba(0,0,0,.15); }
+  .demo-toolbar { display: flex; align-items: center; gap: 12px; padding: 0 15px; height: 40px; border-bottom: 1px solid #2a3740; background: #172129; color: #91a2a8; font: 10px 'IBM Plex Mono', ui-monospace, monospace; }
+  .demo-dots { display: flex; gap: 6px; }
+  .demo-dots i { width: 8px; height: 8px; border-radius: 50%; background: #e17d76; }
+  .demo-dots i:nth-child(2) { background: #e3b35d; }
+  .demo-dots i:nth-child(3) { background: #73b892; }
+  .demo-toolbar-tag { margin-left: auto; letter-spacing: .07em; font-size: 9px; color: #91c4a9; }
+  .demo-screen { display: flex; flex-direction: column; justify-content: center; min-height: 178px; gap: 14px; padding: 26px 21px; overflow-x: auto; }
+  .demo-command-row { display: flex; align-items: baseline; gap: 12px; width: max-content; max-width: none; font: 12px/1.65 'IBM Plex Mono', ui-monospace, monospace; }
+  .demo-command-row code { color: #ebf4ed; white-space: pre; }
+  .demo-prompt { color: #a5e4bb; font-weight: 600; }
+  .demo-instruction { font: 10px/1.6 'IBM Plex Mono', ui-monospace, monospace; color: #78928a; }
+  .demo-window-footer { display: flex; align-items: center; gap: 8px; min-height: 37px; border-top: 1px solid #263239; padding: 0 16px; font: 10px 'IBM Plex Mono', ui-monospace, monospace; color: #aec3b5; }
+  .demo-led { width: 6px; height: 6px; flex-shrink: 0; border-radius: 50%; background: #91dcb5; }
+  .demo-window-label { margin-left: auto; color: #8c9da5; font-size: 9px; letter-spacing: .055em; }
+  .demo-progress { width: 100%; height: 2px; background: #24323a; }
+  .demo-progress div { width: 100%; height: 100%; background: #a2e4bd; transition: width .12s linear; }
+  .demo-controls { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; padding-top: 14px; }
+  .demo-controls-left { display: flex; flex-wrap: wrap; gap: 8px; }
+  .demo-button { display: inline-flex; justify-content: center; align-items: center; gap: 7px; min-height: 37px; padding: 8px 13px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); color: var(--text); cursor: pointer; font: 600 11px 'IBM Plex Sans Variable', ui-sans-serif, sans-serif; transition: border-color .18s ease, background-color .18s ease; }
+  .demo-button svg { width: 14px; height: 14px; flex: 0 0 auto; }
+  .demo-button:hover { border-color: var(--accent); background: var(--surface-hover); }
+  .demo-button:focus-visible, .demo-preview a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .demo-button-primary { border-color: var(--line-accent); color: var(--accent); }
+  .demo-preview { position: relative; margin-top: 14px; padding: 20px; border: 1px solid var(--line-accent); border-radius: 12px; background: var(--surface); animation: demo-reveal .28s ease both; }
+  .demo-preview[hidden] { display: none; }
+  .demo-preview-kicker { display: block; color: var(--accent); font: 10px 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: .09em; }
+  .demo-preview strong { display: block; margin-top: 5px; font-size: 17px; font-weight: 650; }
+  .demo-preview ul { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; padding: 0; list-style: none; margin: 16px 0; }
+  .demo-preview li { border-left: 2px solid var(--line-accent); padding-left: 12px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+  .demo-preview > a { display: inline-flex; gap: 7px; color: var(--accent); font-size: 12px; font-weight: 650; }
+  @keyframes demo-reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  @media (max-width: 700px) {
+    .terminal-heading-label { display: none; }
+    .demo-preview ul { grid-template-columns: 1fr; gap: 10px; }
+  }
+  @media (max-width: 560px) {
+    .terminal-showcase { margin-top: 38px; padding-bottom: 42px; }
+    .demo-shell { padding: 9px; }
+    .demo-toolbar { padding: 0 10px; gap: 7px; font-size: 9px; }
+    .demo-toolbar-tag { font-size: 8px; }
+    .demo-screen { padding: 22px 12px; min-height: 145px; }
+    .demo-command-row { gap: 8px; font-size: 10px; }
+    .demo-instruction { font-size: 9px; }
+    .demo-window-label { font-size: 7px; }
+    .demo-window-footer { padding: 0 9px; font-size: 9px; }
+    .demo-controls { gap: 9px; }
+    .demo-button { font-size: 10px; padding: 7px 10px; }
+    .demo-button-primary { width: 100%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .demo-preview { animation: none; }
+    .demo-progress div, .demo-button { transition: none; }
+  }
+</style>
+
+<script>
+  const demos = document.querySelectorAll<HTMLElement>('[data-terminal-demo]');
+
+  for (const demo of demos) {
+    const elements = [...demo.querySelectorAll<HTMLElement>('[data-demo-command]')];
+    const commands = elements.map((element) => element.textContent ?? '');
+    const replay = demo.querySelector<HTMLButtonElement>('[data-demo-replay]');
+    const copy = demo.querySelector<HTMLButtonElement>('[data-demo-copy]');
+    const preview = demo.querySelector<HTMLButtonElement>('[data-demo-preview]');
+    const panel = demo.querySelector<HTMLElement>('[data-demo-panel]');
+    const progress = demo.querySelector<HTMLElement>('[data-demo-progress]');
+    const status = demo.querySelector<HTMLElement>('[data-demo-status]');
+    const announcement = demo.querySelector<HTMLElement>('[data-demo-announcement]');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const charCount = Math.max(1, commands.join('').length);
+    let runId = 0;
+
+    const complete = () => {
+      runId++;
+      elements.forEach((element, index) => { element.textContent = commands[index]; });
+      if (progress) progress.style.width = '100%';
+      if (status) status.textContent = 'Commands ready to copy';
+    };
+    const sleep = (milliseconds: number) => new Promise<void>((resolve) => setTimeout(resolve, milliseconds));
+
+    const animate = async () => {
+      if (reduced.matches || document.hidden) {
+        complete();
+        return;
+      }
+      const current = ++runId;
+      elements.forEach((element) => { element.textContent = ''; });
+      if (progress) progress.style.width = '0%';
+      if (status) status.textContent = 'Typing example commands…';
+      let typed = 0;
+
+      for (let index = 0; index < commands.length; index++) {
+        for (const char of commands[index]) {
+          if (current !== runId) return;
+          if (reduced.matches || document.hidden) { complete(); return; }
+          elements[index].textContent += char;
+          typed++;
+          if (progress) progress.style.width = `${(typed / charCount) * 100}%`;
+          await sleep(22);
+        }
+        await sleep(300);
+        if (current !== runId) return;
+      }
+      if (status) status.textContent = 'Commands ready to copy';
+    };
+
+    replay?.addEventListener('click', () => { void animate(); });
+    copy?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(commands.join('\n'));
+        if (announcement) announcement.textContent = 'Commands copied to clipboard.';
+      } catch {
+        if (announcement) announcement.textContent = 'Clipboard unavailable. Select the commands to copy them.';
+      }
+    });
+    preview?.addEventListener('click', () => {
+      if (!panel) return;
+      panel.hidden = !panel.hidden;
+      preview.setAttribute('aria-expanded', String(!panel.hidden));
+      if (!panel.hidden) panel.scrollIntoView({ block: 'nearest', behavior: reduced.matches ? 'instant' : 'smooth' });
+    });
+    reduced.addEventListener('change', () => {
+      if (reduced.matches) complete();
+    });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) complete();
+    });
+
+    if (reduced.matches) {
+      complete();
+    } else if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        observer.disconnect();
+        void animate();
+      }, { threshold: 0.22 });
+      observer.observe(demo);
+    } else {
+      void animate();
+    }
+  }
+</script>
