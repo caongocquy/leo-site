@@ -6,9 +6,11 @@ import AtlasArt from './AtlasArt.astro';
 import ExpertiseScene from './ExpertiseScene.astro';
 import Icon from './Icon.astro';
 import { expertise, site, stack } from '../data/site';
+import { journeyCopy } from '../data/journey';
 import { localeFromPath, localizedPath, ui, projectI18n } from '../i18n/translations';
 const locale = localeFromPath(Astro.url.pathname);
 const t = ui(locale);
+const jt = journeyCopy[locale];
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const atlas = projects.find((project) => project.id === 'code-atlas');
@@ -84,6 +86,10 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
     <div class="experience-grid">
       <article class="experience-card"><div class="experience-meta"><span>{t.experience1Label}</span><span>01</span></div><h3>{t.experience1Title}</h3><p>{t.experience1Desc}</p><div class="experience-tech">React Native <i>·</i> TypeScript <i>·</i> Product Engineering</div></article>
       <article class="experience-card"><div class="experience-meta"><span>{t.experience2Label}</span><span>02</span></div><h3>{t.experience2Title}</h3><p>{t.experience2Desc}</p><div class="experience-tech">Swift <i>·</i> Kotlin <i>·</i> UI Performance</div></article>
+    </div>
+    <div class="journey-promo">
+      <div><span class="section-eyebrow">{jt.homepagePrompt}</span><p>{jt.homepageIntro}</p></div>
+      <a href={localizedPath('/journey/', locale)}>{jt.summaryLink}<Icon name="arrow-up-right" size={15}/></a>
     </div>
   </section>
 

@@ -85,3 +85,14 @@ The default English URLs remain unchanged. Vietnamese pages are served staticall
 ## Promotional artwork
 
 The `screenshots` content field optionally supports `kind: concept` and translated labels (`altVi`, `captionVi`). Any Upwork promotional mockup **must** have `kind: concept`, never be represented as an actual in-app screenshot. Place files under `public/images/`, serve locally and prefer compressed WebP over the original large PNGs.
+
+## Career Journey (/journey)
+
+Two static pages: `/journey/` (English) and `/vi/journey/` (Vietnamese), with links in header, footer, and homepage Experience. Inspired by Lucian UX/UI Prompt #370: the progression line lights up while scrolling, with progressive enhancement and `prefers-reduced-motion` support.
+
+Career entries are edited at `src/data/journey.ts`, paired EN/VI:
+- MGI Global (Jun 2019–Dec 2021), 45CM VINA (Jan 2022–Feb 2023), 1988s Media and Technology (Mar 2023–Aug 2024), Galaxy Technology Services (from Feb 2025), reflecting the last reviewed CV.
+- DI HDBank (Feb–Jun 2025), VietJet Air (Jun–Nov 2025), and HDBank (Nov 2025–Jul 2026) are **client assignments nested under Galaxy**, never misrepresented as direct employers.
+- Open-source work in 2026 is a separate milestone from employment; it links to project pages.
+
+Verify any future employment or client-date changes against the CV before updating public entries.

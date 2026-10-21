@@ -587,3 +587,11 @@ body { font-family: var(--font-ui); font-weight: 400; }
 @media (prefers-reduced-motion: reduce) {
   .expertise-grid > .expertise-card { transition: none; }
 }
+
+/* Career Journey discoverability (no additional header height). */
+.journey-promo { display:flex; justify-content:space-between; align-items:center; gap:25px; border:1px solid var(--line); background:var(--surface-alt); border-radius:13px; padding:22px 25px; margin:-54px 0 78px; }
+.journey-promo p { margin:8px 0 0; font-size:12px; color:var(--muted); line-height:1.7; max-width:570px; }
+.journey-promo > a { display:inline-flex; align-items:center; gap:8px; flex:0 0 auto; color:var(--accent); font-size:12px; font-weight:650; }
+.journey-promo > a:hover { text-decoration:underline; text-underline-offset:4px; }
+@media(max-width:830px) { .journey-promo { margin-top:-28px; } }
+@media(max-width:560px) { .journey-promo { margin:-26px 0 58px; padding:18px; flex-direction:column; align-items:flex-start; gap:14px; } }

@@ -14,7 +14,7 @@ const t = ui(locale);
   </a>
   <nav aria-label="Main navigation" class="header-nav">
     <a href={localizedPath("/#expertise",locale)}>{t.navExpertise}</a>
-    <a href={localizedPath("/#experience",locale)}>{t.navExperience}</a>
+    <a href={localizedPath("/journey/",locale)}>{locale === "vi" ? "Hành trình" : "Journey"}</a>
     <a href={localizedPath("/projects",locale)}>{t.navProjects}</a>
     <a href={localizedPath("/#about",locale)}>{t.navAbout}</a>
   </nav>

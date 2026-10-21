@@ -33,3 +33,5 @@ jobs:
         run: node scripts/verify-ui-enhancements.mjs
       - name: Verify Vietnamese and English pages
         run: node scripts/verify-i18n.mjs
+      - name: Verify Career Journey routes and chronology
+        run: node scripts/verify-journey.mjs

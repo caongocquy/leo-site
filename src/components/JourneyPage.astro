@@ -1,0 +1,224 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+import { localeFromPath, localizedPath } from '../i18n/translations';
+import { journeyCopy, journeyMilestones } from '../data/journey';
+
+const locale = localeFromPath(Astro.url.pathname);
+const t = journeyCopy[locale];
+const entries = journeyMilestones[locale];
+---
+<BaseLayout title={t.title} description={t.description}>
+  <div class="journey-crumb">
+    <a href={localizedPath('/', locale)}><Icon name="arrow-left" size={14} />{t.breadcrumb}</a>
+    <span aria-hidden="true">/</span>
+    <span>{t.smallLabel}</span>
+  </div>
+
+  <section class="journey-hero" aria-labelledby="journey-title">
+    <div class="journey-hero-copy">
+      <div class="journey-eyebrow"><span class="journey-pulse" aria-hidden="true"></span>{t.eyebrow}</div>
+      <h1 id="journey-title">{t.heading}<br /><em>{t.emphasis}</em></h1>
+      <p>{t.intro}</p>
+      <div class="journey-hero-links">
+        <a href={site.github} target="_blank" rel="noopener noreferrer">{t.viewGithub}<Icon name="arrow-up-right" size={15}/></a>
+        <a href="https://www.linkedin.com/in/cao-ngoc-quy-173b0812a/" target="_blank" rel="noopener noreferrer">{t.viewLinkedin}<Icon name="arrow-up-right" size={15}/></a>
+      </div>
+    </div>
+    <div class="journey-snapshot" aria-label={t.snapshotSub}>
+      <div class="journey-snapshot-top"><span>{t.snapshotLabel}</span><span aria-hidden="true">●</span></div>
+      <strong>{t.snapshotValue}</strong>
+      <div class="journey-snapshot-bars" aria-hidden="true">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <p>{t.snapshotSub}</p>
+      <span class="journey-snapshot-bottom">{t.scrollCue} <span aria-hidden="true">↓</span></span>
+    </div>
+  </section>
+
+  <section class="journey-story top-lined" aria-labelledby="journey-story-title">
+    <div class="journey-story-intro">
+      <span class="section-eyebrow">{t.smallLabel}</span>
+      <h2 id="journey-story-title">{t.sectionTitle}</h2>
+      <p>{t.sectionSubtitle}</p>
+    </div>
+    <div class="journey-track" data-journey-track>
+      <div class="journey-line" aria-hidden="true"><div class="journey-line-progress" data-journey-progress></div></div>
+      <ol class="journey-entries">
+        {entries.map((entry, index) => (
+          <li id={entry.id} class="journey-milestone" data-journey-item>
+            <span class="journey-marker" aria-hidden="true"></span>
+            <article class="journey-card">
+              <header class="journey-card-head">
+                <div class="journey-card-label">
+                  <span>{t.chapter} {String(index + 1).padStart(2, '0')}</span>
+                  <span class="journey-kind">{entry.kind === 'career' ? t.career : t.openSource}</span>
+                </div>
+                <span class="journey-period">{entry.period}</span>
+              </header>
+              <div class="journey-card-title">
+                <span class="journey-year">{entry.year}</span>
+                <div>
+                  <h3>{entry.company}</h3>
+                  <div class="journey-role">{entry.role}</div>
+                </div>
+              </div>
+              <p class="journey-card-summary">{entry.summary}</p>
+              <div class="journey-assignments">
+                <div class="journey-assignments-title">{t.assignments}</div>
+                {entry.assignments.map((assignment) => (
+                  <div class="journey-assignment">
+                    <span>{assignment.period}</span>
+                    <div>
+                      <strong>{assignment.name}</strong>
+                      <p>{assignment.description}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div class="journey-card-footer">
+                <div class="journey-tags">{entry.technologies.map((tag) => <span>{tag}</span>)}</div>
+                {entry.links && (
+                  <div class="journey-project-links">
+                    {entry.links.map((link) => <a href={localizedPath(link.href, locale)}>{link.name}<Icon name="arrow-up-right" size={13}/></a>)}
+                  </div>
+                )}
+              </div>
+            </article>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <div class="journey-next">
+    <div><span class="section-eyebrow">{t.next}</span><p>{t.nextIntro}</p></div>
+    <a class="button button-primary" href={localizedPath('/projects/', locale)}>{t.viewProjects}<Icon name="arrow-up-right" size={15}/></a>
+  </div>
+</BaseLayout>
+
+<style>
+  .journey-crumb { display:flex; gap: 13px; align-items:center; color:var(--muted-soft); font-size:11px; margin-top: 33px; }
+  .journey-crumb a { display:inline-flex; gap:7px; align-items:center; color:var(--muted); }
+  .journey-crumb a:hover { color:var(--accent); }
+  .journey-hero { padding: 73px 0 100px; display:grid; grid-template-columns: 1.25fr .75fr; gap:clamp(26px,5vw,85px); align-items:center; }
+  .journey-eyebrow { display:flex; align-items:center; gap:10px; color:var(--accent); font: 600 10px 'IBM Plex Mono',ui-monospace,monospace; letter-spacing:.1em; }
+  .journey-pulse { width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 5px rgba(var(--accent-rgb),.12); flex:0 0 auto; }
+  .journey-hero h1 { margin:25px 0 21px; max-width:750px; font-size: clamp(39px, 5.3vw, 72px); line-height:1.12; letter-spacing:-.06em; font-weight:660; color:var(--text-strong); }
+  .journey-hero h1 em { color:var(--accent); font-style:normal; }
+  .journey-hero-copy > p { max-width:590px; margin:0; font-size:15px; line-height:1.85; color:var(--muted); }
+  .journey-hero-links { display:flex; flex-wrap:wrap; align-items:center; gap:12px 23px; margin-top:29px; }
+  .journey-hero-links a { display:inline-flex; align-items:center; gap:7px; font-weight:600; color:var(--accent); font-size:12px; }
+  .journey-hero-links a:hover { text-decoration:underline; text-underline-offset:4px; }
+  .journey-snapshot { padding:23px 25px; min-height:265px; border:1px solid var(--line-accent); background: radial-gradient(circle at 90% 0, rgba(var(--accent-rgb),.1), transparent 60%),var(--surface); border-radius:17px; display:flex; flex-direction:column; }
+  .journey-snapshot-top { display:flex; justify-content:space-between; color:var(--muted-soft); font:10px 'IBM Plex Mono',ui-monospace,monospace; letter-spacing:.1em; }
+  .journey-snapshot-top span:last-child { color:var(--accent); font-size:9px; }
+  .journey-snapshot > strong { display:block; margin-top:17px; color:var(--text-strong); font: 600 clamp(29px,3.2vw,42px) 'IBM Plex Sans Variable',sans-serif; letter-spacing:-.05em; }
+  .journey-snapshot-bars { display:flex; align-items:end; gap:5px; margin:22px 0 15px; height:45px; }
+  .journey-snapshot-bars i { flex:1; display:block; height:var(--h,40%); background:var(--line-accent); border-radius:4px 4px 0 0; opacity:.85; }
+  .journey-snapshot-bars i:nth-child(12n+1){--h:28%}.journey-snapshot-bars i:nth-child(12n+2){--h:46%}
+  .journey-snapshot-bars i:nth-child(12n+3){--h:39%}.journey-snapshot-bars i:nth-child(12n+4){--h:63%}
+  .journey-snapshot-bars i:nth-child(12n+5){--h:41%}.journey-snapshot-bars i:nth-child(12n+6){--h:67%}
+  .journey-snapshot-bars i:nth-child(12n+7){--h:58%}.journey-snapshot-bars i:nth-child(12n+8){--h:80%}
+  .journey-snapshot-bars i:nth-child(12n+9){--h:54%}.journey-snapshot-bars i:nth-child(12n+10){--h:74%}
+  .journey-snapshot-bars i:nth-child(12n+11){--h:85%}.journey-snapshot-bars i:nth-child(12n+12){--h:100%;background:var(--accent)}
+  .journey-snapshot p { margin:0; font-size:12px; line-height:1.65; color:var(--muted); }
+  .journey-snapshot-bottom { display:flex; justify-content:space-between; border-top:1px solid var(--line-soft); margin-top:auto; padding-top:16px; color:var(--muted-soft); font:9px 'IBM Plex Mono',ui-monospace,monospace; letter-spacing:.1em; }
+  .journey-snapshot-bottom span { color:var(--accent); font-size:15px; line-height:1; }
+  .journey-story { padding-top:72px; display:grid; grid-template-columns: 280px minmax(0,1fr); gap:clamp(28px,5vw,70px); }
+  .journey-story-intro { align-self:start; position:sticky; top:35px; }
+  .journey-story-intro h2 { color:var(--text-strong); font-size:clamp(29px,2.8vw,37px); line-height:1.2; letter-spacing:-.04em; font-weight:660; margin:13px 0 15px; }
+  .journey-story-intro p { color:var(--muted); font-size:13px; line-height:1.85; margin:0; }
+  .journey-track { --journey-progress: 0%; position:relative; min-width:0; }
+  .journey-line { position:absolute; left:13px; top:23px; bottom:20px; width:2px; background:var(--line); overflow:hidden; }
+  .journey-line-progress { width:100%; height:var(--journey-progress); background:var(--accent); box-shadow:0 0 8px var(--accent); transition:height .12s linear; }
+  .journey-entries { list-style:none; padding:0; margin:0; display:grid; gap:28px; }
+  .journey-milestone { position:relative; padding-left:50px; scroll-margin-top:35px; }
+  .journey-marker { position:absolute; z-index:2; left:6px; top:20px; width:16px; height:16px; border:3px solid var(--bg); border-radius:50%; background:var(--line-accent); box-shadow:0 0 0 1px var(--line-accent); transition:background-color .25s ease,box-shadow .25s ease; }
+  .journey-milestone.is-active .journey-marker { background:var(--accent); box-shadow:0 0 0 1px var(--accent),0 0 0 7px rgba(var(--accent-rgb),.11); }
+  .journey-card { overflow:hidden; border:1px solid var(--line); border-radius:15px; background:var(--surface); padding:24px; transition:border-color .25s ease,background-color .25s ease; }
+  .journey-milestone.is-active .journey-card { border-color:var(--line-accent); }
+  .journey-card-head { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:center; }
+  .journey-card-label { display:flex; align-items:center; gap:10px; color:var(--accent); font: 600 9px 'IBM Plex Mono',ui-monospace,monospace; letter-spacing:.065em; }
+  .journey-kind { color:var(--muted-soft); border-left:1px solid var(--line); padding-left:10px; }
+  .journey-period { color:var(--muted-soft); font:10px 'IBM Plex Mono',ui-monospace,monospace; }
+  .journey-card-title { display:flex; align-items:center; gap:19px; margin-top:25px; }
+  .journey-year { font:500 32px/1 'IBM Plex Sans Variable',sans-serif; letter-spacing:-.05em; color:var(--accent); }
+  .journey-card-title h3 { margin:0 0 5px; font-size:21px; font-weight:650; color:var(--text-strong); letter-spacing:-.028em; line-height:1.25; }
+  .journey-role { font-size:12px; color:var(--muted); }
+  .journey-card-summary { font-size:13px; color:var(--muted); line-height:1.75; margin:24px 0 26px; }
+  .journey-assignments { border-top:1px solid var(--line-soft); padding-top:20px; }
+  .journey-assignments-title { color:var(--muted-soft); font:9px 'IBM Plex Mono',ui-monospace,monospace; letter-spacing:.1em; margin-bottom:15px; }
+  .journey-assignment { display:grid; grid-template-columns:130px minmax(0,1fr); gap:13px; padding:13px 0; border-top:1px solid var(--line-soft); }
+  .journey-assignment:first-of-type { border-top:0; }
+  .journey-assignment > span { font:9px/1.7 'IBM Plex Mono',ui-monospace,monospace; color:var(--accent); overflow-wrap:anywhere; }
+  .journey-assignment strong { display:block; font-size:12px; color:var(--text); font-weight:650; }
+  .journey-assignment p { margin:4px 0 0; font-size:11px; color:var(--muted); line-height:1.65; }
+  .journey-card-footer { margin-top:18px; display:grid; gap:17px; }
+  .journey-tags { display:flex; gap:8px; flex-wrap:wrap; }
+  .journey-tags span { border:1px solid var(--line); background:var(--surface-alt); padding:5px 8px; border-radius:6px; font-size:9px; color:var(--muted); }
+  .journey-project-links { display:flex; flex-wrap:wrap; gap:13px; padding-top:14px; border-top:1px solid var(--line-soft); }
+  .journey-project-links a { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; color:var(--accent); }
+  .journey-project-links a:hover { text-decoration:underline; text-underline-offset:4px; }
+  .journey-next { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; padding:45px 0 75px; margin-top:60px; border-top:1px solid var(--line-soft); }
+  .journey-next p { margin:10px 0 0; font-size:16px; color:var(--text); }
+  @media(max-width: 1020px) {
+    .journey-story { grid-template-columns:210px minmax(0,1fr); gap:23px; }
+    .journey-assignment { grid-template-columns:112px 1fr; }
+    .journey-hero { grid-template-columns:1.1fr .9fr; }
+  }
+  @media(max-width: 760px) {
+    .journey-hero { grid-template-columns:1fr; gap:30px; padding:56px 0 67px; }
+    .journey-snapshot { min-height:210px; }
+    .journey-story { grid-template-columns:1fr; padding-top:52px; gap:35px; }
+    .journey-story-intro { position:static; max-width:520px; }
+    .journey-story-intro h2 { max-width:420px; }
+  }
+  @media(max-width: 520px) {
+    .journey-crumb { margin-top:22px; }
+    .journey-hero h1 { font-size:clamp(35px,9vw,51px); }
+    .journey-hero-copy > p { font-size:13px; }
+    .journey-snapshot { padding:19px; }
+    .journey-milestone { padding-left:32px; }
+    .journey-line { left:8px; }
+    .journey-marker { left:1px; }
+    .journey-card { padding:17px 15px; }
+    .journey-card-title { gap:11px; flex-wrap:wrap; margin-top:21px; }
+    .journey-year { font-size:26px; }
+    .journey-card-title h3 { font-size:18px; }
+    .journey-assignment { grid-template-columns:1fr; gap:3px; }
+    .journey-entries { gap:20px; }
+    .journey-card-summary { margin:20px 0; }
+    .journey-next { padding-bottom:60px; }
+  }
+  @media(prefers-reduced-motion:reduce) {
+    .journey-line-progress,.journey-marker,.journey-card { transition:none; }
+  }
+</style>
+<script>
+  const track = document.querySelector<HTMLElement>('[data-journey-track]');
+  if (track && 'IntersectionObserver' in window) {
+    const milestones = track.querySelectorAll<HTMLElement>('[data-journey-item]');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        entry.target.classList.toggle('is-active', entry.isIntersecting);
+      });
+    }, { rootMargin: '-10% 0px -48% 0px', threshold: 0 });
+    milestones.forEach((item) => observer.observe(item));
+    let frame = 0;
+    const updateProgress = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const rect = track.getBoundingClientRect();
+        const cursor = window.innerHeight * .55;
+        const fraction = Math.max(0, Math.min(1, (cursor - rect.top) / Math.max(1, rect.height)));
+        track.style.setProperty('--journey-progress', `${(fraction * 100).toFixed(2)}%`);
+      });
+    };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    window.addEventListener('resize', updateProgress);
+    updateProgress();
+  }
+</script>
