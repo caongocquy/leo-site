@@ -1,0 +1,59 @@
+---
+import { site } from '../data/site';
+---
+<header class="site-header">
+  <a href="/" class="brand" aria-label="Leo — Home">
+    <span class="brand-logo" aria-hidden="true">L<span>.</span></span>
+    <span class="brand-text">LEO <small>ENGINEER / BUILDER</small></span>
+  </a>
+  <nav aria-label="Main navigation" class="header-nav">
+    <a href="/#expertise">Expertise</a>
+    <a href="/#experience">Experience</a>
+    <a href="/projects">Projects</a>
+    <a href="/#about">About</a>
+  </nav>
+  <div class="header-actions">
+    <label class="theme-select-wrap">
+      <span class="visually-hidden">Color theme</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+      <select id="theme-select" aria-label="Color theme">
+        <option value="system">System</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </label>
+    <a class="header-github" href={site.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub profile, opens in a new tab">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .7a11.3 11.3 0 0 0-3.58 22.02c.56.1.77-.24.77-.55v-2.02c-3.13.68-3.8-1.34-3.8-1.34-.51-1.3-1.25-1.65-1.25-1.65-1.02-.7.08-.69.08-.69 1.12.08 1.71 1.15 1.71 1.15 1 .1.75 2.16 3.29 1.54.1-.73.39-1.23.71-1.52-2.5-.28-5.14-1.25-5.14-5.6 0-1.24.44-2.25 1.16-3.04-.12-.29-.5-1.45.11-3.02 0 0 .95-.3 3.1 1.16a10.8 10.8 0 0 1 5.64 0c2.15-1.46 3.1-1.16 3.1-1.16.61 1.57.23 2.73.11 3.02.72.79 1.16 1.8 1.16 3.04 0 4.36-2.65 5.31-5.17 5.59.4.35.75 1.03.75 2.08v3.08c0 .31.2.67.78.55A11.3 11.3 0 0 0 12 .7Z"/></svg>
+      <span>GitHub</span>
+      <span aria-hidden="true">↗</span>
+    </a>
+  </div>
+</header>
+<script>
+  const select = document.querySelector<HTMLSelectElement>('#theme-select');
+  const media = window.matchMedia('(prefers-color-scheme: dark)');
+  const resolveTheme = (preference: string): 'dark' | 'light' =>
+    preference === 'dark' || (preference === 'system' && media.matches) ? 'dark' : 'light';
+  const applyTheme = (preference: string) => {
+    const resolved = resolveTheme(preference);
+    document.documentElement.dataset.theme = resolved;
+    document.documentElement.dataset.themePreference = preference;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', resolved === 'dark' ? '#101820' : '#F6F8F5');
+  };
+  if (select) {
+    select.value = document.documentElement.dataset.themePreference || 'system';
+    select.addEventListener('change', () => {
+      const preference = select.value;
+      try {
+        if (preference === 'system') localStorage.removeItem('leo-theme');
+        else localStorage.setItem('leo-theme', preference);
+      } catch {
+        // Keep the selected theme for this page even without persistent storage.
+      }
+      applyTheme(preference);
+    });
+    media.addEventListener('change', () => {
+      if (document.documentElement.dataset.themePreference === 'system') applyTheme('system');
+    });
+  }
+</script>

@@ -1,0 +1,84 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import AtlasArt from '../components/AtlasArt.astro';
+import { expertise, site, stack } from '../data/site';
+
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const atlas = projects.find((project) => project.id === 'code-atlas');
+const otherProjects = projects.filter((project) => project.id !== 'code-atlas').slice(0, 3);
+---
+<BaseLayout>
+  <section class="hero section-grid" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="pulse-dot"></span> HELLO, I'M LEO <span class="eyebrow-rule"></span> MOBILE ENGINEER</div>
+      <h1 id="hero-title">Engineering <em>better</em> mobile experiences<span class="period">.</span></h1>
+      <p class="hero-desc">I build thoughtful mobile apps and the open-source tools behind better development workflows. From native details to code intelligence, I care about making complex things feel simple.</p>
+      <div class="hero-actions">
+        <a href="#projects" class="button button-primary">Explore my work <span aria-hidden="true">↗</span></a>
+        <a href={site.github} class="button button-outline" target="_blank" rel="noopener noreferrer">GitHub profile <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="hero-notes"><span>React Native & native</span><span>Mobile architecture</span><span>Open source</span></div>
+    </div>
+    <div class="hero-visual" aria-label="Illustrative mobile screen alongside a code editor" role="img">
+      <div class="visual-overline"><span>DESIGN × ENGINEERING</span><span class="visual-overline-status">● BUILT WITH INTENT</span></div>
+      <div class="visual-ring" aria-hidden="true"></div>
+      <div class="code-window" aria-hidden="true">
+        <div class="code-title"><span class="window-lights">● ● ●</span> craft.ts</div>
+        <div class="code-lines"><span><b class="purple">type</b> Craft = {</span><span>&nbsp; platform: <b class="mint">'mobile'</b>;</span><span>&nbsp; focus: <b class="mint">'quality'</b>;</span><span>};</span><span class="code-gap"></span><span><b class="purple">export const</b> <b class="blue">build</b> = () =&gt; ({</span><span>&nbsp; experience: <b class="mint">'native-first'</b>,</span><span>&nbsp; mindset: <b class="mint">'open-source'</b>,</span><span>&nbsp; impact: <b class="mint">'developer DX'</b>,</span><span>});</span></div>
+      </div>
+      <div class="phone-shell" aria-hidden="true"><div class="phone-face">
+        <div class="phone-island"></div>
+        <div class="app-top"><strong>orbit<span>.</span></strong><span>✧</span></div>
+        <div class="app-greeting">Welcome back</div>
+        <div class="app-heading">Build with clarity.</div>
+        <div class="app-subtitle">Your ideas, in motion.</div>
+        <div class="phone-chart"><span style="height:36%"></span><span style="height:55%"></span><span style="height:47%"></span><span style="height:76%"></span><span style="height:64%"></span><span style="height:89%"></span><span style="height:78%"></span><span style="height:96%"></span></div>
+        <div class="app-section-title">Today's focus</div>
+        <div class="app-row"><span class="app-icon">✧</span><div><strong>Product experience</strong><small>Design & performance</small></div><span>↗</span></div>
+        <div class="app-row"><span class="app-icon">⌘</span><div><strong>Developer tools</strong><small>Build & share</small></div><span>↗</span></div>
+        <div class="app-bottom-nav">⌂ <span>▧</span> <span>◎</span></div>
+      </div></div>
+      <span class="visual-footnote">// illustrative interface exploration</span>
+    </div>
+  </section>
+
+  <section id="expertise" class="section-block top-lined" aria-labelledby="expertise-title">
+    <div class="section-intro"><span class="section-eyebrow">01 / WHAT I DO</span><h2 id="expertise-title">Engineering beyond <span>the screen.</span></h2><p>I think about the whole experience: what users see, what platforms need, and what makes software sustainable.</p></div>
+    <div class="expertise-grid">
+      {expertise.map((item) => (
+        <article class="expertise-card">
+          <div class="expertise-card-top"><span class="expertise-icon" aria-hidden="true">{item.icon}</span><span class="index-number">{item.number}</span></div>
+          <h3>{item.title}</h3><p>{item.description}</p>
+          <div class="mini-tags">{item.tags.map((tag) => <span>{tag}</span>)}</div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="experience" class="section-block experience-section top-lined" aria-labelledby="experience-title">
+    <div class="section-intro"><span class="section-eyebrow">02 / EXPERIENCE</span><h2 id="experience-title">Real products. <span>Real constraints.</span></h2><p>The work that shapes my approach to building reliable, user-friendly software.</p></div>
+    <div class="experience-grid">
+      <article class="experience-card"><div class="experience-meta"><span>PRODUCTION ENGINEERING</span><span>01</span></div><h3>Mobile experiences in fintech</h3><p>Building and owning complex React Native workflows in cross-functional environments, from feature delivery to integration and reliability issues.</p><div class="experience-tech">React Native <i>·</i> TypeScript <i>·</i> Product Engineering</div></article>
+      <article class="experience-card"><div class="experience-meta"><span>PLATFORM & NATIVE</span><span>02</span></div><h3>Across iOS and Android</h3><p>Working at the JavaScript–native boundary to refine transitions, integrate platform capabilities, and deliver maintainable mobile UI.</p><div class="experience-tech">Swift <i>·</i> Kotlin <i>·</i> UI Performance</div></article>
+    </div>
+  </section>
+
+  <section id="projects" class="section-block projects-section" aria-labelledby="projects-title">
+    <div class="section-heading-row"><div class="section-intro"><span class="section-eyebrow">03 / SELECTED WORK</span><h2 id="projects-title">Open source, <span>built with purpose.</span></h2><p>Useful experiments and products I build, refine, and share with other developers.</p></div><a class="section-view-all" href="/projects">View all projects <span aria-hidden="true">↗</span></a></div>
+    {atlas && (
+      <article class="featured-project">
+        <div class="featured-body"><div class="featured-eyebrow"><span class="featured-star">✦</span> FEATURED PROJECT / CODE INTELLIGENCE</div><h3>{atlas.data.title}</h3><p>{atlas.data.summary}</p><div class="feature-tags">{atlas.data.tags.slice(0, 3).map((tag) => <span>{tag}</span>)}</div><a class="featured-link" href={`/projects/${atlas.id}/`}>Explore Code Atlas <span aria-hidden="true">↗</span></a></div>
+        <AtlasArt />
+      </article>
+    )}
+    <div class="projects-grid">{otherProjects.map((project) => <ProjectCard project={project} />)}</div>
+  </section>
+
+  <section id="about" class="about-section top-lined" aria-labelledby="about-title">
+    <div><span class="section-eyebrow">04 / ABOUT ME</span><h2 id="about-title">Mobile by craft.<br /><span>Builder by curiosity.</span></h2><p>I'm Leo, a mobile engineer who enjoys solving the hard parts—architecture, native integrations, performance, and developer experience. My open-source projects are where I turn those lessons into tools other developers can use.</p><a class="about-link" href={site.github} target="_blank" rel="noopener noreferrer">Connect on GitHub <span aria-hidden="true">↗</span></a></div>
+    <div class="toolbox"><span class="section-eyebrow">MY TOOLBOX</span><div class="stack-tags">{stack.map((item) => <span>{item}</span>)}</div><div class="toolbox-note"><span class="toolbox-terminal">➜</span> Always learning. Always building.</div></div>
+  </section>
+  <div class="bottom-cta"><div><span>HAVE SOMETHING IN MIND?</span><h2>Let's build something <em>meaningful.</em></h2></div><a href={site.github} target="_blank" rel="noopener noreferrer" class="button button-primary">Find me on GitHub <span aria-hidden="true">↗</span></a></div>
+</BaseLayout>

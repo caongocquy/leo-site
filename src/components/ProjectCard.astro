@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { project: CollectionEntry<'projects'>; }
+const { project } = Astro.props;
+const marks: Record<string, string> = { graph: '⌘', route: '⇄', otp: '▦', spark: '✦' };
+---
+<a class="project-card" href={`/projects/${project.id}/`} aria-label={`View ${project.data.title} project details`}>
+  <div class="project-card-top">
+    <span class="project-symbol" aria-hidden="true">{marks[project.data.icon]}</span>
+    <span class="external-arrow" aria-hidden="true">↗</span>
+  </div>
+  <div class="project-card-content">
+    <span class="project-card-kicker">{project.data.category}</span>
+    <h3>{project.data.title}</h3>
+    <p>{project.data.summary}</p>
+  </div>
+  <div class="project-card-bottom">
+    <span>{project.data.tags.slice(0, 2).join(' · ')}</span>
+    <span>View project <span aria-hidden="true">→</span></span>
+  </div>
+</a>
