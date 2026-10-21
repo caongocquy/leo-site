@@ -1,9 +1,12 @@
 ---
-import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { render, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from './Icon.astro';
-import TerminalDemo from '../../components/TerminalDemo.astro';
-import ProjectGallery from '../../components/ProjectGallery.astro';
+import TerminalDemo from './TerminalDemo.astro';
+import ProjectGallery from './ProjectGallery.astro';
+import { localeFromPath, localizedPath, ui, projectI18n } from '../i18n/translations';
+const locale = localeFromPath(Astro.url.pathname);
+const t = ui(locale);
 
 interface Props { project: CollectionEntry<'projects'>; }
 const { project } = Astro.props;
