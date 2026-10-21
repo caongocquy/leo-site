@@ -11,6 +11,8 @@ const slugs = [
 const expectedGallery = {
   'code-atlas': ['cli-init.svg', 'cli-inspect-change.svg'],
   'showdar-router': ['showdar-router-dashboard.png', 'showdar-router-terminal.png'],
+  'react-native-otp-input-kit': ['otp-input-kit-upwork.webp'],
+  'react-native-splash-view': ['splash-view-upwork.webp'],
 };
 
 for (const slug of slugs) {
@@ -26,7 +28,11 @@ for (const slug of slugs) {
     assert.ok(hasGallery, `${slug}: missing screenshot gallery`);
     assert.ok(hasLightbox, `${slug}: missing native dialog lightbox`);
     for (const file of expectedGallery[slug]) {
-      assert.ok(html.includes(file), `${slug}: missing authentic screenshot ${file}`);
+      assert.ok(html.includes(file), `${slug}: missing gallery image ${file}`);
+    }
+    if (slug.startsWith('react-native-')) {
+      assert.ok(html.includes('data-gallery-kind="concept"'), `${slug}: promotional mockup must be labeled concept`);
+      assert.ok(html.includes('Promotional concept'), `${slug}: promotional disclosure missing`);
     }
   } else {
     assert.ok(!hasGallery, `${slug}: should not show gallery without public screenshots`);
