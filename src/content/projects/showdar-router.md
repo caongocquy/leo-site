@@ -12,6 +12,13 @@ tags:
   - API Gateway
   - CLI
 repository: https://github.com/caongocquy/showdar-router
+screenshots:
+  - src: https://raw.githubusercontent.com/caongocquy/showdar-router/main/assets/showdar-router-dashboard.png
+    alt: "Showdar Router dashboard screenshot from its README"
+    caption: "Local routing dashboard"
+  - src: https://raw.githubusercontent.com/caongocquy/showdar-router/main/assets/showdar-router-terminal.png
+    alt: "Showdar Router terminal screenshot"
+    caption: "CLI and routing workflow"
 demoCommands:
   - "npm install -g showdar-router"
   - "showdar-router"

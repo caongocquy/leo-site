@@ -29,3 +29,5 @@ jobs:
         run: node scripts/verify-featured-link.mjs
       - name: Verify terminal project demos
         run: node scripts/verify-terminal-demos.mjs
+      - name: Verify portfolio UI enhancements
+        run: node scripts/verify-ui-enhancements.mjs

@@ -66,3 +66,9 @@ Add your final site URL to the `site` property in `astro.config.mjs` so canonica
 Each project detail page includes a visual command walkthrough inspired by [Lucian #229](https://lucianlabs.dev/uxui-prompt/#229), adapted to the actual package commands. Edit `demoCommands` in each Markdown frontmatter to maintain the walkthrough. Commands are **not executed** by the portfolio. The terminal is progressive-enhanced: commands are visible with JavaScript disabled, and motion preferences are respected.
 
 The interactive pattern is independently implemented with credit to the original [Lucian UX/UI Prompt project](https://github.com/Seokwoooo/lucian-uxui-prompt), licensed MIT © 2026 Seokwoooo.
+
+## UX refinements
+
+- Expertise uses a compact bento layout inspired by Lucian #214; graphic scenes are presentational, with a static layout and reduced-motion support.
+- Project CLI demos combine Lucian #008 copy feedback and #272 package-manager tabs with the previous #229 walkthrough. Package manager choice is remembered locally. Global Yarn commands explicitly refer to **Yarn Classic (v1)**, not modern Yarn.
+- Project galleries use native `<dialog>` lightboxes inspired by Lucian #061, only when public repository screenshots are present in optional `screenshots` frontmatter. Images are loaded from the original public repository; mobile component previews are not fabricated.

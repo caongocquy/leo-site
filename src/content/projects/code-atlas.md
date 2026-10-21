@@ -13,6 +13,13 @@ tags:
   - CLI
 repository: https://github.com/caongocquy/code-atlas
 packageUrl: https://www.npmjs.com/package/@showdar2112/code-atlas
+screenshots:
+  - src: https://raw.githubusercontent.com/caongocquy/code-atlas/master/docs/assets/readme/cli-init.svg
+    alt: "Real Code Atlas CLI initialization output"
+    caption: "CLI initialization"
+  - src: https://raw.githubusercontent.com/caongocquy/code-atlas/master/docs/assets/readme/cli-inspect-change.svg
+    alt: "Actual Code Atlas inspect-change terminal output"
+    caption: "Change impact exploration"
 demoCommands:
   - "npm install -g @showdar2112/code-atlas"
   - "code-atlas init"

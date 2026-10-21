@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import AtlasArt from '../components/AtlasArt.astro';
+import ExpertiseScene from '../components/ExpertiseScene.astro';
 import Icon from '../components/Icon.astro';
 import { expertise, site, stack } from '../data/site';
 
@@ -67,6 +68,7 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
       {expertise.map((item) => (
         <article class="expertise-card">
           <div class="expertise-card-top"><span class="expertise-icon"><Icon name={item.icon} size={27} /></span><span class="index-number">{item.number}</span></div>
+          <ExpertiseScene kind={item.icon} />
           <h3>{item.title}</h3><p>{item.description}</p>
           <div class="mini-tags">{item.tags.map((tag) => <span>{tag}</span>)}</div>
         </article>

@@ -9,9 +9,18 @@ interface Props {
 }
 
 const { title, commands, highlights, repository } = Astro.props;
+const first = commands[0] ?? '';
+const isGlobal = first.startsWith('npm install -g ');
+const packageName = first.replace(/^npm install(?: -g)? /, '');
+const managerCommands = [
+  { id: 'npm', label: 'npm', command: first },
+  { id: 'pnpm', label: 'pnpm', command: `pnpm add ${isGlobal ? '-g ' : ''}${packageName}` },
+  { id: 'yarn', label: isGlobal ? 'Yarn 1' : 'yarn', command: `yarn ${isGlobal ? 'global add ' : 'add '}${packageName}` },
+  { id: 'bun', label: 'bun', command: `bun add ${isGlobal ? '-g ' : ''}${packageName}` },
+];
 ---
 
-<!-- Inspired by Lucian UX/UI Prompt #229, MIT © 2026 Seokwoooo.
+<!-- Inspired by Lucian UX/UI Prompt #008, #229, #272, MIT © 2026 Seokwoooo.
      Reference: https://lucianlabs.dev/uxui-prompt/#229
      Original concept adapted for read-only, project-specific commands. -->
 <section class="terminal-showcase" aria-labelledby="terminal-demo-title">
@@ -29,6 +38,14 @@ const { title, commands, highlights, repository } = Astro.props;
         <span class="demo-dots"><i></i><i></i><i></i></span>
         <span>terminal / {title.toLowerCase().replaceAll(' ', '-')}</span>
         <span class="demo-toolbar-tag">GUIDED PREVIEW</span>
+      </div>
+      <div class="demo-manager" role="group" aria-label="Choose package manager">
+        <span class="demo-manager-label">INSTALL WITH</span>
+        <div class="demo-manager-tabs">
+          {managerCommands.map((manager) => (
+            <button type="button" data-install-manager={manager.id} data-install-command={manager.command} aria-pressed={manager.id === 'npm'} class="demo-manager-tab" title={manager.id === 'yarn' && isGlobal ? 'Yarn Classic (v1) only for global installs' : undefined}>{manager.label}</button>
+          ))}
+        </div>
       </div>
       <div class="demo-screen" aria-hidden="true">
         {commands.map((command) => (
@@ -51,8 +68,9 @@ const { title, commands, highlights, repository } = Astro.props;
           Replay
         </button>
         <button type="button" class="demo-button" data-demo-copy aria-label={`Copy ${title} commands`}>
-          <Icon name="copy" size={14} />
-          Copy commands
+          <span class="demo-copy-ready"><Icon name="copy" size={14} /></span>
+          <span class="demo-copy-done"><Icon name="check" size={14} /></span>
+          <span class="demo-copy-label">Copy commands</span>
         </button>
       </div>
       <button type="button" class="demo-button demo-button-primary" data-demo-preview aria-expanded="false" aria-controls="demo-project-preview">
@@ -86,6 +104,17 @@ const { title, commands, highlights, repository } = Astro.props;
   .demo-dots i:nth-child(2) { background: #e3b35d; }
   .demo-dots i:nth-child(3) { background: #73b892; }
   .demo-toolbar-tag { margin-left: auto; letter-spacing: .07em; font-size: 9px; color: #91c4a9; }
+  .demo-manager { display: flex; align-items: center; gap: 15px; padding: 9px 20px; border-bottom: 1px solid #293740; background: #111a21; }
+  .demo-manager-label { white-space: nowrap; font: 9px 'IBM Plex Mono', ui-monospace, monospace; letter-spacing: .1em; color: #98b1a8; }
+  .demo-manager-tabs { display: flex; gap: 4px; flex-wrap: wrap; }
+  .demo-manager-tab { background: transparent; border: 1px solid transparent; border-radius: 6px; color: #a3b3b4; cursor: pointer; padding: 5px 12px; font: 11px 'IBM Plex Mono', ui-monospace, monospace; transition: background-color .16s ease, border-color .16s ease; }
+  .demo-manager-tab[aria-pressed="true"] { border-color: #446b60; background: #254037; color: #c0f0d3; }
+  .demo-manager-tab:hover { color: #effaf2; }
+  .demo-manager-tab:focus-visible { outline: 2px solid #b8f5d4; outline-offset: 2px; }
+  .demo-copy-done { display: none; color: var(--accent); }
+  [data-demo-copy][data-copied] .demo-copy-ready { display: none; }
+  [data-demo-copy][data-copied] .demo-copy-done { display: inline-flex; }
+  [data-demo-copy][data-copied] { border-color: var(--accent); color: var(--accent); }
   .demo-screen { display: flex; flex-direction: column; justify-content: center; min-height: 178px; gap: 14px; padding: 26px 21px; overflow-x: auto; }
   .demo-command-row { display: flex; align-items: baseline; gap: 12px; width: max-content; max-width: none; font: 12px/1.65 'IBM Plex Mono', ui-monospace, monospace; }
   .demo-command-row code { color: #ebf4ed; white-space: pre; }
@@ -120,6 +149,9 @@ const { title, commands, highlights, repository } = Astro.props;
     .demo-shell { padding: 9px; }
     .demo-toolbar { padding: 0 10px; gap: 7px; font-size: 9px; }
     .demo-toolbar-tag { font-size: 8px; }
+    .demo-manager { padding: 8px 9px; gap: 8px; }
+    .demo-manager-label { font-size: 8px; }
+    .demo-manager-tab { padding: 5px 7px; font-size: 9px; }
     .demo-screen { padding: 22px 12px; min-height: 145px; }
     .demo-command-row { gap: 8px; font-size: 10px; }
     .demo-instruction { font-size: 9px; }
@@ -140,7 +172,9 @@ const { title, commands, highlights, repository } = Astro.props;
 
   for (const demo of demos) {
     const elements = [...demo.querySelectorAll<HTMLElement>('[data-demo-command]')];
-    const commands = elements.map((element) => element.textContent ?? '');
+    const initialCommands = elements.map((element) => element.textContent ?? '');
+    let commands = [...initialCommands];
+    const managers = [...demo.querySelectorAll<HTMLButtonElement>('[data-install-manager]')];
     const replay = demo.querySelector<HTMLButtonElement>('[data-demo-replay]');
     const copy = demo.querySelector<HTMLButtonElement>('[data-demo-copy]');
     const preview = demo.querySelector<HTMLButtonElement>('[data-demo-preview]');
@@ -149,8 +183,26 @@ const { title, commands, highlights, repository } = Astro.props;
     const status = demo.querySelector<HTMLElement>('[data-demo-status]');
     const announcement = demo.querySelector<HTMLElement>('[data-demo-announcement]');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const charCount = Math.max(1, commands.join('').length);
     let runId = 0;
+    let copyReset: ReturnType<typeof setTimeout> | undefined;
+
+    const resetCopied = () => {
+      if (copyReset) clearTimeout(copyReset);
+      copy?.removeAttribute('data-copied');
+      const label = copy?.querySelector<HTMLElement>('.demo-copy-label');
+      if (label) label.textContent = 'Copy commands';
+    };
+
+    const setManager = (id: string, animateChange: boolean) => {
+      const selected = managers.find((manager) => manager.dataset.installManager === id) ?? managers[0];
+      if (!selected) return;
+      commands = [selected.dataset.installCommand ?? initialCommands[0], ...initialCommands.slice(1)];
+      managers.forEach((manager) => manager.setAttribute('aria-pressed', String(manager === selected)));
+      resetCopied();
+      try { localStorage.setItem('leo-package-manager', selected.dataset.installManager ?? 'npm'); } catch { /* Optional persistence. */ }
+      if (animateChange) void animate();
+      else complete();
+    };
 
     const complete = () => {
       runId++;
@@ -170,6 +222,7 @@ const { title, commands, highlights, repository } = Astro.props;
       if (progress) progress.style.width = '0%';
       if (status) status.textContent = 'Typing example commands…';
       let typed = 0;
+      const charCount = Math.max(1, commands.join('').length);
 
       for (let index = 0; index < commands.length; index++) {
         for (const char of commands[index]) {
@@ -186,11 +239,17 @@ const { title, commands, highlights, repository } = Astro.props;
       if (status) status.textContent = 'Commands ready to copy';
     };
 
-    replay?.addEventListener('click', () => { void animate(); });
+    managers.forEach((manager) => manager.addEventListener('click', () => setManager(manager.dataset.installManager ?? 'npm', true)));
+    replay?.addEventListener('click', () => { resetCopied(); void animate(); });
     copy?.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(commands.join('\n'));
         if (announcement) announcement.textContent = 'Commands copied to clipboard.';
+        resetCopied();
+        copy?.setAttribute('data-copied', 'true');
+        const label = copy?.querySelector<HTMLElement>('.demo-copy-label');
+        if (label) label.textContent = 'Copied!';
+        copyReset = setTimeout(resetCopied, 1900);
       } catch {
         if (announcement) announcement.textContent = 'Clipboard unavailable. Select the commands to copy them.';
       }
@@ -208,6 +267,9 @@ const { title, commands, highlights, repository } = Astro.props;
       if (document.hidden) complete();
     });
 
+    let savedManager = 'npm';
+    try { savedManager = localStorage.getItem('leo-package-manager') ?? 'npm'; } catch { /* Optional persistence. */ }
+    setManager(savedManager, false);
     if (reduced.matches) {
       complete();
     } else if ('IntersectionObserver' in window) {

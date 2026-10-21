@@ -17,6 +17,7 @@ const projects = defineCollection({
     packageUrl: z.string().url().optional(),
     docsUrl: z.string().url().optional(),
     demoCommands: z.array(z.string().min(1)).min(1).max(4),
+    screenshots: z.array(z.object({ src: z.string().url(), alt: z.string().min(1), caption: z.string().min(1) })).optional(),
     highlights: z.array(z.string()),
   }),
 });
