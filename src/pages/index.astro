@@ -85,10 +85,10 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
   <section id="projects" class="section-block projects-section" aria-labelledby="projects-title">
     <div class="section-heading-row"><div class="section-intro"><span class="section-eyebrow">03 / SELECTED WORK</span><h2 id="projects-title">Open source, <span>built with purpose.</span></h2><p>Useful experiments and products I build, refine, and share with other developers.</p></div><a class="section-view-all" href="/projects">View all projects <Icon name="arrow-up-right" size={15} /></a></div>
     {atlas && (
-      <article class="featured-project">
-        <div class="featured-body"><div class="featured-eyebrow"><Icon name="sparkles" size={15} class="featured-star" /> FEATURED PROJECT / CODE INTELLIGENCE</div><h3>{atlas.data.title}</h3><p>{atlas.data.summary}</p><div class="feature-tags">{atlas.data.tags.slice(0, 3).map((tag) => <span>{tag}</span>)}</div><a class="featured-link" href={`/projects/${atlas.id}/`}>Explore Code Atlas <Icon name="arrow-up-right" size={15} /></a></div>
+      <a class="featured-project" href={`/projects/${atlas.id}/`} aria-label={`Explore ${atlas.data.title} project`}>
+        <div class="featured-body"><div class="featured-eyebrow"><Icon name="sparkles" size={15} class="featured-star" /> FEATURED PROJECT / CODE INTELLIGENCE</div><h3>{atlas.data.title}</h3><p>{atlas.data.summary}</p><div class="feature-tags">{atlas.data.tags.slice(0, 3).map((tag) => <span>{tag}</span>)}</div><span class="featured-link">Explore Code Atlas <Icon name="arrow-up-right" size={15} /></span></div>
         <AtlasArt />
-      </article>
+      </a>
     )}
     <div class="projects-grid">{otherProjects.map((project) => <ProjectCard project={project} />)}</div>
   </section>

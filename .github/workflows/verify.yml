@@ -25,3 +25,5 @@ jobs:
           test -f dist/projects/code-atlas/index.html
           test -f dist/projects/showdar-router/index.html
           test -f dist/404.html
+      - name: Verify featured card semantics
+        run: node scripts/verify-featured-link.mjs

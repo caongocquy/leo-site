@@ -514,3 +514,31 @@ body { font-family: var(--font-ui); font-weight: 400; }
   .hero h1 { font-size: clamp(43px, 11.3vw, 60px); }
   .projects-section > .projects-grid { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* Featured Code Atlas is a single accessible link, matching other project cards. */
+.featured-project {
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.featured-project:hover,
+.featured-project:focus-visible {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 16px 36px var(--shadow);
+}
+.featured-project:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+.featured-project:hover .featured-link,
+.featured-project:focus-visible .featured-link {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.featured-link svg {
+  transition: transform .18s ease;
+}
+.featured-project:hover .featured-link svg,
+.featured-project:focus-visible .featured-link svg {
+  transform: translate(2px, -2px);
+}
