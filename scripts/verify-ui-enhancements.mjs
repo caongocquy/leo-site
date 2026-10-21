@@ -39,3 +39,12 @@ for (const kind of ['scene-mobile', 'scene-layers', 'scene-terminal']) {
 }
 
 console.log('UI patterns: manager tabs, copy feedback, bento scenes, gallery images and lightbox verified.');
+
+// Regression checks for the latest portfolio visual corrections.
+const stylesheet = readFileSync('src/styles/global.css', 'utf8');
+const bento = stylesheet.slice(stylesheet.lastIndexOf('/* Balanced bento:'));
+assert.ok(bento.includes('grid-column: span 12'), 'Tooling card should occupy a full bento row');
+assert.ok(!bento.includes('grid-row: span 2'), 'Bento should not vertically stretch the mobile card');
+const galleryComponent = readFileSync('src/components/ProjectGallery.astro', 'utf8');
+assert.ok(galleryComponent.includes('transform: translate(-50%, -50%)'), 'Lightbox must be centered in viewport');
+assert.ok(galleryComponent.includes('data-gallery-caption'), 'Lightbox should not copy decorative arrow into caption');

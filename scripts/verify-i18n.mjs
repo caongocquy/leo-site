@@ -11,7 +11,8 @@ for (const [locale, prefix, nav, intro] of [
   const home = html(`${prefix}index.html`);
   assert.match(home, new RegExp(`<html[^>]+lang="${locale}"`), `${locale}: incorrect html lang`);
   assert.ok(home.includes(intro), `${locale}: missing localized hero`);
-  assert.ok(home.includes('🇬🇧') && home.includes('🇻🇳'), `${locale}: missing flags`);
+  assert.ok(home.includes('flag-uk-clip') && home.includes('class="flag-icon"'), `${locale}: missing inline SVG flags`);
+  assert.ok(home.includes('title="Tiếng Việt"') && home.includes('title="English"'), `${locale}: missing flag switcher links`);
   assert.ok(home.includes(nav), `${locale}: missing translated navigation`);
 
   const list = html(`${prefix}projects/index.html`);

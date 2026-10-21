@@ -14,7 +14,7 @@ const t = ui(locale);
         <a href={shot.src} target="_blank" rel="noopener noreferrer" data-gallery-item data-gallery-index={index} data-gallery-kind={shot.kind ?? 'screenshot'} aria-label={`${t.galleryExpand}: ${locale === 'vi' ? shot.altVi ?? shot.alt : shot.alt}`}>
           <figure>
             <div class="gallery-image"><img src={shot.src} alt={locale === "vi" ? shot.altVi ?? shot.alt : shot.alt} loading="lazy" decoding="async" /></div>
-            <figcaption>{locale === 'vi' ? shot.captionVi ?? shot.caption : shot.caption}<span aria-hidden="true">↗</span></figcaption>
+            <figcaption><span data-gallery-caption>{locale === 'vi' ? shot.captionVi ?? shot.caption : shot.caption}</span><span aria-hidden="true">↗</span></figcaption>
           </figure>
         </a>
       ))}
@@ -44,16 +44,16 @@ const t = ui(locale);
   .gallery-image { display: grid; place-items: center; height: clamp(150px, 22vw, 250px); overflow: hidden; background: var(--surface-alt); padding: 13px; }
   .gallery-image img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
   .gallery-grid figcaption { display:flex; justify-content: space-between; align-items: center; gap: 10px; padding: 13px 16px; color: var(--muted); font-size: 11px; font-weight: 600; }
-  .gallery-grid figcaption span { color: var(--accent); font-size: 17px; }
-  .project-lightbox { position: fixed; inset: 0; padding: 0; max-width: min(94vw, 1120px); max-height: min(95vh, 900px); width: 100%; border: 1px solid #3e5950; border-radius: 16px; background: #11191f; color: #eef6f0; box-shadow: 0 35px 100px #0009; overflow: hidden; }
+  .gallery-grid figcaption span:last-child { color: var(--accent); font-size: 17px; }
+  .project-lightbox { position: fixed; inset: auto; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; padding: 0; width: min(94vw, 1050px); max-width: 1050px; max-height: min(90dvh, 850px); border: 1px solid #3e5950; border-radius: 16px; background: #11191f; color: #eef6f0; box-shadow: 0 35px 100px #0009; overflow: hidden; }
   .project-lightbox::backdrop { background: rgba(3, 11, 14, .84); backdrop-filter: blur(5px); }
-  .lightbox-inner { display:flex; flex-direction:column; max-height:min(95vh,900px); }
+  .lightbox-inner { display:flex; flex-direction:column; max-height:min(90dvh,850px); }
   .lightbox-top { display:flex; align-items:center; justify-content:space-between; padding: 13px 18px; border-bottom: 1px solid #33433c; color: #b2c6b9; font: 11px 'IBM Plex Mono',monospace; }
   .lightbox-top button, .lightbox-controls button { display:grid; place-items:center; width:34px; height:34px; background:#24342e; border:1px solid #466153; border-radius:8px; color:#e5f1e9; cursor:pointer; }
   .lightbox-top button:hover, .lightbox-controls button:hover { border-color: #b8f5d4; }
   .lightbox-top button:focus-visible, .lightbox-controls button:focus-visible { outline:2px solid #b8f5d4; outline-offset:2px; }
   .lightbox-image { display:grid; place-items:center; padding:16px; min-height: 180px; flex: 1; overflow:auto; }
-  .lightbox-image img { display:block; max-width:100%; max-height: calc(95vh - 172px); object-fit: contain; }
+  .lightbox-image img { display:block; max-width:100%; max-height: calc(90dvh - 172px); object-fit: contain; }
   .lightbox-footer { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:14px 18px; border-top: 1px solid #33433c; }
   .lightbox-footer strong { display:block; font-weight:650; font-size:12px; }
   .lightbox-footer span { display:block; margin-top:3px; color:#9fb3a8; font-size:10px; }
@@ -87,7 +87,7 @@ const t = ui(locale);
       const thumbnail = item.querySelector<HTMLImageElement>('img');
       image.src = item.href;
       image.alt = thumbnail?.alt ?? '';
-      if (caption) caption.textContent = item.querySelector('figcaption')?.textContent?.trim() ?? '';
+      if (caption) caption.textContent = item.querySelector('[data-gallery-caption]')?.textContent?.trim() ?? '';
       if (count) count.textContent = `${currentIndex + 1} / ${items.length}`;
       if (disclosure) disclosure.textContent = item.dataset.galleryKind === 'concept' ? dialog.dataset.galleryConcept ?? '' : dialog.dataset.galleryActual ?? '';
     };
