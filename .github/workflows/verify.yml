@@ -24,7 +24,13 @@ jobs:
           test -f dist/projects/index.html
           test -f dist/projects/code-atlas/index.html
           test -f dist/projects/showdar-router/index.html
+          test -f dist/journey/index.html
+          test -f dist/en/index.html
+          test -f dist/en/projects/index.html
+          test -f dist/en/projects/code-atlas/index.html
+          test -f dist/en/journey/index.html
           test -f dist/404.html
+          test ! -e dist/vi/index.html
       - name: Verify featured card semantics
         run: node scripts/verify-featured-link.mjs
       - name: Verify terminal project demos

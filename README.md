@@ -75,7 +75,7 @@ The interactive pattern is independently implemented with credit to the original
 
 ## English / Vietnamese
 
-The default English URLs remain unchanged. Vietnamese pages are served statically under `/vi/`, including `/vi/projects/` and each `/vi/projects/<id>/`. The language picker uses 🇬🇧 / 🇻🇳 links and keeps the current page when switching. No runtime translation library, browser-language redirects, or tracking cookies are needed.
+**Vietnamese is the default language** and uses clean, unprefixed URLs: `/`, `/projects/`, `/journey/`, `/projects/<id>/`. English uses `/en/`, `/en/projects/`, `/en/journey/` and `/en/projects/<id>/`. The language switch shows the Vietnamese SVG flag **first** (left) and the UK SVG flag second (right), preserving the current page. No client-side translation library, browser-language redirect or tracking cookie is needed.
 
 - English UI and Vietnamese UI: `src/i18n/translations.ts`
 - Original English project articles: `src/content/projects/*.md`
@@ -88,7 +88,7 @@ The `screenshots` content field optionally supports `kind: concept` and translat
 
 ## Career Journey (/journey)
 
-Two static pages: `/journey/` (English) and `/vi/journey/` (Vietnamese), with links in header, footer, and homepage Experience. Inspired by Lucian UX/UI Prompt #370: the progression line lights up while scrolling, with progressive enhancement and `prefers-reduced-motion` support.
+Two static pages: `/journey/` (Vietnamese default) and `/en/journey/` (English), with links in header, footer, and homepage Experience. Inspired by Lucian UX/UI Prompt #370: the progression line lights up while scrolling, with progressive enhancement and `prefers-reduced-motion` support.
 
 Career entries are edited at `src/data/journey.ts`, paired EN/VI:
 - MGI Global (Jun 2019–Dec 2021), 45CM VINA (Jan 2022–Feb 2023), 1988s Media and Technology (Mar 2023–Aug 2024), Galaxy Technology Services (from Feb 2025), reflecting the last reviewed CV.
@@ -100,3 +100,10 @@ Verify any future employment or client-date changes against the CV before updati
 ## Toolchain
 
 GitHub Actions and `.node-version` use Node.js 24; Astro 7.4+ requires at least 22.23.4. Run `npm install` and `npm run build` with a supported Node version.
+
+## Hero and Journey UI patterns
+
+- Lucian #216 inspired hero entrance uses **CSS-only staggered presentation**, not hidden content contingent on JavaScript. It is disabled for `prefers-reduced-motion: reduce`.
+- Hero headline communicates both production mobile engineering and open-source developer tools. Actions lead to selected projects and Career Journey.
+- Lucian #275 inspired Journey scrollspy uses plain, accessible milestone links that work without JavaScript; scroll position adds `aria-current="location"` when supported. On mobile the milestones become a horizontally scrollable rail.
+- Public site default is Vietnamese; English is under `/en/`. When assigning a real site origin in `astro.config.mjs`, the layout emits localized canonical/alternate URLs and `x-default` points to Vietnamese.
