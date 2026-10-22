@@ -595,3 +595,31 @@ body { font-family: var(--font-ui); font-weight: 400; }
 .journey-promo > a:hover { text-decoration:underline; text-underline-offset:4px; }
 @media(max-width:830px) { .journey-promo { margin-top:-28px; } }
 @media(max-width:560px) { .journey-promo { margin:-26px 0 58px; padding:18px; flex-direction:column; align-items:flex-start; gap:14px; } }
+
+
+/* Lucian #216-inspired restrained first-view hero entrance. Static HTML remains readable without JS. */
+.hero-title-break { display: block; height: .06em; }
+.hero h1 { font-size: clamp(40px, 4.55vw, 65px); letter-spacing: -.052em; line-height: 1.14; }
+.hero .eyebrow, .hero h1, .hero-desc, .hero-actions, .hero-notes, .hero-visual {
+  animation: hero-arrive .72s cubic-bezier(.2,.8,.2,1) both;
+}
+.hero .eyebrow { animation-delay: .03s; }
+.hero h1 { animation-delay: .12s; }
+.hero-desc { animation-delay: .21s; }
+.hero-actions { animation-delay: .29s; }
+.hero-notes { animation-delay: .37s; }
+.hero-visual { animation-delay: .25s; }
+@keyframes hero-arrive {
+  from { opacity: 0; transform: translate3d(0, 17px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@media (max-width: 830px) {
+  .hero h1 { font-size: clamp(40px, 6.25vw, 63px); }
+}
+@media (max-width: 560px) {
+  .hero h1 { font-size: clamp(35px, 9vw, 47px); line-height: 1.15; letter-spacing: -.045em; }
+  .hero-title-break { height: .12em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero .eyebrow, .hero h1, .hero-desc, .hero-actions, .hero-notes, .hero-visual { animation: none; }
+}
