@@ -2,6 +2,12 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import sharp from 'sharp';
 
+// Production and branch previews must keep independent Wrangler environments.
+const wrangler = JSON.parse(readFileSync('wrangler.jsonc', 'utf8'));
+assert.equal(wrangler.name, 'leo-site');
+assert.equal(wrangler.assets.directory, './dist');
+assert.deepEqual(wrangler.previews, {}, 'Workers Builds runs "wrangler preview" for PRs; previews block is required');
+
 const host = 'https://leo-site.quy-caongoc.workers.dev';
 const read = (p) => readFileSync(p, 'utf8');
 const slugs = readdirSync('src/content/projects').filter((p) => p.endsWith('.md')).map((p) => p.slice(0, -3));
