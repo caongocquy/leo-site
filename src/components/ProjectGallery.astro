@@ -8,10 +8,10 @@ const t = ui(locale);
 
 {screenshots.length > 0 && (
   <section class="gallery-section" aria-label={`${title} — ${t.galleryTitle}`}>
-    <div class="gallery-heading"><div><span class="section-eyebrow">{t.galleryEyebrow}</span><h2>{t.galleryTitle}<span class="period">.</span></h2></div><span class="gallery-note">{t.galleryExpand}</span></div>
+    <div class="gallery-heading" data-scroll-reveal><div><span class="section-eyebrow">{t.galleryEyebrow}</span><h2>{t.galleryTitle}<span class="period">.</span></h2></div><span class="gallery-note">{t.galleryExpand}</span></div>
     <div class="gallery-grid" data-project-gallery>
       {screenshots.map((shot, index) => (
-        <a href={shot.src} target="_blank" rel="noopener noreferrer" data-gallery-item data-gallery-index={index} data-gallery-kind={shot.kind ?? 'screenshot'} aria-label={`${t.galleryExpand}: ${locale === 'vi' ? shot.altVi ?? shot.alt : shot.alt}`}>
+        <a href={shot.src} target="_blank" rel="noopener noreferrer" data-gallery-item data-scroll-reveal data-gallery-index={index} data-gallery-kind={shot.kind ?? 'screenshot'} aria-label={`${t.galleryExpand}: ${locale === 'vi' ? shot.altVi ?? shot.alt : shot.alt}`}>
           <figure>
             <div class="gallery-image"><img src={shot.src} alt={locale === "vi" ? shot.altVi ?? shot.alt : shot.alt} loading="lazy" decoding="async" /></div>
             <figcaption><span data-gallery-caption>{locale === 'vi' ? shot.captionVi ?? shot.caption : shot.caption}</span><span aria-hidden="true">↗</span></figcaption>

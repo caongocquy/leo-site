@@ -68,10 +68,10 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
   </section>
 
   <section id="expertise" class="section-block top-lined" aria-labelledby="expertise-title">
-    <div class="section-intro"><span class="section-eyebrow">{t.whatIDo}</span><h2 id="expertise-title">{t.expertiseTitle} <span>{t.expertiseTitleEm}</span></h2><p>{t.expertiseIntro}</p></div>
+    <div class="section-intro" data-scroll-reveal><span class="section-eyebrow">{t.whatIDo}</span><h2 id="expertise-title">{t.expertiseTitle} <span>{t.expertiseTitleEm}</span></h2><p>{t.expertiseIntro}</p></div>
     <div class="expertise-grid">
       {expertise.map((item) => (
-        <article class="expertise-card">
+        <article class="expertise-card" data-scroll-reveal>
           <div class="expertise-card-top"><span class="expertise-icon"><Icon name={item.icon} size={27} /></span><span class="index-number">{item.number}</span></div>
           <ExpertiseScene kind={item.icon} />
           <h3>{locale === 'vi' ? t[`expertise${item.number.slice(-1)}Title`] : item.title}</h3><p>{locale === 'vi' ? t[`expertise${item.number.slice(-1)}Desc`] : item.description}</p>
@@ -82,21 +82,21 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
   </section>
 
   <section id="experience" class="section-block experience-section top-lined" aria-labelledby="experience-title">
-    <div class="section-intro"><span class="section-eyebrow">{t.experienceLabel}</span><h2 id="experience-title">{t.experienceTitle} <span>{t.experienceEm}</span></h2><p>{t.experienceIntro}</p></div>
+    <div class="section-intro" data-scroll-reveal><span class="section-eyebrow">{t.experienceLabel}</span><h2 id="experience-title">{t.experienceTitle} <span>{t.experienceEm}</span></h2><p>{t.experienceIntro}</p></div>
     <div class="experience-grid">
-      <article class="experience-card"><div class="experience-meta"><span>{t.experience1Label}</span><span>01</span></div><h3>{t.experience1Title}</h3><p>{t.experience1Desc}</p><div class="experience-tech">React Native <i>·</i> TypeScript <i>·</i> Product Engineering</div></article>
-      <article class="experience-card"><div class="experience-meta"><span>{t.experience2Label}</span><span>02</span></div><h3>{t.experience2Title}</h3><p>{t.experience2Desc}</p><div class="experience-tech">Swift <i>·</i> Kotlin <i>·</i> UI Performance</div></article>
+      <article class="experience-card" data-scroll-reveal><div class="experience-meta"><span>{t.experience1Label}</span><span>01</span></div><h3>{t.experience1Title}</h3><p>{t.experience1Desc}</p><div class="experience-tech">React Native <i>·</i> TypeScript <i>·</i> Product Engineering</div></article>
+      <article class="experience-card" data-scroll-reveal><div class="experience-meta"><span>{t.experience2Label}</span><span>02</span></div><h3>{t.experience2Title}</h3><p>{t.experience2Desc}</p><div class="experience-tech">Swift <i>·</i> Kotlin <i>·</i> UI Performance</div></article>
     </div>
-    <div class="journey-promo">
+    <div class="journey-promo" data-scroll-reveal>
       <div><span class="section-eyebrow">{jt.homepagePrompt}</span><p>{jt.homepageIntro}</p></div>
       <a href={localizedPath('/journey/', locale)}>{jt.summaryLink}<Icon name="arrow-up-right" size={15}/></a>
     </div>
   </section>
 
   <section id="projects" class="section-block projects-section" aria-labelledby="projects-title">
-    <div class="section-heading-row"><div class="section-intro"><span class="section-eyebrow">{t.selectedWork}</span><h2 id="projects-title">{t.projectsTitle} <span>{t.projectsEm}</span></h2><p>{t.projectsIntro}</p></div><a class="section-view-all" href={localizedPath("/projects",locale)}>{t.viewAllProjects} <Icon name="arrow-up-right" size={15} /></a></div>
+    <div class="section-heading-row"><div class="section-intro" data-scroll-reveal><span class="section-eyebrow">{t.selectedWork}</span><h2 id="projects-title">{t.projectsTitle} <span>{t.projectsEm}</span></h2><p>{t.projectsIntro}</p></div><a class="section-view-all" href={localizedPath("/projects",locale)}>{t.viewAllProjects} <Icon name="arrow-up-right" size={15} /></a></div>
     {atlas && (
-      <a class="featured-project" href={localizedPath(`/projects/${atlas.id}/`,locale)} aria-label={`${t.exploreAtlas}: ${atlas.data.title}`}>
+      <a class="featured-project" data-scroll-reveal href={localizedPath(`/projects/${atlas.id}/`,locale)} aria-label={`${t.exploreAtlas}: ${atlas.data.title}`}>
         <div class="featured-body"><div class="featured-eyebrow"><Icon name="sparkles" size={15} class="featured-star" /> {t.featuredProject}</div><h3>{atlas.data.title}</h3><p>{projectI18n(atlas,locale).summary}</p><div class="feature-tags">{atlas.data.tags.slice(0, 3).map((tag) => <span>{tag}</span>)}</div><span class="featured-link">{t.exploreAtlas} <Icon name="arrow-up-right" size={15} /></span></div>
         <AtlasArt />
       </a>
@@ -105,8 +105,8 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
   </section>
 
   <section id="about" class="about-section top-lined" aria-labelledby="about-title">
-    <div><span class="section-eyebrow">{t.aboutLabel}</span><h2 id="about-title">{t.aboutTitle}<br /><span>{t.aboutTitleEm}</span></h2><p>{t.aboutText}</p><a class="about-link" href={site.github} target="_blank" rel="noopener noreferrer">{t.connectGithub} <Icon name="arrow-up-right" size={15} /></a></div>
-    <div class="toolbox"><span class="section-eyebrow">{t.toolbox}</span><div class="stack-tags">{stack.map((item) => <span>{item}</span>)}</div><div class="toolbox-note"><Icon name="terminal" size={14} class="toolbox-terminal" /> {t.alwaysLearning}</div></div>
+    <div data-scroll-reveal><span class="section-eyebrow">{t.aboutLabel}</span><h2 id="about-title">{t.aboutTitle}<br /><span>{t.aboutTitleEm}</span></h2><p>{t.aboutText}</p><a class="about-link" href={site.github} target="_blank" rel="noopener noreferrer">{t.connectGithub} <Icon name="arrow-up-right" size={15} /></a></div>
+    <div class="toolbox" data-scroll-reveal><span class="section-eyebrow">{t.toolbox}</span><div class="stack-tags">{stack.map((item) => <span>{item}</span>)}</div><div class="toolbox-note"><Icon name="terminal" size={14} class="toolbox-terminal" /> {t.alwaysLearning}</div></div>
   </section>
-  <div class="bottom-cta"><div><span>{t.ctaPrompt}</span><h2>{t.ctaTitle} <em>{t.ctaEm}</em></h2></div><a href={site.github} target="_blank" rel="noopener noreferrer" class="button button-primary">{t.findGithub} <Icon name="arrow-up-right" size={15} /></a></div>
+  <div class="bottom-cta" data-scroll-reveal><div><span>{t.ctaPrompt}</span><h2>{t.ctaTitle} <em>{t.ctaEm}</em></h2></div><a href={site.github} target="_blank" rel="noopener noreferrer" class="button button-primary">{t.findGithub} <Icon name="arrow-up-right" size={15} /></a></div>
 </BaseLayout>

@@ -27,7 +27,7 @@ const managerCommands = [
      Reference: https://lucianlabs.dev/uxui-prompt/#229
      Original concept adapted for read-only, project-specific commands. -->
 <section class="terminal-showcase" aria-labelledby="terminal-demo-title">
-  <div class="terminal-heading">
+  <div class="terminal-heading" data-scroll-reveal>
     <div>
       <span class="section-eyebrow">{t.terminalEyebrow}</span>
       <h2 id="terminal-demo-title">{t.terminalTitle}<span class="period">.</span></h2>
@@ -35,7 +35,7 @@ const managerCommands = [
     </div>
     <span class="terminal-heading-label">{t.terminalQuick}</span>
   </div>
-  <div class="demo-shell" data-terminal-demo data-label-ready={t.terminalReady} data-label-typing={t.terminalTyping} data-label-copy={t.copyCommands} data-label-copied={t.copied} data-label-copy-success={t.copySuccess} data-label-copy-failed={t.copyFailed}>
+  <div class="demo-shell" data-scroll-reveal data-terminal-demo data-label-ready={t.terminalReady} data-label-typing={t.terminalTyping} data-label-copy={t.copyCommands} data-label-copied={t.copied} data-label-copy-success={t.copySuccess} data-label-copy-failed={t.copyFailed}>
     <div class="demo-window">
       <div class="demo-toolbar" aria-hidden="true">
         <span class="demo-dots"><i></i><i></i><i></i></span>

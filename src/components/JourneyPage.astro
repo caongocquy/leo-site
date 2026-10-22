@@ -39,7 +39,7 @@ const entries = journeyMilestones[locale];
   </section>
 
   <section class="journey-story top-lined" aria-labelledby="journey-story-title">
-    <div class="journey-story-intro">
+    <div class="journey-story-intro" data-scroll-reveal>
       <span class="section-eyebrow">{t.smallLabel}</span>
       <h2 id="journey-story-title">{t.sectionTitle}</h2>
       <p>{t.sectionSubtitle}</p>
@@ -58,7 +58,7 @@ const entries = journeyMilestones[locale];
         {entries.map((entry, index) => (
           <li id={entry.id} class="journey-milestone" data-journey-item>
             <span class="journey-marker" aria-hidden="true"></span>
-            <article class="journey-card">
+            <article class="journey-card" data-scroll-reveal>
               <header class="journey-card-head">
                 <div class="journey-card-label">
                   <span>{t.chapter} {String(index + 1).padStart(2, '0')}</span>
@@ -102,7 +102,7 @@ const entries = journeyMilestones[locale];
     </div>
   </section>
 
-  <div class="journey-next">
+  <div class="journey-next" data-scroll-reveal>
     <div><span class="section-eyebrow">{t.next}</span><p>{t.nextIntro}</p></div>
     <a class="button button-primary" href={localizedPath('/projects/', locale)}>{t.viewProjects}<Icon name="arrow-up-right" size={15}/></a>
   </div>
