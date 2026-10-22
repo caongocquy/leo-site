@@ -74,7 +74,7 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
     <div class="expertise-grid">
       {expertise.map((item) => (
         <article class="expertise-card" data-scroll-reveal>
-          <div class="expertise-card-top"><span class="expertise-icon"><Icon name={item.icon} size={27} /></span><span class="index-number">{item.number}</span></div>
+          <div class="expertise-card-top"><span class="expertise-icon"><Icon name={item.icon} size={27} /></span></div>
           <ExpertiseScene kind={item.icon} />
           <h3>{locale === 'vi' ? t[`expertise${item.number.slice(-1)}Title`] : item.title}</h3><p>{locale === 'vi' ? t[`expertise${item.number.slice(-1)}Desc`] : item.description}</p>
           <div class="mini-tags">{item.tags.map((tag) => <span>{tag}</span>)}</div>
@@ -93,8 +93,8 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
   <section id="experience" class="section-block experience-section top-lined" aria-labelledby="experience-title">
     <div class="section-intro" data-scroll-reveal><span class="section-eyebrow">{t.experienceLabel}</span><h2 id="experience-title">{t.experienceTitle} <span>{t.experienceEm}</span></h2><p>{t.experienceIntro}</p></div>
     <div class="experience-grid">
-      <article class="experience-card" data-scroll-reveal><div class="experience-meta"><span>{t.experience1Label}</span><span>01</span></div><h3>{t.experience1Title}</h3><p>{t.experience1Desc}</p><div class="experience-tech">React Native <i>·</i> TypeScript <i>·</i> Product Engineering</div></article>
-      <article class="experience-card" data-scroll-reveal><div class="experience-meta"><span>{t.experience2Label}</span><span>02</span></div><h3>{t.experience2Title}</h3><p>{t.experience2Desc}</p><div class="experience-tech">Swift <i>·</i> Kotlin <i>·</i> UI Performance</div></article>
+      <article class="experience-card" data-scroll-reveal><div class="experience-meta"><span>{t.experience1Label}</span></div><h3>{t.experience1Title}</h3><p>{t.experience1Desc}</p><div class="experience-tech">React Native <i>·</i> TypeScript <i>·</i> Product Engineering</div></article>
+      <article class="experience-card" data-scroll-reveal><div class="experience-meta"><span>{t.experience2Label}</span></div><h3>{t.experience2Title}</h3><p>{t.experience2Desc}</p><div class="experience-tech">Swift <i>·</i> Kotlin <i>·</i> UI Performance</div></article>
     </div>
     <div class="journey-promo" data-scroll-reveal>
       <div><span class="section-eyebrow">{jt.homepagePrompt}</span><p>{jt.homepageIntro}</p></div>

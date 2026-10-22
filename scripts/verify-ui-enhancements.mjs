@@ -96,6 +96,9 @@ assert.ok(stylesheet.includes('.section-intro > .section-eyebrow {'), 'Home sect
 assert.ok(stylesheet.includes('white-space: normal;'), 'Long localized hero eyebrow must wrap');
 assert.ok(!homeSource.includes('class="about-section'), 'Duplicate About section must stay removed');
 assert.ok(homeSource.includes('class="expertise-toolbox"'), 'Tech stack must stay under Expertise');
+assert.ok(!homeSource.includes('class="index-number"'), 'Expertise cards should not show decorative numbers');
+assert.ok(!homeSource.includes('<span>01</span></div><h3>'), 'Experience cards should not show decorative numbers');
+assert.ok(!homeSource.includes('<span>02</span></div><h3>'), 'Experience cards should not show decorative numbers');
 assert.ok(tocSource.includes("getActiveSection(sectionTops, offset)"), 'TOC scrollspy missing');
 assert.ok(tocSource.includes("getDocumentProgress(window.scrollY"), 'Vertical progress missing');
 assert.ok(tocSource.includes("addEventListener('scroll', schedule, { passive: true })"), 'TOC scroll events must be passive');
@@ -116,6 +119,8 @@ for (const prefix of ['', 'en/']) {
     : ['02 / CHUYÊN MÔN', '03 / KINH NGHIỆM', '04 / DỰ ÁN TIÊU BIỂU'];
   for (const label of expectedLabels) assert.ok(home.includes(label), `Missing ordered Home label: ${label}`);
   assert.ok(home.includes('class="hero-section-number">01 /</span>'), 'Home hero section index missing');
+  assert.ok(!home.includes('class="index-number"'), 'Rendered expertise cards should not show decorative numeric badges');
+  assert.doesNotMatch(home, /class="experience-meta"[^>]*>[^<]*<span>[^<]*<\/span><span>0[12]<\/span>/, 'Rendered experience cards should not show numeric badges');
   for (const id of ['about', 'expertise', 'experience', 'projects']) {
     assert.ok(home.includes(`id="${id}"`), `Missing anchor #${id}`);
     assert.ok(home.includes(`data-toc-link="${id}"`), `Missing TOC anchor #${id}`);
