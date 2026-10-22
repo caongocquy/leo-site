@@ -623,3 +623,33 @@ body { font-family: var(--font-ui); font-weight: 400; }
 @media (prefers-reduced-motion: reduce) {
   .hero .eyebrow, .hero h1, .hero-desc, .hero-actions, .hero-notes, .hero-visual { animation: none; }
 }
+
+
+/* Lucian #212-inspired scroll-aware sticky navigation. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  transition: transform .22s cubic-bezier(.2,.7,.2,1), background-color .22s ease, box-shadow .22s ease;
+}
+.site-header.is-header-scrolled {
+  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 12px 28px -20px var(--shadow);
+  border-radius: 0 0 10px 10px;
+}
+.site-header.is-header-hidden {
+  transform: translate3d(0, -110%, 0);
+  pointer-events: none;
+}
+.site-header.is-header-hidden:focus-within {
+  transform: none;
+  pointer-events: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Persistently visible sticky navigation for reduced motion. */
+  .site-header,
+  .site-header.is-header-hidden { transform: none; transition: none; pointer-events: auto; }
+}
