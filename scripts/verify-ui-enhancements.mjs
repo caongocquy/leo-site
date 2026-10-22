@@ -160,7 +160,7 @@ for (const prefix of ['', 'en/']) {
     }
   }
   assert.ok(!home.includes('class="index-number"'), 'Rendered expertise cards should not show decorative numeric badges');
-  const cardSlugs = [...home.matchAll(/<a[^>]*class="project-card"[^>]*href="\\/(?:en\\/)?projects\\/([^/]+)\\/"/g)].map((match) => match[1]);
+  const cardSlugs = [...home.matchAll(/<a[^>]*class="project-card"[^>]*href="\/(?:en\/)?projects\/([^/]+)\/"/g)].map((match) => match[1]);
   assert.deepEqual(cardSlugs, ['showdar-skills', 'react-native-splash-view'], `${prefix || 'vi/'} homepage must show exactly two secondary cards alongside Code Atlas`);
   assert.ok(!home.includes('01 / 05'), 'Homepage hero should not show fake image pagination');
   assert.doesNotMatch(home, /class="experience-meta"[^>]*>[^<]*<span>[^<]*<\/span><span>0[12]<\/span>/, 'Rendered experience cards should not show numeric badges');
