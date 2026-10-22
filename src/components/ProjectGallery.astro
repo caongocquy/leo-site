@@ -1,0 +1,113 @@
+---
+import { ui, type Locale } from '../i18n/translations';
+interface Shot { src: string; alt: string; caption: string; kind?: 'concept' | 'screenshot'; altVi?: string; captionVi?: string; }
+interface Props { title: string; screenshots: Shot[]; locale?: Locale; }
+const { title, screenshots, locale = 'en' } = Astro.props;
+const t = ui(locale);
+---
+
+{screenshots.length > 0 && (
+  <section class="gallery-section" aria-label={`${title} — ${t.galleryTitle}`}>
+    <div class="gallery-heading" data-scroll-reveal><div><span class="section-eyebrow">{t.galleryEyebrow}</span><h2>{t.galleryTitle}<span class="period">.</span></h2></div><span class="gallery-note">{t.galleryExpand}</span></div>
+    <div class="gallery-grid" data-project-gallery>
+      {screenshots.map((shot, index) => (
+        <a href={shot.src} target="_blank" rel="noopener noreferrer" data-gallery-item data-scroll-reveal data-gallery-index={index} data-gallery-kind={shot.kind ?? 'screenshot'} aria-label={`${t.galleryExpand}: ${locale === 'vi' ? shot.altVi ?? shot.alt : shot.alt}`}>
+          <figure>
+            <div class="gallery-image"><img src={shot.src} alt={locale === "vi" ? shot.altVi ?? shot.alt : shot.alt} loading="lazy" decoding="async" /></div>
+            <figcaption><span data-gallery-caption>{locale === 'vi' ? shot.captionVi ?? shot.caption : shot.caption}</span><span aria-hidden="true">↗</span></figcaption>
+          </figure>
+        </a>
+      ))}
+    </div>
+    <dialog data-gallery-actual={t.galleryActual} data-gallery-concept={t.galleryConcept} class="project-lightbox" data-project-lightbox aria-label={`${title} screenshot viewer`}>
+      <div class="lightbox-inner">
+        <div class="lightbox-top"><span data-lightbox-count>1 / {screenshots.length}</span><button type="button" data-lightbox-close aria-label={t.galleryClose}>✕</button></div>
+        <div class="lightbox-image"><img alt="" data-lightbox-image /></div>
+        <div class="lightbox-footer">
+          <div><strong data-lightbox-caption></strong><span>{t.galleryActual}</span></div>
+          <div class="lightbox-controls"><button type="button" data-lightbox-prev aria-label={t.galleryPrevious}>←</button><button type="button" data-lightbox-next aria-label={t.galleryNext}>→</button></div>
+        </div>
+      </div>
+    </dialog>
+  </section>
+)}
+<style>
+  .gallery-section { padding: 0 0 64px; margin-top: 50px; border-bottom: 1px solid var(--line-soft); }
+  .gallery-heading { display: flex; justify-content: space-between; gap: 18px; align-items: end; margin-bottom: 22px; }
+  .gallery-heading h2 { font-size: clamp(26px,3vw,34px); font-weight: 650; letter-spacing: -.035em; margin: 9px 0 0; line-height: 1.2; }
+  .gallery-note { white-space: nowrap; color: var(--muted-soft); font: 9px 'IBM Plex Mono',monospace; letter-spacing: .08em; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .gallery-grid > a { display: block; min-width: 0; border: 1px solid var(--line); border-radius: 13px; background: var(--surface); overflow: hidden; transition: border-color .18s ease, transform .18s ease; }
+  .gallery-grid > a:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .gallery-grid > a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .gallery-grid figure { margin: 0; }
+  .gallery-image { display: grid; place-items: center; height: clamp(150px, 22vw, 250px); overflow: hidden; background: var(--surface-alt); padding: 13px; }
+  .gallery-image img { display: block; max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
+  .gallery-grid figcaption { display:flex; justify-content: space-between; align-items: center; gap: 10px; padding: 13px 16px; color: var(--muted); font-size: 11px; font-weight: 600; }
+  .gallery-grid figcaption span:last-child { color: var(--accent); font-size: 17px; }
+  .project-lightbox { position: fixed; inset: auto; top: 50%; left: 50%; transform: translate(-50%, -50%); margin: 0; padding: 0; width: min(94vw, 1050px); max-width: 1050px; max-height: min(90dvh, 850px); border: 1px solid #3e5950; border-radius: 16px; background: #11191f; color: #eef6f0; box-shadow: 0 35px 100px #0009; overflow: hidden; }
+  .project-lightbox::backdrop { background: rgba(3, 11, 14, .84); backdrop-filter: blur(5px); }
+  .lightbox-inner { display:flex; flex-direction:column; max-height:min(90dvh,850px); }
+  .lightbox-top { display:flex; align-items:center; justify-content:space-between; padding: 13px 18px; border-bottom: 1px solid #33433c; color: #b2c6b9; font: 11px 'IBM Plex Mono',monospace; }
+  .lightbox-top button, .lightbox-controls button { display:grid; place-items:center; width:34px; height:34px; background:#24342e; border:1px solid #466153; border-radius:8px; color:#e5f1e9; cursor:pointer; }
+  .lightbox-top button:hover, .lightbox-controls button:hover { border-color: #b8f5d4; }
+  .lightbox-top button:focus-visible, .lightbox-controls button:focus-visible { outline:2px solid #b8f5d4; outline-offset:2px; }
+  .lightbox-image { display:grid; place-items:center; padding:16px; min-height: 180px; flex: 1; overflow:auto; }
+  .lightbox-image img { display:block; max-width:100%; max-height: calc(90dvh - 172px); object-fit: contain; }
+  .lightbox-footer { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; padding:14px 18px; border-top: 1px solid #33433c; }
+  .lightbox-footer strong { display:block; font-weight:650; font-size:12px; }
+  .lightbox-footer span { display:block; margin-top:3px; color:#9fb3a8; font-size:10px; }
+  .lightbox-controls { display:flex; gap:7px; }
+  @media (max-width: 560px) {
+    .gallery-section { padding-bottom: 45px; }
+    .gallery-grid { grid-template-columns:1fr; }
+    .gallery-note { font-size:8px; }
+    .lightbox-footer { align-items:flex-start; }
+    .lightbox-image { padding:9px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gallery-grid > a { transition:none; }
+    .project-lightbox::backdrop { backdrop-filter: none; }
+  }
+</style>
+<script>
+  const gallery = document.querySelector<HTMLElement>('[data-project-gallery]');
+  const dialog = document.querySelector<HTMLDialogElement>('[data-project-lightbox]');
+  if (gallery && dialog) {
+    const items = [...gallery.querySelectorAll<HTMLAnchorElement>('[data-gallery-item]')];
+    const image = dialog.querySelector<HTMLImageElement>('[data-lightbox-image]');
+    const caption = dialog.querySelector<HTMLElement>('[data-lightbox-caption]');
+    const count = dialog.querySelector<HTMLElement>('[data-lightbox-count]');
+    const disclosure = dialog.querySelector<HTMLElement>('.lightbox-footer span');
+    let currentIndex = 0;
+    const display = (index: number) => {
+      if (!image || items.length === 0) return;
+      currentIndex = (index + items.length) % items.length;
+      const item = items[currentIndex];
+      const thumbnail = item.querySelector<HTMLImageElement>('img');
+      image.src = item.href;
+      image.alt = thumbnail?.alt ?? '';
+      if (caption) caption.textContent = item.querySelector('[data-gallery-caption]')?.textContent?.trim() ?? '';
+      if (count) count.textContent = `${currentIndex + 1} / ${items.length}`;
+      if (disclosure) disclosure.textContent = item.dataset.galleryKind === 'concept' ? dialog.dataset.galleryConcept ?? '' : dialog.dataset.galleryActual ?? '';
+    };
+    items.forEach((item, index) => {
+      item.addEventListener('click', (event) => {
+        if (typeof dialog.showModal !== 'function') return;
+        event.preventDefault();
+        display(index);
+        dialog.showModal();
+      });
+    });
+    dialog.querySelector('[data-lightbox-close]')?.addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-lightbox-prev]')?.addEventListener('click', () => display(currentIndex - 1));
+    dialog.querySelector('[data-lightbox-next]')?.addEventListener('click', () => display(currentIndex + 1));
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') { event.preventDefault(); display(currentIndex - 1); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); display(currentIndex + 1); }
+    });
+  }
+</script>

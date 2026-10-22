@@ -1,0 +1,64 @@
+---
+interface Props { kind: 'mobile' | 'layers' | 'terminal'; }
+const { kind } = Astro.props;
+---
+<div class={`expertise-scene scene-${kind}`} aria-hidden="true">
+  {kind === 'mobile' && (
+    <div class="scene-device">
+      <span class="scene-device-caption">REACT NATIVE / IOS + ANDROID</span>
+      <div class="scene-device-head"><i></i><span>Verification</span><i></i></div>
+      <div class="scene-device-copy">A better experience starts with the details.</div>
+      <div class="scene-pins"><span>3</span><span>8</span><span>2</span><span class="scene-pin-active"></span><span></span><span></span></div>
+      <div class="scene-device-foot">SECURE · ACCESSIBLE · NATIVE</div>
+    </div>
+  )}
+  {kind === 'layers' && (
+    <div class="scene-layers">
+      <div class="scene-layer"><span>UI</span><small>screens · states</small></div>
+      <span class="scene-connector">↓</span>
+      <div class="scene-layer scene-layer-active"><span>DOMAIN</span><small>boundaries</small></div>
+      <span class="scene-connector">↓</span>
+      <div class="scene-layer"><span>PLATFORM</span><small>iOS · Android</small></div>
+    </div>
+  )}
+  {kind === 'terminal' && (
+    <div class="scene-terminal">
+      <div class="scene-terminal-head"><span class="scene-lights"><i></i><i></i><i></i></span><span>devtools</span></div>
+      <div><b>❯</b> <span>showdar setup</span></div>
+      <div class="scene-terminal-sub">Portable workflows for coding agents</div>
+      <div class="scene-terminal-status"><i></i> CLI · MCP · AGENTS</div>
+    </div>
+  )}
+</div>
+<style>
+  .expertise-scene { position: relative; display: grid; place-items: center; width: 100%; min-height: 122px; margin: 17px 0 18px; border-radius: 11px; background: var(--surface-alt); border: 1px solid var(--line-soft); overflow: hidden; }
+  .expertise-scene::before { content: ''; position: absolute; inset: 0; opacity: .7; background-image: linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px); background-size: 27px 27px; mask-image: radial-gradient(ellipse,#000,transparent 80%); }
+  .scene-mobile { min-height: 205px; }
+  .scene-device { z-index: 1; width: min(86%,320px); padding: 14px 16px 13px; background: var(--surface); border: 1px solid var(--line-accent); border-radius: 12px; box-shadow: 0 10px 25px var(--shadow); }
+  .scene-device-caption { font: 9px 'IBM Plex Mono',ui-monospace,monospace; color: var(--accent); letter-spacing: .045em; }
+  .scene-device-head { display: flex; align-items: center; justify-content: space-between; margin: 12px 0 11px; color: var(--text); font-weight: 650; font-size: 11px; }
+  .scene-device-head i { width: 11px; height: 2px; border-radius: 99px; background: var(--muted-soft); }
+  .scene-device-copy { font-size: 12px; color: var(--muted); line-height: 1.5; max-width: 240px; }
+  .scene-pins { display:flex; gap: 7px; margin-top: 14px; }
+  .scene-pins span { display: grid; place-items: center; flex: 1; min-width: 0; height: 27px; border-radius: 5px; border: 1px solid var(--line); background: var(--bg); font: 13px 'IBM Plex Mono',monospace; }
+  .scene-pins .scene-pin-active { border-color: var(--accent); }
+  .scene-pins .scene-pin-active::after { content: ''; width: 1px; height: 11px; background: var(--accent); }
+  .scene-device-foot { margin-top: 12px; color: var(--muted-soft); font: 8px 'IBM Plex Mono',monospace; letter-spacing: .08em; }
+  .scene-layers { z-index: 1; display: flex; justify-content: center; align-items: center; gap: 7px; width: 94%; }
+  .scene-layer { min-width: 0; padding: 10px 7px; flex: 1; text-align: center; background: var(--surface); border: 1px solid var(--line); border-radius: 7px; }
+  .scene-layer > span { display: block; color: var(--text); font: 600 9px 'IBM Plex Mono',monospace; letter-spacing: .03em; }
+  .scene-layer small { display: block; margin-top: 5px; color: var(--muted); font: 8px 'IBM Plex Sans Variable',sans-serif; white-space: nowrap; }
+  .scene-layer-active { border-color: var(--line-accent); background: var(--icon-surface); }
+  .scene-layer-active > span { color: var(--accent); }
+  .scene-connector { flex: 0 0 auto; color: var(--accent); transform: rotate(-90deg); font-size: 15px; }
+  .scene-terminal { position: relative; z-index: 1; border: 1px solid var(--line-accent); border-radius: 8px; width: min(90%,300px); background: var(--surface); overflow: hidden; font: 10px 'IBM Plex Mono',monospace; color: var(--text); }
+  .scene-terminal-head { display: flex; align-items: center; justify-content: space-between; padding: 8px 11px; border-bottom: 1px solid var(--line); font-size: 9px; color: var(--muted); }
+  .scene-lights { display: flex; gap: 4px; } .scene-lights i { width: 6px; height: 6px; background: var(--line-accent); border-radius: 50%; }
+  .scene-terminal > div:nth-child(2) { margin: 13px 12px 6px; }
+  .scene-terminal b { color: var(--accent); }
+  .scene-terminal-sub { margin: 0 12px; font: 10px 'IBM Plex Sans Variable',sans-serif; color: var(--muted); }
+  .scene-terminal-status { display:flex; align-items:center; gap:6px; border-top:1px solid var(--line); color:var(--accent); margin-top:13px; padding:8px 12px; font-size:8px; }
+  .scene-terminal-status i { display:block; width:5px; height:5px; border-radius:50%; background:var(--accent); }
+  @media (max-width: 830px) { .scene-mobile { min-height: 188px; } }
+  @media (max-width: 560px) { .scene-mobile { min-height: 170px; } }
+</style>

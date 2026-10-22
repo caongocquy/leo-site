@@ -1,14 +1,19 @@
 ---
 import { site } from '../data/site';
+import Icon from './Icon.astro';
+import { localeFromPath, localizedPath, ui } from '../i18n/translations';
+const locale = localeFromPath(Astro.url.pathname);
+const t = ui(locale);
 ---
 <footer class="site-footer">
   <div>
     <strong>Leo<span class="accent">.</span></strong>
-    <span>Built with care. Shared in the open.</span>
+    <span>{t.footerTagline}</span>
   </div>
   <div class="footer-links">
-    <a href="/projects">Projects</a>
-    <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    <a href={localizedPath("/journey/",locale)}>{locale === "vi" ? "Hành trình" : "Journey"}</a>
+    <a href={localizedPath("/projects",locale)}>{t.navProjects}</a>
+    <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub <Icon name="arrow-up-right" size={13}/></a>
     <span>© {new Date().getFullYear()} Leo</span>
   </div>
 </footer>

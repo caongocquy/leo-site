@@ -1,0 +1,216 @@
+---
+---
+<!-- Lucian UX/UI Prompt #021 · MIT License (c) 2026 Seokwoooo · https://lucianlabs.dev/uxui-prompt/#021 -->
+<div class="theme-controls" role="group" aria-label="Color theme">
+  <button
+    id="theme-sky-switch"
+    class="sky-theme-switch"
+    type="button"
+    role="switch"
+    aria-label="Dark mode"
+    aria-checked="false"
+    title="Toggle light and dark mode"
+  >
+    <span class="sky-halo" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="sky-stars" aria-hidden="true">
+      <i></i><i></i><i></i><i></i><i></i>
+    </span>
+    <span class="sky-clouds" aria-hidden="true"><i></i><i></i></span>
+    <span class="sky-knob" aria-hidden="true">
+      <span class="sky-moon"><i></i><i></i><i></i></span>
+    </span>
+  </button>
+
+</div>
+
+<style>
+  .theme-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .sky-theme-switch {
+    position: relative;
+    isolation: isolate;
+    width: 88px;
+    height: 38px;
+    transform: scale(.7272727);
+    transform-origin: top left;
+    margin-right: -24px;
+    margin-bottom: -10px;
+    padding: 0;
+    border: 0;
+    border-radius: 99px;
+    cursor: pointer;
+    overflow: hidden;
+    background: linear-gradient(180deg, #5db7ff, #9ed8ff);
+    box-shadow: inset 0 2px 5px rgb(0 30 80 / 23%), inset 0 -1px 3px rgb(255 255 255 / 35%), 0 6px 14px -10px rgb(40 110 200 / 65%);
+    transition: box-shadow .6s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .sky-theme-switch::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: linear-gradient(180deg, #141a3a, #232c5c);
+    opacity: 0;
+    transition: opacity .6s ease;
+  }
+  :global(html[data-theme="dark"]) .sky-theme-switch::before { opacity: 1; }
+  :global(html[data-theme="dark"]) .sky-theme-switch {
+    box-shadow: inset 0 2px 5px rgb(0 0 0 / 45%), inset 0 -1px 3px rgb(255 255 255 / 9%), 0 6px 14px -10px rgb(20 24 70 / 80%);
+  }
+  .sky-theme-switch:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .sky-halo {
+    position: absolute;
+    z-index: 1;
+    left: 19px;
+    top: 19px;
+    width: 0;
+    height: 0;
+    transition: transform .65s cubic-bezier(.22, 1.3, .42, 1);
+  }
+  .sky-halo i {
+    position: absolute;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 12%);
+  }
+  .sky-halo i:nth-child(1) { width: 47px; height: 47px; margin: -23.5px; }
+  .sky-halo i:nth-child(2) { width: 67px; height: 67px; margin: -33.5px; }
+  .sky-halo i:nth-child(3) { width: 87px; height: 87px; margin: -43.5px; }
+  :global(html[data-theme="dark"]) .sky-halo { transform: translateX(50px); }
+  .sky-knob {
+    position: absolute;
+    z-index: 3;
+    top: 4px;
+    left: 4px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: radial-gradient(circle at 35% 30%, #fff1a8, #ffd23f 45%, #f8a91e);
+    box-shadow: 0 3px 6px -2px rgb(140 80 0 / 45%), inset -2px -3px 5px rgb(200 110 0 / 30%), inset 2px 2px 4px rgb(255 255 255 / 45%);
+    transition: transform .65s cubic-bezier(.22, 1.3, .42, 1);
+  }
+  :global(html[data-theme="dark"]) .sky-knob { transform: translateX(50px) rotate(200deg); }
+  .sky-moon {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #f4f6fb, #c9cfdd 60%, #a9b0c2);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: transform .6s ease, opacity .35s ease;
+  }
+  :global(html[data-theme="dark"]) .sky-moon { opacity: 1; transform: none; }
+  .sky-moon i {
+    position: absolute;
+    border-radius: 50%;
+    background: #a3aabc;
+    box-shadow: inset 1px 1px 2px rgb(0 0 0 / 15%);
+  }
+  .sky-moon i:nth-child(1) { width: 8px; height: 8px; left: 8px; top: 6px; }
+  .sky-moon i:nth-child(2) { width: 5px; height: 5px; left: 18px; top: 16px; }
+  .sky-moon i:nth-child(3) { width: 4px; height: 4px; left: 9px; top: 20px; }
+  .sky-clouds {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    transition: transform .6s ease, opacity .5s ease;
+  }
+  .sky-clouds i { position: absolute; border-radius: 99px; }
+  .sky-clouds i:first-child {
+    right: -4px;
+    bottom: -8px;
+    width: 45px;
+    height: 22px;
+    background: #fff;
+    box-shadow: -17px 3px 0 -2px #fff, -29px 6px 0 -4px #fff;
+  }
+  .sky-clouds i:last-child {
+    right: 9px;
+    bottom: -12px;
+    width: 36px;
+    height: 21px;
+    background: #e3f1ff;
+    box-shadow: -14px 3px 0 -3px #e3f1ff;
+  }
+  :global(html[data-theme="dark"]) .sky-clouds { opacity: 0; transform: translateY(35px); }
+  .sky-stars {
+    position: absolute;
+    z-index: 1;
+    inset: 0;
+    opacity: 0;
+    transform: translateY(-15px);
+    transition: opacity .5s ease, transform .6s ease;
+  }
+  :global(html[data-theme="dark"]) .sky-stars { opacity: 1; transform: none; }
+  .sky-stars i {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 5px #fff;
+    animation: sky-twinkle 2.4s ease-in-out infinite;
+  }
+  .sky-stars i:nth-child(1) { left: 12px; top: 9px; }
+  .sky-stars i:nth-child(2) { left: 24px; top: 26px; animation-delay: -.6s; }
+  .sky-stars i:nth-child(3) { left: 38px; top: 12px; animation-delay: -1.2s; }
+  .sky-stars i:nth-child(4) { left: 49px; top: 28px; animation-delay: -1.8s; }
+  .sky-stars i:nth-child(5) { left: 8px; top: 25px; animation-delay: -.9s; }
+  @keyframes sky-twinkle { 50% { opacity: .35; transform: scale(.6); } }
+  @media (prefers-reduced-motion: reduce) {
+    .sky-theme-switch, .sky-theme-switch::before,
+    .sky-halo, .sky-knob, .sky-moon, .sky-clouds, .sky-stars { transition: none !important; }
+    .sky-stars i { animation: none !important; }
+  }
+</style>
+
+<script>
+  type Preference = 'system' | 'dark' | 'light';
+  const root = document.documentElement;
+  const toggle = document.querySelector<HTMLButtonElement>('#theme-sky-switch');
+  const scheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+  const resolvedTheme = (pref: Preference): 'light' | 'dark' =>
+    pref === 'system' ? (scheme.matches ? 'dark' : 'light') : pref;
+
+  const syncControls = () => {
+    const dark = root.dataset.theme === 'dark';
+    toggle?.setAttribute('aria-checked', String(dark));
+    toggle?.setAttribute('title', dark ? 'Switch to light mode' : 'Switch to dark mode');
+  };
+
+  const setTheme = (pref: Preference) => {
+    const resolved = resolvedTheme(pref);
+    root.dataset.theme = resolved;
+    root.dataset.themePreference = pref;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', resolved === 'dark' ? '#101820' : '#F6F8F5');
+    try {
+      if (pref === 'system') localStorage.removeItem('leo-theme');
+      else localStorage.setItem('leo-theme', pref);
+    } catch {
+      // Theme changes still work when storage is unavailable.
+    }
+    syncControls();
+  };
+
+  toggle?.addEventListener('click', () => {
+    setTheme(root.dataset.theme === 'dark' ? 'light' : 'dark');
+  });
+  scheme.addEventListener('change', () => {
+    if (root.dataset.themePreference === 'system') setTheme('system');
+  });
+  window.addEventListener('storage', (event) => {
+    if (event.key !== 'leo-theme') return;
+    const next: Preference = event.newValue === 'light' || event.newValue === 'dark' ? event.newValue : 'system';
+    setTheme(next);
+  });
+  syncControls();
+</script>
