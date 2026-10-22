@@ -57,6 +57,20 @@ for (const path of paths) {
   }
 }
 
+// Homepage social snippets are authored in Leo's voice, not a third-person bio.
+for (const [prefix, description] of [
+  ['', 'Mình là Leo, một Mobile Engineer. Mình xây dựng ứng dụng mobile và các công cụ mã nguồn mở giúp developer hiểu và cải thiện code.'],
+  ['en/', "I'm Leo, a Mobile Engineer. I build mobile apps and open-source tools that help developers understand and improve code."],
+]) {
+  const html = read(`dist/${prefix}index.html`);
+  meta(html, 'og:description', description);
+  meta(html, 'twitter:description', description);
+  meta(html, 'description', description);
+  assert.ok(html.includes('Leo — Mobile Engineer'), 'Portfolio share title must use the compact Leo identity');
+  assert.ok(!html.includes('Leo là kỹ sư mobile'), 'Old third-person Vietnamese share copy must be removed');
+  assert.ok(!html.includes('Leo is a mobile engineer building'), 'Old third-person English share copy must be removed');
+}
+
 const sitemap = read('dist/sitemap.xml');
 assert.ok(sitemap.startsWith('<?xml version="1.0" encoding="UTF-8"?>'));
 assert.equal((sitemap.match(/<loc>/g) ?? []).length, paths.length * 2, 'Sitemap must include all bilingual public routes');

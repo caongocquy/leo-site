@@ -66,11 +66,11 @@ const en = {
   notFoundTitle: 'Wrong turn', notFoundIntro: "Looks like this page took a different path. Let's get you back to the good stuff.",
   notFoundLabel: '404 / PAGE NOT FOUND', backHome: 'Back to home',
   switchEnglish: 'English', switchVietnamese: 'Tiếng Việt',
-  siteDescription: 'Leo is a mobile engineer building thoughtful mobile experiences and open-source tools for developers.',
+  siteDescription: "I'm Leo, a Mobile Engineer. I build mobile apps and open-source tools that help developers understand and improve code.",
   projectsDescription: 'Open-source projects and developer tools built by Leo, from code intelligence to reusable React Native libraries.',
   notFoundDescription: 'The page you requested could not be found.',
   screenVerification: 'ACCOUNT VERIFICATION',
-  role: 'Mobile Engineer & Open-source Builder',
+  role: 'Mobile Engineer & Open Source Builder',
 } as const;
 
 const vi: Record<keyof typeof en, string> = {
@@ -130,11 +130,11 @@ const vi: Record<keyof typeof en, string> = {
   notFoundTitle: 'Không tìm thấy trang', notFoundIntro: 'Đường dẫn này không còn tồn tại. Hãy quay về trang chủ nhé.',
   notFoundLabel: '404 / KHÔNG TÌM THẤY TRANG', backHome: 'Về trang chủ',
   switchEnglish: 'English', switchVietnamese: 'Tiếng Việt',
-  siteDescription: 'Leo là kỹ sư mobile, phát triển ứng dụng di động và công cụ mã nguồn mở hữu ích cho developer.',
+  siteDescription: 'Mình là Leo, một Mobile Engineer. Mình xây dựng ứng dụng mobile và các công cụ mã nguồn mở giúp developer hiểu và cải thiện code.',
   projectsDescription: 'Các dự án mã nguồn mở và công cụ phát triển của Leo, từ phân tích code đến thư viện React Native.',
   notFoundDescription: 'Không tìm thấy trang yêu cầu.',
   screenVerification: 'XÁC MINH TÀI KHOẢN',
-  role: 'Kỹ sư Mobile & Người xây dựng mã nguồn mở',
+  role: 'Mobile Engineer & Open Source Builder',
 };
 
 export const ui = (locale: Locale) => locale === 'vi' ? vi : en;
