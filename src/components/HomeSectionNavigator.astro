@@ -12,12 +12,8 @@ const sections = [
 const title = locale === 'vi' ? 'TRONG TRANG NÀY' : 'ON THIS PAGE';
 const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
 ---
-<details class="home-toc" data-home-toc>
-  <summary class="home-toc-toggle">
-    <span class="home-toc-toggle-icon" aria-hidden="true">☷</span>
-    <span>{mobileTitle}</span>
-    <span class="home-toc-toggle-chevron" aria-hidden="true">⌃</span>
-  </summary>
+<aside class="home-toc" data-home-toc>
+  <div class="home-toc-desktop">
   <div class="home-toc-panel">
     <div class="home-toc-heading">
       <span class="home-toc-eyebrow">{title}</span>
@@ -40,18 +36,50 @@ const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
       ))}
     </nav>
   </div>
-</details>
+  </div>
+  <details class="home-toc-mobile" data-home-toc-mobile>
+    <summary class="home-toc-toggle">
+      <span class="home-toc-toggle-icon" aria-hidden="true">☷</span>
+      <span>{mobileTitle}</span>
+      <span class="home-toc-toggle-chevron" aria-hidden="true">⌃</span>
+    </summary>
+  <div class="home-toc-panel">
+    <div class="home-toc-heading">
+      <span class="home-toc-eyebrow">{title}</span>
+      <span class="home-toc-count" data-toc-count>01 / 04</span>
+      <strong data-toc-current>{sections[0].label}</strong>
+    </div>
+    <nav class="home-toc-links" aria-label={mobileTitle}>
+      {sections.map((item, index) => (
+        <a
+          class="home-toc-link"
+          href={`#${item.id}`}
+          data-toc-link={item.id}
+          aria-label={`${String(index + 1).padStart(2, '0')}. ${item.label}`}
+          aria-current={index === 0 ? 'location' : undefined}
+        >
+          <span class="home-toc-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <span class="home-toc-label" aria-hidden="true">{item.label}</span>
+          <span class="home-toc-marker" aria-hidden="true"></span>
+        </a>
+      ))}
+    </nav>
+  </div>
+  </details>
+</aside>
 
 <script>
   import { getActiveSection, getDocumentProgress } from '../utils/homeToc.mjs';
 
-  const toc = document.querySelector<HTMLDetailsElement>('[data-home-toc]');
+  const toc = document.querySelector<HTMLElement>('[data-home-toc]');
   if (toc) {
     const header = document.querySelector<HTMLElement>('[data-site-header]');
     const links = [...toc.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
-    const currentLabel = toc.querySelector<HTMLElement>('[data-toc-current]');
-    const currentCount = toc.querySelector<HTMLElement>('[data-toc-count]');
-    const entries = links.map((link) => ({
+    const desktopLinks = [...toc.querySelectorAll<HTMLAnchorElement>('.home-toc-desktop [data-toc-link]')];
+    const mobileDisclosure = toc.querySelector<HTMLDetailsElement>('[data-home-toc-mobile]');
+    const currentLabels = [...toc.querySelectorAll<HTMLElement>('[data-toc-current]')];
+    const currentCounts = [...toc.querySelectorAll<HTMLElement>('[data-toc-count]')];
+    const entries = desktopLinks.map((link) => ({
       id: link.dataset.tocLink ?? '',
       link,
       section: document.getElementById(link.dataset.tocLink ?? ''),
@@ -68,12 +96,13 @@ const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
       const active = entries[index];
       if (active && active.id !== previousId) {
         previousId = active.id;
-        links.forEach((link) => {
-          if (link === active.link) link.setAttribute('aria-current', 'location');
+        for (const link of links) {
+          if (link.dataset.tocLink === active.id) link.setAttribute('aria-current', 'location');
           else link.removeAttribute('aria-current');
-        });
-        if (currentLabel) currentLabel.textContent = active.link.querySelector('.home-toc-label')?.textContent ?? '';
-        if (currentCount) currentCount.textContent = `${String(index + 1).padStart(2, '0')} / ${String(entries.length).padStart(2, '0')}`;
+        }
+        const label = active.link.querySelector('.home-toc-label')?.textContent ?? '';
+        for (const element of currentLabels) element.textContent = label;
+        for (const element of currentCounts) element.textContent = `${String(index + 1).padStart(2, '0')} / ${String(entries.length).padStart(2, '0')}`;
       }
       const progress = getDocumentProgress(window.scrollY, document.documentElement.scrollHeight, window.innerHeight);
       toc.style.setProperty('--toc-progress', `${(progress * 100).toFixed(1)}%`);
@@ -88,19 +117,21 @@ const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
     window.addEventListener('pageshow', schedule);
     window.addEventListener('hashchange', schedule);
 
-    // Native details controls the mobile disclosure even without JavaScript.
+    // Native details supports mobile disclosure without JavaScript.
     toc.addEventListener('click', (event) => {
-      if ((event.target as Element).closest('a[data-toc-link]')) {
-        toc.open = false;
+      if ((event.target as Element).closest('a[data-toc-link]') && mobileDisclosure) {
+        mobileDisclosure.open = false;
       }
     });
     document.addEventListener('pointerdown', (event) => {
-      if (toc.open && !toc.contains(event.target as Node)) toc.open = false;
+      if (mobileDisclosure?.open && !mobileDisclosure.contains(event.target as Node)) {
+        mobileDisclosure.open = false;
+      }
     });
-    toc.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && toc.open) {
-        toc.open = false;
-        toc.querySelector<HTMLElement>('summary')?.focus();
+    mobileDisclosure?.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && mobileDisclosure.open) {
+        mobileDisclosure.open = false;
+        mobileDisclosure.querySelector<HTMLElement>('summary')?.focus();
       }
     });
     update();
