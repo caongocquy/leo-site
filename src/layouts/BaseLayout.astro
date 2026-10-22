@@ -12,12 +12,58 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  noindex?: boolean;
+  projectSchema?: { name: string; summary: string; repository: string; keywords: string[] };
 }
 
 const locale = localeFromPath(Astro.url.pathname);
 const t = ui(locale);
-const { title = `${site.name} — ${t.role}`, description = t.siteDescription } = Astro.props;
-const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString() : undefined;
+const { title = `${site.name} — ${t.role}`, description = t.siteDescription, noindex = false, projectSchema } = Astro.props;
+const origin = Astro.site ?? new URL('https://leo-site.quy-caongoc.workers.dev');
+const canonical = new URL(Astro.url.pathname, origin).toString();
+const shareImage = new URL('/og-image.jpg', origin).toString();
+const homepage = new URL('/', origin).toString();
+const personId = `${homepage}#person`;
+const websiteId = `${homepage}#website`;
+const path = Astro.url.pathname.replace(/^\\/en(?=\\/|$)/, '') || '/';
+const parts = path.split('/').filter(Boolean);
+const breadcrumbs = parts.length ? [
+  { '@type': 'ListItem', position: 1, name: locale === 'vi' ? 'Trang chủ' : 'Home', item: new URL(locale === 'vi' ? '/' : '/en/', origin).toString() },
+  ...(parts[0] === 'projects' ? [
+    { '@type': 'ListItem', position: 2, name: locale === 'vi' ? 'Dự án' : 'Projects', item: new URL(localizedPath('/projects/', locale), origin).toString() },
+    ...(parts[1] ? [{ '@type': 'ListItem', position: 3, name: projectSchema?.name ?? parts[1], item: canonical }] : [])
+  ] : [
+    { '@type': 'ListItem', position: 2, name: locale === 'vi' ? 'Hành trình' : 'Journey', item: canonical }
+  ])
+] : [];
+// Claims stay sourced from the public portfolio and confirmed employer history.
+const graph: Record<string, unknown>[] = [
+  {
+    '@type': 'WebSite', '@id': websiteId, url: homepage, name: 'Leo — Cao Ngoc Quy',
+    description: site.description, inLanguage: ['vi-VN', 'en-US'], creator: { '@id': personId }
+  },
+  {
+    '@type': 'Person', '@id': personId, name: site.fullName, alternateName: site.name,
+    url: homepage, sameAs: [site.github], jobTitle: 'Mobile Developer',
+    worksFor: { '@type': 'Organization', name: 'Galaxy Technology Services' },
+    knowsAbout: ['React Native', 'Flutter', 'TypeScript', 'Mobile Engineering', 'Open Source', 'Developer Tools']
+  },
+  {
+    '@type': 'WebPage', '@id': canonical, url: canonical, name: title, description,
+    inLanguage: locale === 'vi' ? 'vi-VN' : 'en-US',
+    isPartOf: { '@id': websiteId }, about: { '@id': personId }
+  },
+  ...(breadcrumbs.length ? [{
+    '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumbs`, itemListElement: breadcrumbs
+  }] : []),
+  ...(projectSchema ? [{
+    '@type': 'SoftwareSourceCode', '@id': `${canonical}#source`, url: canonical,
+    name: projectSchema.name, description: projectSchema.summary,
+    codeRepository: projectSchema.repository, keywords: projectSchema.keywords.join(', '),
+    author: { '@id': personId }
+  }] : [])
+];
+const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang={locale}>
@@ -25,16 +71,32 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString(
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <meta name="theme-color" content="#101820" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={locale === "vi" ? "vi_VN" : "en_US"} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    {canonical && <link rel="canonical" href={canonical} />}
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Leo" />
+    <meta property="og:locale:alternate" content={locale === 'vi' ? 'en_US' : 'vi_VN'} />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:secure_url" content={shareImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Leo — Cao Ngoc Quy, Mobile Engineer and Open-Source Builder" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={shareImage} />
+    <meta name="twitter:image:alt" content="Leo — Cao Ngoc Quy, Mobile Engineer and Open-Source Builder" />
+    {!noindex && <link rel="canonical" href={canonical} />}
     {Astro.site && <link rel="alternate" hreflang="en" href={new URL(localizedPath(Astro.url.pathname, "en"), Astro.site).toString()} />}
     {Astro.site && <link rel="alternate" hreflang="vi" href={new URL(localizedPath(Astro.url.pathname, "vi"), Astro.site).toString()} />}
     {Astro.site && <link rel="alternate" hreflang="x-default" href={new URL(localizedPath(Astro.url.pathname, "vi"), Astro.site).toString()} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script type="application/ld+json" set:html={jsonLd} />
     <title>{title}</title>
     <script is:inline>
       // Apply saved theme before paint to prevent a flash of the wrong theme.

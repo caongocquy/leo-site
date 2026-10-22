@@ -7,3 +7,6 @@ dist/
 .env.*
 !.env.example
 .DS_Store
+
+# Built from scripts/generate-social-image.mjs during npm run build
+public/og-image.jpg
