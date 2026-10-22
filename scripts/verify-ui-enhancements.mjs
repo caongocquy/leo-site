@@ -90,6 +90,10 @@ assert.ok(headerSource.includes("addEventListener('scroll', schedule, { passive:
 assert.ok(!headerSource.includes('is-header-hidden'), 'Sticky header must stay visible');
 assert.ok(homeSource.includes('<HomeSectionNavigator />'), 'Home-only TOC missing');
 assert.ok(homeSource.includes('id="about" class="hero'), 'Hero introduction anchor missing');
+assert.ok(homeSource.includes('class="hero-section-number">01 /</span>'), 'Hero must visibly represent TOC section 01');
+assert.ok(stylesheet.includes('/* Bilingual Home outline and section labels use the same 01-04 hierarchy. */'), 'Readable numbered Home labels CSS missing');
+assert.ok(stylesheet.includes('.section-intro > .section-eyebrow {'), 'Home section eyebrow text needs readable font sizing');
+assert.ok(stylesheet.includes('white-space: normal;'), 'Long localized hero eyebrow must wrap');
 assert.ok(!homeSource.includes('class="about-section'), 'Duplicate About section must stay removed');
 assert.ok(homeSource.includes('class="expertise-toolbox"'), 'Tech stack must stay under Expertise');
 assert.ok(tocSource.includes("getActiveSection(sectionTops, offset)"), 'TOC scrollspy missing');
@@ -106,6 +110,12 @@ for (const prefix of ['', 'en/']) {
   assert.ok(nav, `Global nav missing from ${prefix}home`);
   assert.equal((nav.match(/data-nav-page=/g) ?? []).length, 3, 'Global header should show exactly 3 page links');
   assert.match(nav, /data-nav-page="home"[^>]*aria-current="page"/, 'Home page must be active on Home');
+  assert.match(nav, new RegExp(`data-nav-page="home"[^>]*>${prefix ? 'About Me' : 'Giới thiệu'}<`), 'Page-level intro label must match locale');
+  const expectedLabels = prefix
+    ? ['02 / WHAT I DO', '03 / EXPERIENCE', '04 / SELECTED WORK']
+    : ['02 / CHUYÊN MÔN', '03 / KINH NGHIỆM', '04 / DỰ ÁN TIÊU BIỂU'];
+  for (const label of expectedLabels) assert.ok(home.includes(label), `Missing ordered Home label: ${label}`);
+  assert.ok(home.includes('class="hero-section-number">01 /</span>'), 'Home hero section index missing');
   for (const id of ['about', 'expertise', 'experience', 'projects']) {
     assert.ok(home.includes(`id="${id}"`), `Missing anchor #${id}`);
     assert.ok(home.includes(`data-toc-link="${id}"`), `Missing TOC anchor #${id}`);

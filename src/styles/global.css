@@ -915,3 +915,40 @@ html { scroll-padding-top: 108px; }
   .header-actions { gap: 4px; }
   .header-nav a { font-size: 11px; padding-inline: 4px; }
 }
+
+/* Bilingual Home outline and section labels use the same 01-04 hierarchy. */
+.hero .eyebrow {
+  font-size: clamp(13px, 1.05vw, 16px);
+  line-height: 1.5;
+  letter-spacing: .065em;
+  font-weight: 700;
+  white-space: normal;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+}
+.hero .eyebrow .hero-section-number {
+  flex: 0 0 auto;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  color: var(--muted);
+  letter-spacing: .015em;
+}
+.hero .eyebrow .hero-greeting,
+.hero .eyebrow .hero-occupation { min-width: 0; }
+.hero .eyebrow .eyebrow-rule { flex-shrink: 0; }
+.section-intro > .section-eyebrow {
+  display: inline-block;
+  font-size: clamp(13px, 1vw, 15px);
+  line-height: 1.5;
+  letter-spacing: .08em;
+  font-weight: 700;
+}
+@media (max-width: 560px) {
+  .hero .eyebrow {
+    font-size: 13.5px;
+    line-height: 1.6;
+    gap: 4px 8px;
+  }
+  .hero .eyebrow .eyebrow-rule { display: none; }
+  .hero .eyebrow .hero-occupation { flex-basis: 100%; padding-left: 0; }
+  .section-intro > .section-eyebrow { font-size: 13px; }
+}
