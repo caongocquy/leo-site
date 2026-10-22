@@ -32,7 +32,7 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).toString(
     {canonical && <link rel="canonical" href={canonical} />}
     {Astro.site && <link rel="alternate" hreflang="en" href={new URL(localizedPath(Astro.url.pathname, "en"), Astro.site).toString()} />}
     {Astro.site && <link rel="alternate" hreflang="vi" href={new URL(localizedPath(Astro.url.pathname, "vi"), Astro.site).toString()} />}
-    {Astro.site && <link rel="alternate" hreflang="x-default" href={new URL(localizedPath(Astro.url.pathname, "en"), Astro.site).toString()} />}
+    {Astro.site && <link rel="alternate" hreflang="x-default" href={new URL(localizedPath(Astro.url.pathname, "vi"), Astro.site).toString()} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title}</title>
     <script is:inline>

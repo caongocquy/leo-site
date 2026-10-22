@@ -20,11 +20,11 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
   <section class="hero section-grid" aria-labelledby="hero-title">
     <div class="hero-copy">
       <div class="eyebrow"><span class="pulse-dot"></span> {t.hello} <span class="eyebrow-rule"></span> {t.occupation}</div>
-      <h1 id="hero-title">{t.heroTitle} <em>{t.heroEmphasis}</em> {t.heroEnd}<span class="period">.</span></h1>
+      <h1 id="hero-title">{t.heroTitle}<span class="hero-title-break" aria-hidden="true"></span><em>{t.heroEmphasis}</em><span class="period">.</span></h1>
       <p class="hero-desc">{t.heroDescription}</p>
       <div class="hero-actions">
         <a href="#projects" class="button button-primary">{t.exploreWork} <Icon name="arrow-up-right" size={15} /></a>
-        <a href={site.github} class="button button-outline" target="_blank" rel="noopener noreferrer">{t.githubProfile} <Icon name="arrow-up-right" size={15} /></a>
+        <a href={localizedPath("/journey/",locale)} class="button button-outline">{t.heroJourney} <Icon name="arrow-up-right" size={15} /></a>
       </div>
       <div class="hero-notes"><span>{t.mobileNative}</span><span>{t.mobileArchitecture}</span><span>{t.openSource}</span></div>
     </div>

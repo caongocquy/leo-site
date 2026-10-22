@@ -1,20 +1,22 @@
 import type { CollectionEntry } from 'astro:content';
 
 export type Locale = 'en' | 'vi';
-export const localeFromPath = (path: string): Locale => path === '/vi' || path.startsWith('/vi/') ? 'vi' : 'en';
+// Vietnamese is canonical at /; English uses /en/.
+export const localeFromPath = (path: string): Locale => path === '/en' || path.startsWith('/en/') ? 'en' : 'vi';
 
 export const localizedPath = (path: string, locale: Locale): string => {
-  const normalized = path.replace(/^\/vi(?=\/|$)/, '') || '/';
-  return locale === 'vi' ? `/vi${normalized === '/' ? '/' : normalized}` : normalized;
+  const normalized = path.replace(/^\/(?:vi|en)(?=\/|$)/, '') || '/';
+  return locale === 'en' ? `/en${normalized}` : normalized;
 };
 
 const en = {
   navExpertise: 'Expertise', navExperience: 'Experience', navProjects: 'Projects', navAbout: 'About',
   githubProfile: 'GitHub profile', skip: 'Skip to content',
   hello: "HELLO, I'M LEO", occupation: 'MOBILE ENGINEER',
-  heroTitle: 'Engineering', heroEmphasis: 'better', heroEnd: 'mobile experiences',
-  heroDescription: 'I build thoughtful mobile apps and the open-source tools behind better development workflows. From native details to code intelligence, I care about making complex things feel simple.',
-  exploreWork: 'Explore my work', mobileNative: 'React Native & native', mobileArchitecture: 'Mobile architecture', openSource: 'Open source',
+  heroTitle: 'Building mobile products.', heroEmphasis: 'Engineering developer tools', heroEnd: '',
+  heroDescription: 'I build production mobile experiences and open-source tools that help developers understand and improve code. From React Native to code intelligence and AI-assisted workflows, I focus on practical engineering.',
+  heroJourney: 'Career journey',
+  exploreWork: 'Explore projects', mobileNative: 'React Native & native', mobileArchitecture: 'Mobile architecture', openSource: 'Open source',
   whatIDo: '01 / WHAT I DO', expertiseTitle: 'Engineering beyond', expertiseTitleEm: 'the screen.',
   expertiseIntro: 'I think about the whole experience: what users see, what platforms need, and what makes software sustainable.',
   expertise1Title: 'Mobile engineering', expertise1Desc: 'Production-grade React Native applications, platform integration, and thoughtful cross-platform interfaces.',
@@ -75,8 +77,9 @@ const vi: Record<keyof typeof en, string> = {
   navExpertise: 'Chuyên môn', navExperience: 'Kinh nghiệm', navProjects: 'Dự án', navAbout: 'Giới thiệu',
   githubProfile: 'Trang GitHub', skip: 'Bỏ qua đến nội dung',
   hello: 'XIN CHÀO, MÌNH LÀ LEO', occupation: 'KỸ SƯ MOBILE',
-  heroTitle: 'Kiến tạo trải nghiệm mobile', heroEmphasis: 'tốt hơn', heroEnd: '',
-  heroDescription: 'Mình xây dựng ứng dụng di động và những công cụ mã nguồn mở giúp quy trình phát triển hiệu quả hơn. Từ tích hợp native đến phân tích mã nguồn, mình luôn hướng tới giải pháp rõ ràng cho những bài toán phức tạp.',
+  heroTitle: 'Xây dựng ứng dụng mobile.', heroEmphasis: 'Phát triển công cụ cho developer', heroEnd: '',
+  heroDescription: 'Mình phát triển ứng dụng mobile thực tế và các công cụ mã nguồn mở giúp developer hiểu, cải thiện và bảo trì code. Từ React Native đến code intelligence và quy trình phát triển cùng AI agent.',
+  heroJourney: 'Hành trình nghề nghiệp',
   exploreWork: 'Khám phá dự án', mobileNative: 'React Native & native', mobileArchitecture: 'Kiến trúc mobile', openSource: 'Mã nguồn mở',
   whatIDo: '01 / CHUYÊN MÔN', expertiseTitle: 'Không chỉ là', expertiseTitleEm: 'giao diện.',
   expertiseIntro: 'Mình quan tâm đến toàn bộ sản phẩm: trải nghiệm người dùng, đặc thù nền tảng và khả năng bảo trì lâu dài.',
