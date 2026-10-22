@@ -625,13 +625,7 @@ body { font-family: var(--font-ui); font-weight: 400; }
 }
 
 
-/* Lucian #212-inspired scroll-aware sticky navigation. */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  transition: transform .22s cubic-bezier(.2,.7,.2,1), background-color .22s ease, box-shadow .22s ease;
-}
+/* Scrolled sticky header visual treatment. Navigation itself always remains visible. */
 .site-header.is-header-scrolled {
   background: var(--bg);
   background: color-mix(in srgb, var(--bg) 94%, transparent);
@@ -640,22 +634,8 @@ body { font-family: var(--font-ui); font-weight: 400; }
   box-shadow: 0 12px 28px -20px var(--shadow);
   border-radius: 0 0 10px 10px;
 }
-.site-header.is-header-hidden {
-  transform: translate3d(0, -110%, 0);
-  pointer-events: none;
-}
-.site-header.is-header-hidden:focus-within {
-  transform: none;
-  pointer-events: auto;
-}
-@media (prefers-reduced-motion: reduce) {
-  /* Persistently visible sticky navigation for reduced motion. */
-  .site-header,
-  .site-header.is-header-hidden { transform: none; transition: none; pointer-events: auto; }
-}
 
-
-/* Keep hash navigation headings clear of the returning sticky header. */
+/* Keep anchor destinations clear of the sticky header on mobile and desktop. */
 html { scroll-padding-top: 108px; }
 @media (max-width: 830px) {
   html { scroll-padding-top: 150px; }
