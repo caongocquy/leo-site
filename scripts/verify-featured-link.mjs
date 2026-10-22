@@ -1,16 +1,17 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 
-const html = readFileSync('dist/index.html', 'utf8');
-const anchor = html.match(/<a\b[^>]*\bclass="featured-project"[^>]*>/);
-
-assert.ok(anchor, 'Featured Code Atlas card must be a semantic anchor');
-assert.match(anchor[0], /\bhref="\/projects\/code-atlas\/"/, 'Card must link to Code Atlas details');
-assert.match(anchor[0], /\baria-label="Explore Code Atlas: Code Atlas"/, 'Card needs an accessible label');
-
-const inner = html.slice(html.indexOf(anchor[0]) + anchor[0].length);
-const cardBody = inner.slice(0, inner.indexOf('</a>'));
-assert.ok(cardBody.includes('Explore Code Atlas'), 'Featured card content is missing');
-assert.doesNotMatch(cardBody, /<a\b/, 'A linked card must not contain nested links');
-
-console.log('Featured Code Atlas card: navigation and semantic markup verified.');
+for (const [locale, prefix, label] of [
+  ['vi', '', 'Khám phá Code Atlas: Code Atlas'],
+  ['en', 'en/', 'Explore Code Atlas: Code Atlas'],
+]) {
+  const html = readFileSync(`dist/${prefix}index.html`, 'utf8');
+  const anchor = html.match(/<a\b[^>]*\bclass="featured-project"[^>]*>/);
+  assert.ok(anchor, `${locale}: missing semantic featured link`);
+  assert.ok(anchor[0].includes(`href="/${prefix}projects/code-atlas/"`), `${locale}: wrong featured route`);
+  assert.ok(anchor[0].includes(`aria-label="${label}"`), `${locale}: missing accessible featured label`);
+  const cardBody = html.slice(html.indexOf(anchor[0]) + anchor[0].length).split('</a>')[0];
+  assert.ok(cardBody.includes('Code Atlas'), `${locale}: missing card content`);
+  assert.doesNotMatch(cardBody, /<a\b/, 'Nested anchor in featured card');
+}
+console.log('Featured Code Atlas card: accessible link verified for both locales.');

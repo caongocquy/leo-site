@@ -10,7 +10,7 @@ const projects = {
 };
 
 for (const [slug, command] of Object.entries(projects)) {
-  const page = readFileSync(`dist/projects/${slug}/index.html`, 'utf8');
+  const page = readFileSync(`dist/en/projects/${slug}/index.html`, 'utf8');
   assert.ok(page.includes('data-terminal-demo'), `${slug} missing terminal demo`);
   assert.ok(page.includes('data-demo-replay'), `${slug} missing Replay control`);
   assert.ok(page.includes('data-demo-copy'), `${slug} missing Copy control`);

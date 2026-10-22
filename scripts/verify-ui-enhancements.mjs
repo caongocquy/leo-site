@@ -16,7 +16,7 @@ const expectedGallery = {
 };
 
 for (const slug of slugs) {
-  const html = readFileSync(`dist/projects/${slug}/index.html`, 'utf8');
+  const html = readFileSync(`dist/en/projects/${slug}/index.html`, 'utf8');
   for (const manager of ['npm', 'pnpm', 'yarn', 'bun']) {
     assert.ok(html.includes(`data-install-manager="${manager}"`), `${slug}: missing ${manager} install option`);
   }
@@ -54,3 +54,8 @@ assert.ok(!bento.includes('grid-row: span 2'), 'Bento should not vertically stre
 const galleryComponent = readFileSync('src/components/ProjectGallery.astro', 'utf8');
 assert.ok(galleryComponent.includes('transform: translate(-50%, -50%)'), 'Lightbox must be centered in viewport');
 assert.ok(galleryComponent.includes('data-gallery-caption'), 'Lightbox should not copy decorative arrow into caption');
+
+const heroSource = readFileSync('src/styles/global.css', 'utf8');
+assert.ok(heroSource.includes('/* Lucian #216-inspired'), 'Hero stagger must be present');
+assert.ok(heroSource.includes('@keyframes hero-arrive'), 'Hero entrance keyframes missing');
+assert.ok(heroSource.includes('prefers-reduced-motion: reduce'), 'Motion preference must be supported');
