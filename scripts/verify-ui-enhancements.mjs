@@ -97,6 +97,19 @@ assert.ok(stylesheet.includes('white-space: normal;'), 'Long localized hero eyeb
 assert.ok(!homeSource.includes('class="about-section'), 'Duplicate About section must stay removed');
 assert.ok(homeSource.includes('class="expertise-toolbox"'), 'Tech stack must stay under Expertise');
 assert.ok(!homeSource.includes('class="index-number"'), 'Expertise cards should not show decorative numbers');
+assert.ok(homeSource.includes("['showdar-skills', 'react-native-splash-view']"), 'Homepage must curate the requested two secondary projects');
+assert.ok(!homeSource.includes('01 / 05'), 'Hero visual has no carousel so it must not show fake pagination');
+assert.ok(stylesheet.includes('font: inherit;'), 'Hero 01 must inherit the same type treatment as other section numbers');
+const headerBrand = readFileSync('src/components/Header.astro', 'utf8');
+const footerBrand = readFileSync('src/components/Footer.astro', 'utf8');
+for (const source of [headerBrand, footerBrand]) {
+  assert.ok(source.includes('/brand/leo-horizontal-on-dark.svg') && source.includes('/brand/leo-horizontal-on-light.svg'), 'Header/footer must use user-provided Leo vector art');
+}
+assert.ok(readFileSync('public/favicon.svg', 'utf8').includes('viewBox="0 0 512 512"'), 'Favicon must use the user-provided Leo avatar geometry');
+for (const path of ['src/components/ProjectsPage.astro', 'src/components/ProjectDetailPage.astro']) {
+  const source = readFileSync(path, 'utf8');
+  assert.ok(!source.includes('class="breadcrumb"') && !source.includes('class="detail-breadcrumb"'), `${path} must not show a breadcrumb`);
+}
 assert.ok(!homeSource.includes('<span>01</span></div><h3>'), 'Experience cards should not show decorative numbers');
 assert.ok(!homeSource.includes('<span>02</span></div><h3>'), 'Experience cards should not show decorative numbers');
 assert.ok(tocSource.includes("getActiveSection(sectionTops, offset)"), 'TOC scrollspy missing');
@@ -147,6 +160,9 @@ for (const prefix of ['', 'en/']) {
     }
   }
   assert.ok(!home.includes('class="index-number"'), 'Rendered expertise cards should not show decorative numeric badges');
+  const cardSlugs = [...home.matchAll(/<a[^>]*class="project-card"[^>]*href="\/(?:en\/)?projects\/([^/]+)\/"/g)].map((match) => match[1]);
+  assert.deepEqual(cardSlugs, ['showdar-skills', 'react-native-splash-view'], `${prefix || 'vi/'} homepage must show exactly two secondary cards alongside Code Atlas`);
+  assert.ok(!home.includes('01 / 05'), 'Homepage hero should not show fake image pagination');
   assert.doesNotMatch(home, /class="experience-meta"[^>]*>[^<]*<span>[^<]*<\/span><span>0[12]<\/span>/, 'Rendered experience cards should not show numeric badges');
   for (const id of ['about', 'expertise', 'experience', 'projects']) {
     assert.ok(home.includes(`id="${id}"`), `Missing anchor #${id}`);
@@ -165,6 +181,8 @@ for (const prefix of ['', 'en/']) {
   for (const pathname of ['journey/index.html', 'projects/index.html', 'projects/code-atlas/index.html']) {
     const page = readFileSync(`dist/${prefix}${pathname}`, 'utf8');
     assert.ok(page.includes('data-site-header'), `Header missing on ${prefix}${pathname}`);
+    if (pathname.startsWith('journey/')) assert.ok(!page.includes('journey-crumb'), 'Journey breadcrumb must be absent');
+    if (pathname.startsWith('projects/')) assert.ok(!page.includes('class="breadcrumb"') && !page.includes('detail-breadcrumb'), 'Project breadcrumbs must be absent');
     assert.ok(!page.includes('data-home-toc'), `TOC must not appear on ${prefix}${pathname}`);
     const current = pathname.startsWith('journey/') ? 'journey' : 'projects';
     assert.match(page, new RegExp(`data-nav-page="${current}"[^>]*aria-current="page"`), `Active page is wrong on ${prefix}${pathname}`);

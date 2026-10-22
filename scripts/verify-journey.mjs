@@ -17,6 +17,13 @@ for (const [locale, prefix, title, marker] of [
   }
   assert.ok(page.includes(locale === 'vi' ? '02/2025 — HIỆN TẠI' : 'FEB 2025 — PRESENT'), `${locale}: Galaxy must show ongoing employment`);
   assert.ok(page.includes(locale === 'vi' ? 'ĐANG LÀM VIỆC' : 'CURRENTLY EMPLOYED'), `${locale}: current employer badge missing`);
+  assert.ok(page.includes('journey-snapshot-focus') && page.includes('journey-snapshot-role'), `${locale}: Journey must show factual career and focus information`);
+  assert.ok(!page.includes('journey-snapshot-bars'), `${locale}: decorative snapshot chart must be removed`);
+  assert.ok(!page.includes('journey-crumb'), `${locale}: breadcrumb UI must be removed`);
+  const milestoneIds = [...page.matchAll(/<li id="([^"]+)" class="journey-milestone"/g)].map((match) => match[1]);
+  assert.deepEqual(milestoneIds, ['galaxy', 'open-source', '1988s', '45cm', 'mgi'], `${locale}: newest-first timeline must start with ongoing Galaxy employment`);
+  const tocIds = [...page.matchAll(/<a href="#(galaxy|open-source|1988s|45cm|mgi)" aria-label=/g)].map((match) => match[1]);
+  assert.deepEqual(tocIds, milestoneIds, `${locale}: timeline TOC order should match its cards`);
   assert.ok(page.includes('journey-current-employment') && page.includes('journey-current-chip'), `${locale}: current role must be visible in hero and Galaxy card`);
   assert.ok(page.includes('MGI Global') && page.includes('45CM VINA'), `${locale}: earlier history missing`);
   assert.ok(page.includes('1988s Media and Technology') && page.includes('Galaxy Technology Services'), `${locale}: later employment missing`);

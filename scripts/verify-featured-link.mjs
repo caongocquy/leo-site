@@ -13,5 +13,7 @@ for (const [locale, prefix, label] of [
   const cardBody = html.slice(html.indexOf(anchor[0]) + anchor[0].length).split('</a>')[0];
   assert.ok(cardBody.includes('Code Atlas'), `${locale}: missing card content`);
   assert.doesNotMatch(cardBody, /<a\b/, 'Nested anchor in featured card');
+  const curatedCards = [...html.matchAll(/<a[^>]*class="project-card"[^>]*href="\/(?:en\/)?projects\/([^/]+)\/"/g)].map((match) => match[1]);
+  assert.deepEqual(curatedCards, ['showdar-skills', 'react-native-splash-view'], `${locale}: only the two selected companion projects should render`);
 }
 console.log('Featured Code Atlas card: accessible link verified for both locales.');

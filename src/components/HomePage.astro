@@ -15,7 +15,12 @@ const jt = journeyCopy[locale];
 
 const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const atlas = projects.find((project) => project.id === 'code-atlas');
-const otherProjects = projects.filter((project) => project.id !== 'code-atlas').slice(0, 4);
+const selectedSecondaryIds = ['showdar-skills', 'react-native-splash-view'] as const;
+const otherProjects = selectedSecondaryIds.map((id) => {
+  const project = projects.find((item) => item.id === id);
+  if (!project) throw new Error(`Missing curated Home project: ${id}`);
+  return project;
+});
 ---
 <BaseLayout>
   <HomeSectionNavigator />
@@ -65,7 +70,7 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
           </div>
         </div>
       </div>
-      <div class="visual-footnote"><span>{t.realComponent}</span><span>01 / 05</span></div>
+      <div class="visual-footnote"><span>{t.realComponent}</span></div>
     </div>
   </section>
 

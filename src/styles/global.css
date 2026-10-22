@@ -950,3 +950,36 @@ html { scroll-padding-top: 108px; }
   .hero .eyebrow .hero-occupation { flex-basis: 100%; padding-left: 0; }
   .section-intro > .section-eyebrow { font-size: 13px; }
 }
+
+/* Use the owner's supplied Leo logo assets across responsive light/dark branding. */
+.brand { min-width:0; }
+.brand-image { display:block; width:clamp(132px, 12vw, 168px); height:auto; max-width:100%; }
+html[data-theme="dark"] .brand-image-on-light,
+html[data-theme="light"] .brand-image-on-dark { display:none; }
+.footer-brand { display:inline-flex; align-items:center; max-width:100%; }
+.footer-brand .brand-image { width:155px; }
+
+/* The 01 Hero section number is part of the same type hierarchy as 02–04. */
+.hero .eyebrow .hero-section-number {
+  font: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+}
+/* The illustration is not a carousel: remove its meaningless 01 / 05 counter. */
+.visual-footnote { justify-content:flex-start; }
+/* No visible breadcrumb rows on Projects or Project Detail. */
+.subpage-hero .section-eyebrow { margin-top:0; }
+.project-detail { padding-top:68px; }
+@media (max-width: 830px) {
+  .site-header .brand-image { width:132px; }
+}
+@media (max-width: 560px) {
+  .site-header .brand-image { width:114px; }
+  .subpage-hero .section-eyebrow { margin-top:0; }
+  .project-detail { padding-top:42px; }
+}
+@media (max-width: 360px) {
+  .site-header .brand-image { width:102px; }
+}

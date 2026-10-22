@@ -173,3 +173,11 @@ The Home outline no longer hardcodes its four labels independently from the sect
 | 04 | Dự án tiêu biểu | Selected Work |
 
 The page-level Projects tab remains **Dự án / Projects**, distinct from the featured/selected projects section inside Home. Regression assertions compare the rendered labels, numbering, and accessible names in **both** desktop and mobile outlines against the rendered section headings in both languages.
+
+## Leo brand + Career Journey refresh
+
+The header and footer use the new Leo owner-supplied horizontal SVG mark with light/dark variants; the favicon uses its square avatar version. The existing owner-selected PNG social preview is unchanged.
+
+The Journey timeline renders **ongoing Galaxy employment first**, then **parallel 2026 open-source work**, then **1988s → 45CM → MGI** (recent to earlier). Its decorative 12-bar chart was replaced with a factual snapshot showing current company/role and three areas of technical focus; no invented metrics.
+
+Only the **visible** Journey, Projects and Project Detail breadcrumbs were removed; JSON-LD breadcrumb structured data remains for SEO. The Home hero art no longer shows nonfunctional `01 / 05`, and Hero section `01` shares the other section labels' type style. Home Selected Projects is exactly **Code Atlas + Showdar Skills + React Native Splash View**; all five project detail pages remain available in the Projects index.

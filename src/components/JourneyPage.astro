@@ -7,15 +7,12 @@ import { journeyCopy, journeyMilestones } from '../data/journey';
 
 const locale = localeFromPath(Astro.url.pathname);
 const t = journeyCopy[locale];
-const entries = journeyMilestones[locale];
+// Active employment first, independent work alongside it, then prior employers newest-first.
+const entries = [...journeyMilestones[locale]].sort((a, b) =>
+  Number(Boolean(b.current)) - Number(Boolean(a.current)) || Number(b.year) - Number(a.year)
+);
 ---
 <BaseLayout title={t.title} description={t.description}>
-  <div class="journey-crumb">
-    <a href={localizedPath('/', locale)}><Icon name="arrow-left" size={14} />{t.breadcrumb}</a>
-    <span aria-hidden="true">/</span>
-    <span>{t.smallLabel}</span>
-  </div>
-
   <section class="journey-hero" aria-labelledby="journey-title">
     <div class="journey-hero-copy">
       <div class="journey-eyebrow"><span class="journey-pulse" aria-hidden="true"></span>{t.eyebrow}</div>
@@ -30,10 +27,14 @@ const entries = journeyMilestones[locale];
     <div class="journey-snapshot" aria-label={t.snapshotSub}>
       <div class="journey-snapshot-top"><span>{t.snapshotLabel}</span><span aria-hidden="true">●</span></div>
       <strong>{t.snapshotValue}</strong>
-      <div class="journey-snapshot-bars" aria-hidden="true">
-        <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      <div class="journey-snapshot-role">
+        <span>{t.snapshotCurrentHeading}</span>
+        <strong>{t.currentCompany}</strong>
       </div>
-      <p>{t.snapshotSub}</p>
+      <div class="journey-snapshot-focus">
+        <span>{t.snapshotFocusHeading}</span>
+        <ul>{t.snapshotFocus.map((focus) => <li><Icon name="check" size={14} />{focus}</li>)}</ul>
+      </div>
       <span class="journey-snapshot-bottom">{t.scrollCue} <span aria-hidden="true">↓</span></span>
     </div>
   </section>
@@ -109,10 +110,7 @@ const entries = journeyMilestones[locale];
 </BaseLayout>
 
 <style>
-  .journey-crumb { display:flex; gap: 13px; align-items:center; color:var(--muted-soft); font-size:11px; margin-top: 33px; }
-  .journey-crumb a { display:inline-flex; gap:7px; align-items:center; color:var(--muted); }
-  .journey-crumb a:hover { color:var(--accent); }
-  .journey-hero { padding: 73px 0 100px; display:grid; grid-template-columns: 1.25fr .75fr; gap:clamp(26px,5vw,85px); align-items:center; }
+  .journey-hero { padding: 61px 0 100px; display:grid; grid-template-columns: 1.25fr .75fr; gap:clamp(26px,5vw,85px); align-items:center; }
   .journey-eyebrow { display:flex; align-items:center; gap:10px; color:var(--accent); font: 600 10px 'IBM Plex Mono',ui-monospace,monospace; letter-spacing:.1em; }
   .journey-pulse { width:7px; height:7px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 5px rgba(var(--accent-rgb),.12); flex:0 0 auto; }
   .journey-hero h1 { margin:25px 0 21px; max-width:750px; font-size: clamp(39px, 5.3vw, 72px); line-height:1.12; letter-spacing:-.06em; font-weight:660; color:var(--text-strong); }
@@ -129,15 +127,13 @@ const entries = journeyMilestones[locale];
   .journey-snapshot-top { display:flex; justify-content:space-between; color:var(--muted-soft); font:10px 'IBM Plex Mono',ui-monospace,monospace; letter-spacing:.1em; }
   .journey-snapshot-top span:last-child { color:var(--accent); font-size:9px; }
   .journey-snapshot > strong { display:block; margin-top:17px; color:var(--text-strong); font: 600 clamp(24px,2.6vw,35px) 'IBM Plex Sans Variable',sans-serif; letter-spacing:-.05em; overflow-wrap:anywhere; }
-  .journey-snapshot-bars { display:flex; align-items:end; gap:5px; margin:22px 0 15px; height:45px; }
-  .journey-snapshot-bars i { flex:1; display:block; height:var(--h,40%); background:var(--line-accent); border-radius:4px 4px 0 0; opacity:.85; }
-  .journey-snapshot-bars i:nth-child(12n+1){--h:28%}.journey-snapshot-bars i:nth-child(12n+2){--h:46%}
-  .journey-snapshot-bars i:nth-child(12n+3){--h:39%}.journey-snapshot-bars i:nth-child(12n+4){--h:63%}
-  .journey-snapshot-bars i:nth-child(12n+5){--h:41%}.journey-snapshot-bars i:nth-child(12n+6){--h:67%}
-  .journey-snapshot-bars i:nth-child(12n+7){--h:58%}.journey-snapshot-bars i:nth-child(12n+8){--h:80%}
-  .journey-snapshot-bars i:nth-child(12n+9){--h:54%}.journey-snapshot-bars i:nth-child(12n+10){--h:74%}
-  .journey-snapshot-bars i:nth-child(12n+11){--h:85%}.journey-snapshot-bars i:nth-child(12n+12){--h:100%;background:var(--accent)}
-  .journey-snapshot p { margin:0; font-size:12px; line-height:1.65; color:var(--muted); }
+  .journey-snapshot-role { display:grid; gap:8px; border-top:1px solid var(--line-soft); margin-top:21px; padding-top:18px; }
+  .journey-snapshot-role > span, .journey-snapshot-focus > span { color:var(--muted-soft); font:600 10px/1.5 'IBM Plex Mono',ui-monospace,monospace; letter-spacing:.08em; }
+  .journey-snapshot-role strong { color:var(--text-strong); font-size:13px; font-weight:650; line-height:1.5; overflow-wrap:anywhere; }
+  .journey-snapshot-focus { display:grid; gap:11px; margin:18px 0; }
+  .journey-snapshot-focus ul { display:grid; gap:9px; margin:0; padding:0; list-style:none; }
+  .journey-snapshot-focus li { display:flex; gap:10px; align-items:center; min-width:0; color:var(--text); font-size:12px; line-height:1.45; }
+  .journey-snapshot-focus li svg { flex:0 0 auto; color:var(--accent); }
   .journey-snapshot-bottom { display:flex; justify-content:space-between; border-top:1px solid var(--line-soft); margin-top:auto; padding-top:16px; color:var(--muted-soft); font:9px 'IBM Plex Mono',ui-monospace,monospace; letter-spacing:.1em; }
   .journey-snapshot-bottom span { color:var(--accent); font-size:15px; line-height:1; }
   .journey-story { padding-top:72px; display:grid; grid-template-columns: 280px minmax(0,1fr); gap:clamp(28px,5vw,70px); }
@@ -202,7 +198,6 @@ const entries = journeyMilestones[locale];
 
   }
   @media(max-width: 520px) {
-    .journey-crumb { margin-top:22px; }
     .journey-hero h1 { font-size:clamp(35px,9vw,51px); }
     .journey-hero-copy > p { font-size:13px; }
     .journey-current-employment { padding:10px 12px; }
