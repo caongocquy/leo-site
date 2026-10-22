@@ -12,6 +12,9 @@ const read = (p) => readFileSync(p, 'utf8');
 const slugs = readdirSync('src/content/projects').filter((p) => p.endsWith('.md')).map((p) => p.slice(0, -3));
 const paths = ['/', '/projects/', '/journey/', ...slugs.map((slug) => `/projects/${slug}/`)];
 const fileFor = (path) => path === '/' ? 'dist/index.html' : `dist${path}index.html`;
+const originalPreview = readFileSync('public/social-preview.png');
+const uploadedWidth = originalPreview.readUInt32BE(16);
+const uploadedHeight = originalPreview.readUInt32BE(20);
 
 function meta(html, key, value) {
   assert.ok(
@@ -33,8 +36,8 @@ for (const path of paths) {
     meta(html, 'og:url', canonical);
     meta(html, 'og:image', host + '/social-preview.png');
     meta(html, 'og:image:type', 'image/png');
-    meta(html, 'og:image:width', '1200');
-    meta(html, 'og:image:height', '630');
+    meta(html, 'og:image:width', String(uploadedWidth));
+    meta(html, 'og:image:height', String(uploadedHeight));
     meta(html, 'twitter:card', 'summary_large_image');
     meta(html, 'twitter:image', host + '/social-preview.png');
     const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
@@ -82,12 +85,13 @@ for (const missing of ['dist/404.html', 'dist/en/404/index.html', 'dist/en/404.h
 const social = 'dist/social-preview.png';
 assert.ok(existsSync('public/social-preview.png'), 'User-owned share preview must be present in public/');
 const image = readFileSync(social);
-const sourceImage = readFileSync('public/social-preview.png');
-assert.ok(image.equals(sourceImage), 'Build must copy the uploaded image unchanged, not replace it');
+assert.ok(image.equals(originalPreview), 'Build must copy the uploaded image unchanged, not replace it');
 assert.ok(image.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])), 'Share preview must be PNG');
 assert.equal(image.toString('ascii', 12, 16), 'IHDR', 'PNG header must include IHDR');
-assert.equal(image.readUInt32BE(16), 1200, 'Share preview should be 1200px wide');
-assert.equal(image.readUInt32BE(20), 630, 'Share preview should be 630px high');
+assert.ok(uploadedWidth >= 600 && uploadedHeight >= 315, 'Share preview should be high resolution');
+const aspectRatio = uploadedWidth / uploadedHeight;
+assert.ok(aspectRatio >= 1.65 && aspectRatio <= 2.10, `Share preview aspect ratio out of range: ${aspectRatio.toFixed(3)}`);
+console.log(`User-uploaded PNG: ${uploadedWidth}x${uploadedHeight}, aspect ${aspectRatio.toFixed(3)}`);
 assert.ok(statSync(social).size < 3_000_000, 'Share preview should be under 3 MB');
 assert.ok(!existsSync('scripts/generate-social-image.mjs'), 'Old generated artwork script must be removed');
 console.log(`SEO/GEO: ${paths.length * 2} canonical routes, bilingual sitemap, JSON-LD, robots, llms.txt and user-uploaded PNG social preview verified.`);
