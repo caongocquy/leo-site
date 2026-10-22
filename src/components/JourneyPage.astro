@@ -191,14 +191,14 @@ const entries = journeyMilestones[locale];
     .journey-hero { grid-template-columns:1.1fr .9fr; }
   }
   @media(max-width: 760px) {
-    .journey-hero { grid-template-columns:1fr; gap:30px; padding:56px 0 67px; }
+    .journey-hero { grid-template-columns:minmax(0, 1fr); gap:30px; padding:56px 0 67px; }
     .journey-snapshot { min-height:210px; }
-    .journey-story { grid-template-columns:1fr; padding-top:52px; gap:35px; }
+    .journey-story { grid-template-columns:minmax(0, 1fr); padding-top:52px; gap:35px; }
     .journey-story-intro { position:static; max-width:520px; }
     .journey-story-intro h2 { max-width:420px; }
-    .journey-toc { flex-direction:row; overflow-x:auto; padding:0 0 9px; margin-top:18px; border-left:0; gap:8px; scrollbar-width:thin; }
-    .journey-toc a { margin:0; padding:8px 11px; border:1px solid var(--line); border-radius:8px; flex:0 0 auto; max-width:215px; }
-    .journey-toc a[aria-current="location"] { border-color:var(--accent); }
+    .journey-toc { flex-direction:row; min-width:0; width:100%; max-width:100%; overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; -webkit-overflow-scrolling:touch; padding:0 0 10px; margin-top:18px; border-left:0; gap:8px; scrollbar-width:thin; scroll-snap-type:x proximity; }
+    .journey-toc a { margin:0; padding:9px 12px; border:1px solid var(--line); background:var(--surface-alt); border-radius:999px; flex:0 0 auto; max-width:min(215px, 78vw); scroll-snap-align:start; }
+    .journey-toc a[aria-current="location"] { border-color:var(--accent); background:var(--icon-surface); }
 
   }
   @media(max-width: 520px) {
@@ -218,6 +218,28 @@ const entries = journeyMilestones[locale];
     .journey-entries { gap:20px; }
     .journey-card-summary { margin:20px 0; }
     .journey-next { padding-bottom:60px; }
+  }
+
+  /* Guard against intrinsic grid/flex min-content sizes expanding the iPhone viewport. */
+  .journey-hero, .journey-hero-copy, .journey-snapshot,
+  .journey-story, .journey-story-intro, .journey-track,
+  .journey-entries, .journey-milestone, .journey-card,
+  .journey-card-head, .journey-card-title, .journey-assignments,
+  .journey-assignment, .journey-next {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .journey-card-title > div, .journey-assignment > div, .journey-snapshot-top > span { min-width: 0; }
+  .journey-card h3, .journey-card strong, .journey-card p,
+  .journey-card-label, .journey-period, .journey-story-intro p,
+  .journey-hero-copy p, .journey-next p {
+    overflow-wrap: anywhere;
+  }
+  .journey-project-links a { min-width: 0; overflow-wrap: anywhere; }
+  @media (max-width: 760px) {
+    .journey-card-label { min-width: 0; flex-wrap: wrap; gap: 7px 9px; }
+    .journey-period { max-width: 100%; }
+    .journey-story-intro, .journey-track { width: 100%; }
   }
   @media(prefers-reduced-motion:reduce) {
     .journey-line-progress,.journey-marker,.journey-card { transition:none; }

@@ -150,3 +150,9 @@ The sticky header now has **three page-level destinations**: Home, Journey, and 
 At desktop widths (1440px+), the compact **right-side vertical outline** is top-aligned just below the sticky header, fitting into the right-side gutter without sitting across the Hero artwork. It always shows the active section name above its progress rail. It expands into a PDF-style outline on hover or keyboard focus; anchors support native hash navigation. The tracker uses passive scroll listeners, `requestAnimationFrame`, and a header-aware selection probe. At narrower widths, the rail becomes a native `<details>` disclosure button near the bottom right; click-outside, link selection, and Escape dismiss the panel. Native `<details>` and anchors work without JavaScript. Reduced-motion preferences disable rail animation and smooth scroll.
 
 Run `npm run build && node scripts/verify-ui-enhancements.mjs && node scripts/verify-home-toc.mjs` for bilingual markup and behavior-helper checks. The TOC is intentionally absent from Journey, Projects and project detail pages.
+
+## iPhone layout and mobile navigation refinement
+
+The Journey timeline uses `minmax(0,1fr)` for its single-column mobile grid, explicit min-size boundaries on nested cards, word wrapping for long content and an independently horizontally scrollable career-year chip strip. This avoids the page-level horizontal overflow seen in iPhone Safari.
+
+At <=830px, the sticky header becomes a balanced utility row (brand, locale/theme/GitHub) plus a three-column segmented page navigation (Home/Journey/Projects). The active page is a filled surface instead of a thin underline. At <=420px the brand tagline is hidden so controls keep their touch targets without forcing sideways scrolling. Desktop navigation is unchanged. Verify the page at 320, 375, 390, 430 and 768 CSS px in both languages; test iOS Safari separately from Chromium.
