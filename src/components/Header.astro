@@ -6,7 +6,7 @@ import LanguageSwitch from './LanguageSwitch.astro';
 import { localeFromPath, localizedPath, ui } from '../i18n/translations';
 const locale = localeFromPath(Astro.url.pathname);
 const t = ui(locale);
-const pathname = Astro.url.pathname.replace(/^\\/en(?=\\/|$)/, '') || '/';
+const pathname = Astro.url.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
 const initialNav = pathname === '/journey/' || pathname === '/journey'
   ? 'journey'
   : pathname.startsWith('/projects/') || pathname === '/projects'
@@ -40,7 +40,7 @@ const initialNav = pathname === '/journey/' || pathname === '/journey'
   const header = document.querySelector<HTMLElement>('[data-site-header]');
   if (header) {
     const links = [...header.querySelectorAll<HTMLAnchorElement>('[data-nav-target]')];
-    const path = window.location.pathname.replace(/^\\/en(?=\\/|$)/, '') || '/';
+    const path = window.location.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
     const isHome = path === '/' || path === '';
     const sectionMap = [
       { id: 'about', target: 'about' },
