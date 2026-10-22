@@ -708,16 +708,136 @@ html { scroll-padding-top: 108px; }
   .header-nav a, .header-nav a::after { transition: none; }
 }
 
-/* Five distinct destinations: home Experience is not the separate Journey page. */
-@media (max-width: 830px) {
-  .header-nav {
-    min-width: 0;
-    justify-content: flex-start;
-    gap: clamp(13px, 3.5vw, 21px);
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scroll-padding-inline: 8px;
-    scrollbar-width: thin;
+/* Floating PDF-outline navigation on Home; independent of the three page tabs. */
+.home-toc {
+  --toc-progress: 0%;
+  position: fixed;
+  z-index: 55;
+  top: 50%;
+  right: max(12px, env(safe-area-inset-right));
+  transform: translateY(-50%);
+  width: 104px;
+  max-height: calc(100vh - 128px);
+  color: var(--text);
+  transition: width .2s ease;
+}
+.home-toc-toggle { display: none; }
+.home-toc-panel {
+  border: 1px solid transparent;
+  border-radius: 15px;
+  padding: 15px 12px;
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.home-toc:is(:hover, :focus-within) { width: 228px; }
+.home-toc:is(:hover, :focus-within) .home-toc-panel {
+  border-color: var(--line);
+  background: var(--surface);
+  box-shadow: 0 20px 48px var(--shadow);
+}
+.home-toc-heading { display: grid; justify-items: end; min-height: 70px; gap: 2px; padding-bottom: 13px; text-align: right; }
+.home-toc-eyebrow { font: 600 8px/1.5 var(--font-code); color: var(--muted-soft); letter-spacing: .08em; white-space: nowrap; }
+.home-toc-count { font: 600 10px/1.5 var(--font-code); color: var(--accent); }
+.home-toc-heading strong { color: var(--text-strong); font-size: 12px; font-weight: 650; white-space: nowrap; }
+.home-toc-links { position: relative; display: grid; gap: 3px; }
+.home-toc-links::before,
+.home-toc-links::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 13px;
+  right: 4px;
+  width: 2px;
+  border-radius: 3px;
+  pointer-events: none;
+}
+.home-toc-links::before { height: calc(100% - 26px); background: var(--line); }
+.home-toc-links::after { height: calc((100% - 26px) * var(--toc-progress)); background: var(--accent); transition: height .13s ease; }
+.home-toc-link {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  border-radius: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  transition: color .18s ease, background-color .18s ease;
+}
+.home-toc-link:hover, .home-toc-link:focus-visible { color: var(--text-strong); }
+.home-toc-index { font: 500 10px var(--font-code); color: var(--muted-soft); }
+.home-toc-label {
+  max-width: 0;
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width .18s ease, opacity .18s ease;
+}
+.home-toc:is(:hover, :focus-within) .home-toc-label { max-width: 135px; opacity: 1; visibility: visible; }
+.home-toc-link[aria-current='location'] .home-toc-index,
+.home-toc-link[aria-current='location'] { color: var(--accent); font-weight: 700; }
+.home-toc-link[aria-current='location'] .home-toc-marker { background: var(--accent); height: 29px; }
+.home-toc-marker { display: block; width: 10px; height: 12px; border-radius: 4px; background: var(--line-accent); flex: 0 0 auto; transition: height .18s ease, background-color .18s ease; }
+.home-toc:is(:hover, :focus-within) .home-toc-link { padding-inline: 9px 0; }
+.home-toc:is(:hover, :focus-within) .home-toc-link:hover { background: var(--surface-alt); }
+
+@media (max-width: 1279px) {
+  .home-toc {
+    top: auto;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    transform: none;
+    width: auto;
+    max-height: none;
+    filter: none;
   }
-  .header-nav a { flex-shrink: 0; }
+  .home-toc:is(:hover, :focus-within) { width: auto; }
+  .home-toc-toggle {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line-accent);
+    background: var(--surface);
+    box-shadow: 0 8px 28px var(--shadow);
+    font-size: 12px;
+    font-weight: 650;
+    color: var(--text-strong);
+    cursor: pointer;
+    list-style: none;
+  }
+  .home-toc-toggle::-webkit-details-marker { display: none; }
+  .home-toc-toggle-chevron { font-size: 13px; transition: transform .18s; }
+  .home-toc[open] .home-toc-toggle-chevron { transform: rotate(180deg); }
+  .home-toc-panel, .home-toc:is(:hover, :focus-within) .home-toc-panel {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 12px);
+    width: min(280px, calc(100vw - 32px));
+    border: 1px solid var(--line-accent);
+    box-shadow: 0 18px 52px var(--shadow);
+    background: var(--surface);
+    padding: 14px;
+  }
+  .home-toc[open] .home-toc-panel { display: block; }
+  .home-toc-heading { min-height: 0; padding-bottom: 11px; }
+  .home-toc-label, .home-toc:is(:hover, :focus-within) .home-toc-label {
+    max-width: none;
+    opacity: 1;
+    visibility: visible;
+  }
+  .home-toc-link { min-height: 42px; padding: 0 9px; }
+  .home-toc-link[aria-current='location'] { background: var(--surface-alt); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-toc, .home-toc-panel, .home-toc-link, .home-toc-label,
+  .home-toc-marker, .home-toc-links::after, .home-toc-toggle-chevron { transition: none; }
 }

@@ -4,6 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from './ProjectCard.astro';
 import AtlasArt from './AtlasArt.astro';
 import ExpertiseScene from './ExpertiseScene.astro';
+import HomeSectionNavigator from './HomeSectionNavigator.astro';
 import Icon from './Icon.astro';
 import { expertise, site, stack } from '../data/site';
 import { journeyCopy } from '../data/journey';
@@ -17,6 +18,7 @@ const atlas = projects.find((project) => project.id === 'code-atlas');
 const otherProjects = projects.filter((project) => project.id !== 'code-atlas').slice(0, 4);
 ---
 <BaseLayout>
+  <HomeSectionNavigator />
   <section id="about" class="hero section-grid" aria-labelledby="hero-title">
     <div class="hero-copy">
       <div class="eyebrow"><span class="pulse-dot"></span> {t.hello} <span class="eyebrow-rule"></span> {t.occupation}</div>

@@ -142,3 +142,11 @@ The canonical deployment origin is `https://leo-site.quy-caongoc.workers.dev` in
 The Hero at `/#about` is the only About/introduction content; there is no repeated About section below projects. The existing stack tags stay in a compact toolbox beneath Expertise. The original `#about` link continues to work.
 
 The header is **always visible** while scrolling. A compact underline and `aria-current` mark the active destination: Hero/About, Expertise, and Experience anchors on Home; the separate Journey page and Projects pages mark their own route tabs. Journey is never activated by scrolling Home. On Journey/Projects pages the page tab is marked server-side, including without JS; on the homepage a passive, animation-frame-throttled scrollspy updates the active section. Sticky offsets account for two-row mobile navigation. Section headings are slightly larger at desktop and mobile sizes. Existing reduced-motion behavior remains intact.
+
+## Home floating table of contents
+
+The sticky header now has **three page-level destinations**: Home, Journey, and Projects. Only the URL controls its `aria-current="page"` indicator. Home-only section links are instead presented through `HomeSectionNavigator.astro` (About/Hero, Expertise, Experience, Selected Work).
+
+At desktop widths (1280px+), the compact **right-side vertical outline** always shows the active section name above its progress rail. It expands into a PDF-style outline on hover or keyboard focus; anchors support native hash navigation. The tracker uses passive scroll listeners, `requestAnimationFrame`, and a header-aware selection probe. At narrower widths, the rail becomes a native `<details>` disclosure button near the bottom right; click-outside, link selection, and Escape dismiss the panel. Native `<details>` and anchors work without JavaScript. Reduced-motion preferences disable rail animation and smooth scroll.
+
+Run `npm run build && node scripts/verify-ui-enhancements.mjs && node scripts/verify-home-toc.mjs` for bilingual markup and behavior-helper checks. The TOC is intentionally absent from Journey, Projects and project detail pages.

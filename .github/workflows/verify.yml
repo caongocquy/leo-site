@@ -37,6 +37,8 @@ jobs:
         run: node scripts/verify-terminal-demos.mjs
       - name: Verify portfolio UI enhancements
         run: node scripts/verify-ui-enhancements.mjs
+      - name: Verify home PDF-outline navigation
+        run: node scripts/verify-home-toc.mjs
       - name: Verify one-time scroll reveal on all page types
         run: node scripts/verify-scroll-reveal.mjs
       - name: Verify Vietnamese and English pages
