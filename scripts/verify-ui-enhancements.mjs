@@ -71,7 +71,11 @@ assert.ok(stylesheet.includes('/* Floating PDF-outline navigation'), 'Floating T
 assert.ok(stylesheet.includes('.home-toc:is(:hover, :focus-within)'), 'Desktop hover and keyboard expand missing');
 assert.ok(stylesheet.includes('.home-toc-mobile[open] .home-toc-panel'), 'Mobile disclosure styles missing');
 assert.ok(stylesheet.includes('.home-toc-desktop { display: none; }'), 'Desktop rail must not obscure small screens');
-assert.ok(stylesheet.includes('max-width: 1279px'), 'Responsive TOC breakpoint missing');
+assert.ok(stylesheet.includes('max-width: 1439px'), 'TOC must collapse before it obscures desktop content');
+assert.ok(stylesheet.includes('top: max(104px, calc(env(safe-area-inset-top) + 104px))'), 'Desktop TOC must sit below the header instead of covering the Hero');
+assert.ok(!stylesheet.slice(stylesheet.indexOf('/* Floating PDF-outline navigation'), stylesheet.indexOf('.home-toc-mobile { display: none; }')).includes('translateY(-50%)'), 'Desktop TOC cannot be vertically centered');
+assert.ok(stylesheet.includes('right: max(0px, env(safe-area-inset-right))'), 'Desktop TOC must hug the right viewport gutter');
+assert.ok(stylesheet.includes('width: 82px'), 'Collapsed outline must fit into a narrow right gutter');
 assert.ok(stylesheet.includes('clamp(35px, 4vw, 49px)'), 'Larger home section headings missing');
 assert.ok(!headerSource.includes('data-nav-target'), 'Page navigation must not track home sections');
 assert.ok(headerSource.includes('data-nav-page="home"'), 'Global Home page link missing');
