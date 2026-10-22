@@ -59,3 +59,24 @@ const heroSource = readFileSync('src/styles/global.css', 'utf8');
 assert.ok(heroSource.includes('/* Lucian #216-inspired'), 'Hero stagger must be present');
 assert.ok(heroSource.includes('@keyframes hero-arrive'), 'Hero entrance keyframes missing');
 assert.ok(heroSource.includes('prefers-reduced-motion: reduce'), 'Motion preference must be supported');
+
+
+const headerSource = readFileSync('src/components/Header.astro', 'utf8');
+assert.ok(headerSource.includes('data-site-header'), 'Header needs scroll behavior hook');
+assert.ok(headerSource.includes("addEventListener('scroll', schedule, { passive: true })"), 'Scroll events must be passive');
+assert.ok(headerSource.includes('requestAnimationFrame(update)'), 'Scroll events must be throttled');
+assert.ok(headerSource.includes('next !== direction'), 'Reversing scroll direction must reset travel');
+assert.ok(headerSource.includes('direction > 0 && distance >= 24'), 'Down-scroll must use a nonzero threshold');
+assert.ok(headerSource.includes('direction < 0 && distance >= 12'), 'Up-scroll must reveal navigation');
+assert.ok(headerSource.includes('header.contains(document.activeElement)'), 'Keyboard focus must show navigation');
+assert.ok(headerSource.includes("addEventListener('focusin'"), 'Focus must reveal the header');
+assert.ok(stylesheet.includes('/* Lucian #212-inspired scroll-aware sticky navigation'), 'Sticky header styles missing');
+assert.ok(stylesheet.includes('position: sticky;'), 'Header must be sticky');
+assert.ok(stylesheet.includes('.site-header.is-header-hidden:focus-within'), 'Focus-visible safeguard missing');
+assert.ok(stylesheet.includes('/* Persistently visible sticky navigation for reduced motion. */'), 'Reduced-motion fallback missing');
+for (const prefix of ['', 'en/']) {
+  for (const pathname of ['index.html', 'journey/index.html', 'projects/index.html']) {
+    const page = readFileSync(`dist/${prefix}${pathname}`, 'utf8');
+    assert.ok(page.includes('data-site-header'), `Header missing in ${prefix}${pathname}`);
+  }
+}
