@@ -67,6 +67,10 @@ assert.ok(headerSource.includes('data-site-header'), 'Header must stay sticky');
 assert.ok(headerSource.includes("addEventListener('scroll', schedule, { passive: true })"), 'Active section scroll observer must be passive');
 assert.ok(headerSource.includes('requestAnimationFrame(update)'), 'Section scroll calculations must be frame throttled');
 assert.ok(headerSource.includes('section.offsetTop <= probe'), 'Home scrollspy must follow current sections');
+assert.ok(headerSource.includes('data-nav-target="experience" href={localizedPath("/#experience",locale)}'), 'Experience needs its own home section tab');
+assert.ok(headerSource.includes('data-nav-target="journey" href={localizedPath("/journey/",locale)}'), 'Journey must remain a separate page link');
+assert.ok(headerSource.includes("{ id: 'experience', target: 'experience' }"), 'Home Experience must activate its own tab');
+assert.ok(!headerSource.includes("{ id: 'experience', target: 'journey' }"), 'Home Experience must never mark Journey page active');
 assert.ok(headerSource.includes("header.offsetHeight"), 'Scrollspy must account for responsive sticky header height');
 assert.ok(!headerSource.includes('is-header-hidden'), 'Header must not auto-hide on downward scroll');
 assert.ok(stylesheet.includes('/* Sticky, always-visible navigation'), 'Persistent sticky navigation styles missing');
@@ -81,10 +85,13 @@ for (const prefix of ['', 'en/']) {
   assert.ok(home.includes('<section id="about" class="hero'), 'Hero introduction anchor missing');
   assert.ok(!home.includes('class="about-section'), 'About duplicated on home');
   assert.ok(home.includes('class="expertise-toolbox"'), 'Toolbox missing on home');
-  for (const key of ['about', 'expertise', 'journey', 'projects']) {
+  for (const key of ['about', 'expertise', 'experience', 'journey', 'projects']) {
     assert.ok(home.includes(`data-nav-target="${key}"`), `Missing navigation target ${key}`);
   }
   assert.ok(home.includes('data-nav-target="about"') && home.includes('aria-current="location"'), 'Homepage should mark the introduction as active without JS');
+  assert.match(home, /data-nav-target="experience" href="\/(?:en\/)?#experience"/, 'Experience should navigate to a home anchor');
+  assert.match(home, /data-nav-target="journey" href="\/(?:en\/)?journey\/"/, 'Journey should navigate to its dedicated page');
+  assert.doesNotMatch(home, /data-nav-target="journey"[^>]*aria-current=/, 'Journey should not be marked active on the homepage');
 }
 for (const prefix of ['', 'en/']) {
   for (const pathname of ['journey/index.html', 'projects/index.html', 'projects/code-atlas/index.html']) {

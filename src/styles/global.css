@@ -707,3 +707,17 @@ html { scroll-padding-top: 108px; }
 @media (prefers-reduced-motion: reduce) {
   .header-nav a, .header-nav a::after { transition: none; }
 }
+
+/* Five distinct destinations: home Experience is not the separate Journey page. */
+@media (max-width: 830px) {
+  .header-nav {
+    min-width: 0;
+    justify-content: flex-start;
+    gap: clamp(13px, 3.5vw, 21px);
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-padding-inline: 8px;
+    scrollbar-width: thin;
+  }
+  .header-nav a { flex-shrink: 0; }
+}
