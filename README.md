@@ -126,13 +126,13 @@ Home, Projects, Project Detail and Journey use one progressive-enhancement compo
 
 ## Production SEO, GEO and social previews
 
-The canonical deployment origin is `https://leo-site.quy-caongoc.workers.dev` in `astro.config.mjs`. Change it everywhere (site config, `public/robots.txt`, `public/llms.txt`, social-card footer, and tests) when using a custom domain; do not point canonicals at two different hosts.
+The canonical deployment origin is `https://leo-site.quy-caongoc.workers.dev` in `astro.config.mjs`. Change it everywhere (site config, `public/robots.txt`, `public/llms.txt`, social preview metadata, and tests) when using a custom domain; do not point canonicals at two different hosts.
 
 - `src/pages/sitemap.xml.ts` builds `/sitemap.xml` from published project content, with Vietnamese, English and x-default hreflang alternates. Public routes only; 404s are not listed.
 - `public/robots.txt` allows crawl and references the sitemap. The Vietnamese home is the default locale at `/`; English is under `/en/`.
-- `BaseLayout.astro` emits per-route canonical, Open Graph title/description/URL, absolute JPG share image and dimensions, Twitter summary large image card, and JSON-LD for `WebSite`, `Person`, `WebPage`, `BreadcrumbList`. Project pages add `SoftwareSourceCode` referencing the public source repository. Employment at Galaxy is marked current; client assignments remain separate.
-- The share card is built into `dist/og-image.jpg` from SVG artwork by `npm run generate:og` (called inside `npm run build`). It is **1200×630 JPEG** and uses abstract code/mobile illustrations, not fabricated screenshots.
+- `BaseLayout.astro` emits per-route canonical, Open Graph title/description/URL, absolute PNG share image and dimensions, Twitter summary large image card, and JSON-LD for `WebSite`, `Person`, `WebPage`, `BreadcrumbList`. Project pages add `SoftwareSourceCode` referencing the public source repository. Employment at Galaxy is marked current; client assignments remain separate.
+- The share card uses the **user-uploaded** `public/social-preview.png`, copied unchanged by Astro into `dist/social-preview.png`. The metadata expects a **1200×630 PNG**. No build-time image generation, placeholder artwork or extra Sharp dependency.
 - `public/llms.txt` is an optional human/agent-readable navigation summary. Google Search says it does **not** use llms.txt for ranking or AI search inclusion: see https://developers.google.com/search/docs/fundamentals/ai-optimization-guide
 - Both 404 pages use `noindex, follow`. No unsupported ratings, metrics, testimonials or employer claims are included in structured data.
 - Verify with `npm run build && node scripts/verify-seo-geo.mjs`; GitHub Actions runs this check for every PR.
-- After merging, verify `/sitemap.xml`, `/robots.txt`, `/llms.txt`, and `/og-image.jpg` on Cloudflare, then use Google Search Console and the LinkedIn Post Inspector to request a fresh crawl. Indexing and link previews are controlled by external crawlers and may be cached.
+- After merging, verify `/sitemap.xml`, `/robots.txt`, `/llms.txt`, and `/social-preview.png` on Cloudflare, then use Google Search Console and the LinkedIn Post Inspector to request a fresh crawl. Indexing and link previews are controlled by external crawlers and may be cached.

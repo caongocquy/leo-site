@@ -21,7 +21,7 @@ const t = ui(locale);
 const { title = `${site.name} — ${t.role}`, description = t.siteDescription, noindex = false, projectSchema } = Astro.props;
 const origin = Astro.site ?? new URL('https://leo-site.quy-caongoc.workers.dev');
 const canonical = new URL(Astro.url.pathname, origin).toString();
-const shareImage = new URL('/og-image.jpg', origin).toString();
+const shareImage = new URL('/social-preview.png', origin).toString();
 const homepage = new URL('/', origin).toString();
 const personId = `${homepage}#person`;
 const websiteId = `${homepage}#website`;
@@ -82,7 +82,7 @@ const jsonLd = JSON.stringify({ '@context': 'https://schema.org', '@graph': grap
     <meta property="og:locale:alternate" content={locale === 'vi' ? 'en_US' : 'vi_VN'} />
     <meta property="og:image" content={shareImage} />
     <meta property="og:image:secure_url" content={shareImage} />
-    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="Leo — Cao Ngoc Quy, Mobile Engineer and Open-Source Builder" />

@@ -5,8 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run generate:og && astro build",
-    "generate:og": "node scripts/generate-social-image.mjs",
+    "build": "astro build",
     "preview": "astro preview",
     "deploy": "npm run build && wrangler deploy"
   },
@@ -20,8 +19,7 @@
   },
   "devDependencies": {
     "typescript": "^5.9.3",
-    "wrangler": "^4.151.0",
-    "sharp": "^0.35.5"
+    "wrangler": "^4.151.0"
   },
   "engines": {
     "node": ">=22.23.4"

@@ -1,6 +1,5 @@
 import assert from 'node:assert/strict';
-import { readFileSync, readdirSync, statSync } from 'node:fs';
-import sharp from 'sharp';
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 
 // Production and branch previews must keep independent Wrangler environments.
 const wrangler = JSON.parse(readFileSync('wrangler.jsonc', 'utf8'));
@@ -32,11 +31,12 @@ for (const path of paths) {
     assert.ok(html.includes(`hreflang="en" href="${host + '/en' + path}"`), `${localized}: en hreflang missing`);
     assert.ok(html.includes(`hreflang="x-default" href="${host + path}"`), `${localized}: wrong x-default`);
     meta(html, 'og:url', canonical);
-    meta(html, 'og:image', host + '/og-image.jpg');
+    meta(html, 'og:image', host + '/social-preview.png');
+    meta(html, 'og:image:type', 'image/png');
     meta(html, 'og:image:width', '1200');
     meta(html, 'og:image:height', '630');
     meta(html, 'twitter:card', 'summary_large_image');
-    meta(html, 'twitter:image', host + '/og-image.jpg');
+    meta(html, 'twitter:image', host + '/social-preview.png');
     const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
     assert.ok(match, `${localized}: JSON-LD missing`);
     const doc = JSON.parse(match[1]);
@@ -79,10 +79,15 @@ for (const missing of ['dist/404.html', 'dist/en/404/index.html', 'dist/en/404.h
   }
 }
 
-const social = 'dist/og-image.jpg';
-const image = await sharp(social).metadata();
-assert.equal(image.format, 'jpeg');
-assert.equal(image.width, 1200);
-assert.equal(image.height, 630);
-assert.ok(statSync(social).size < 500_000, 'Share image should be lightweight');
-console.log(`SEO/GEO: ${paths.length * 2} canonical routes, bilingual sitemap, JSON-LD, robots, llms.txt and 1200x630 social preview verified.`);
+const social = 'dist/social-preview.png';
+assert.ok(existsSync('public/social-preview.png'), 'User-owned share preview must be present in public/');
+const image = readFileSync(social);
+const sourceImage = readFileSync('public/social-preview.png');
+assert.ok(image.equals(sourceImage), 'Build must copy the uploaded image unchanged, not replace it');
+assert.ok(image.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])), 'Share preview must be PNG');
+assert.equal(image.toString('ascii', 12, 16), 'IHDR', 'PNG header must include IHDR');
+assert.equal(image.readUInt32BE(16), 1200, 'Share preview should be 1200px wide');
+assert.equal(image.readUInt32BE(20), 630, 'Share preview should be 630px high');
+assert.ok(statSync(social).size < 3_000_000, 'Share preview should be under 3 MB');
+assert.ok(!existsSync('scripts/generate-social-image.mjs'), 'Old generated artwork script must be removed');
+console.log(`SEO/GEO: ${paths.length * 2} canonical routes, bilingual sitemap, JSON-LD, robots, llms.txt and user-uploaded PNG social preview verified.`);
