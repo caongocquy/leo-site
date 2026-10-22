@@ -160,3 +160,16 @@ At <=830px, the sticky header becomes a balanced utility row (brand, locale/them
 ## Bilingual Home labels and section numbering
 
 The page-level Home tab is labeled **Giới thiệu** in Vietnamese and **About Me** in English. The Home table of contents and visible section eyebrow labels use the same order: `01` Hero/Introduction, `02` Expertise, `03` Experience, `04` Selected Work. The Hero greeting remains the introduction text with a subtle `01 /` prefix. Only small eyebrow and numbered section-label typography increased; large section headings and mobile layout are intentionally unchanged. Bilingual generated-page assertions guard the wording and ordering.
+
+## Home section labels: one source of truth
+
+The Home outline no longer hardcodes its four labels independently from the sections. It uses the header's localized intro label and derives the other three names directly from `t.whatIDo`, `t.experienceLabel`, and `t.selectedWork`, removing the numeric prefix and formatting the case for readable menu text.
+
+| Section | Vietnamese | English |
+| --- | --- | --- |
+| 01 | Giới thiệu | About Me |
+| 02 | Chuyên môn | What I Do |
+| 03 | Kinh nghiệm | Experience |
+| 04 | Dự án tiêu biểu | Selected Work |
+
+The page-level Projects tab remains **Dự án / Projects**, distinct from the featured/selected projects section inside Home. Regression assertions compare the rendered labels, numbering, and accessible names in **both** desktop and mobile outlines against the rendered section headings in both languages.

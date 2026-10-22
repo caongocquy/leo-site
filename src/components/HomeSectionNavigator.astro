@@ -3,11 +3,20 @@ import { localeFromPath, ui } from '../i18n/translations';
 
 const locale = localeFromPath(Astro.url.pathname);
 const t = ui(locale);
+// Derive the outline labels from the exact same translations used by each
+// Home section heading. Avoid independently hardcoded TOC copy drifting away.
+const sectionName = (heading: string) => {
+  const value = heading.replace(/^\d{2}\s*\/\s*/, '').toLocaleLowerCase(locale);
+  if (locale === 'en') {
+    return value.replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
+  }
+  return value.charAt(0).toLocaleUpperCase('vi') + value.slice(1);
+};
 const sections = [
-  { id: 'about', label: t.navAbout },
-  { id: 'expertise', label: t.navExpertise },
-  { id: 'experience', label: t.navExperience },
-  { id: 'projects', label: locale === 'vi' ? 'Dự án nổi bật' : 'Selected work' },
+  { id: 'about', label: t.home },
+  { id: 'expertise', label: sectionName(t.whatIDo) },
+  { id: 'experience', label: sectionName(t.experienceLabel) },
+  { id: 'projects', label: sectionName(t.selectedWork) },
 ];
 const title = locale === 'vi' ? 'TRONG TRANG NÀY' : 'ON THIS PAGE';
 const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';

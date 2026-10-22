@@ -100,6 +100,10 @@ assert.ok(!homeSource.includes('class="index-number"'), 'Expertise cards should 
 assert.ok(!homeSource.includes('<span>01</span></div><h3>'), 'Experience cards should not show decorative numbers');
 assert.ok(!homeSource.includes('<span>02</span></div><h3>'), 'Experience cards should not show decorative numbers');
 assert.ok(tocSource.includes("getActiveSection(sectionTops, offset)"), 'TOC scrollspy missing');
+assert.ok(tocSource.includes('sectionName(t.whatIDo)'), 'Expertise outline must share the section translation');
+assert.ok(tocSource.includes('sectionName(t.experienceLabel)'), 'Experience outline must share the section translation');
+assert.ok(tocSource.includes('sectionName(t.selectedWork)'), 'Selected Work outline must share the section translation');
+assert.ok(!tocSource.includes('Dự án nổi bật'), 'TOC must not hardcode an alternative project section title');
 assert.ok(tocSource.includes("getDocumentProgress(window.scrollY"), 'Vertical progress missing');
 assert.ok(tocSource.includes("addEventListener('scroll', schedule, { passive: true })"), 'TOC scroll events must be passive');
 assert.ok(tocSource.includes('requestAnimationFrame(update)'), 'TOC scroll events must be throttled');
@@ -119,6 +123,29 @@ for (const prefix of ['', 'en/']) {
     : ['02 / CHUYÊN MÔN', '03 / KINH NGHIỆM', '04 / DỰ ÁN TIÊU BIỂU'];
   for (const label of expectedLabels) assert.ok(home.includes(label), `Missing ordered Home label: ${label}`);
   assert.ok(home.includes('class="hero-section-number">01 /</span>'), 'Home hero section index missing');
+  // Check every label on both the desktop and mobile outlines against the
+  // actual in-page eyebrow for that section, including its 01-04 ordering.
+  const expectedOutline = prefix
+    ? [
+        ['about', '01', 'About Me', null],
+        ['expertise', '02', 'What I Do', 'WHAT I DO'],
+        ['experience', '03', 'Experience', 'EXPERIENCE'],
+        ['projects', '04', 'Selected Work', 'SELECTED WORK'],
+      ]
+    : [
+        ['about', '01', 'Giới thiệu', null],
+        ['expertise', '02', 'Chuyên môn', 'CHUYÊN MÔN'],
+        ['experience', '03', 'Kinh nghiệm', 'KINH NGHIỆM'],
+        ['projects', '04', 'Dự án tiêu biểu', 'DỰ ÁN TIÊU BIỂU'],
+      ];
+  for (const [id, number, label, eyebrow] of expectedOutline) {
+    const navItems = home.match(new RegExp(`data-toc-link="${id}"[^>]*aria-label="${number}\\. ${label}"`, 'g')) ?? [];
+    assert.equal(navItems.length, 2, `${prefix || 'vi/'} ${id}: desktop/mobile outline must use section label "${label}"`);
+    assert.ok(home.includes(`class="home-toc-label" aria-hidden="true">${label}</span>`), `${id}: visible TOC title mismatch`);
+    if (eyebrow) {
+      assert.ok(home.includes(`class="section-eyebrow">${number} / ${eyebrow}</span>`), `${id}: heading and outline must have the same section name/number`);
+    }
+  }
   assert.ok(!home.includes('class="index-number"'), 'Rendered expertise cards should not show decorative numeric badges');
   assert.doesNotMatch(home, /class="experience-meta"[^>]*>[^<]*<span>[^<]*<\/span><span>0[12]<\/span>/, 'Rendered experience cards should not show numeric badges');
   for (const id of ['about', 'expertise', 'experience', 'projects']) {
