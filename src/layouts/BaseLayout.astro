@@ -25,7 +25,7 @@ const shareImage = new URL('/og-image.jpg', origin).toString();
 const homepage = new URL('/', origin).toString();
 const personId = `${homepage}#person`;
 const websiteId = `${homepage}#website`;
-const path = Astro.url.pathname.replace(/^\\/en(?=\\/|$)/, '') || '/';
+const path = Astro.url.pathname.replace(/^\/en(?=\/|$)/, '') || '/';
 const parts = path.split('/').filter(Boolean);
 const breadcrumbs = parts.length ? [
   { '@type': 'ListItem', position: 1, name: locale === 'vi' ? 'Trang chủ' : 'Home', item: new URL(locale === 'vi' ? '/' : '/en/', origin).toString() },
