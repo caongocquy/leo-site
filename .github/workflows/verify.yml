@@ -43,3 +43,5 @@ jobs:
         run: node scripts/verify-i18n.mjs
       - name: Verify Career Journey routes and chronology
         run: node scripts/verify-journey.mjs
+      - name: Verify production SEO GEO and social preview
+        run: node scripts/verify-seo-geo.mjs

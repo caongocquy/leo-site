@@ -9,8 +9,11 @@ const paths = ['/', '/projects/', '/journey/', ...slugs.map((slug) => `/projects
 const fileFor = (path) => path === '/' ? 'dist/index.html' : `dist${path}index.html`;
 
 function meta(html, key, value) {
-  const re = new RegExp(`<meta[^>]*(?:name|property)="${key.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}"[^>]*content="${value.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}"[^>]*>`);
-  assert.match(html, re, `Missing ${key}=${value}`);
+  assert.ok(
+    html.includes(`property="${key}" content="${value}"`) ||
+    html.includes(`name="${key}" content="${value}"`),
+    `Missing ${key}=${value}`
+  );
 }
 
 for (const path of paths) {
