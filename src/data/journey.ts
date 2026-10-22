@@ -11,6 +11,7 @@ export interface JourneyMilestone {
   period: string;
   year: string;
   kind: 'career' | 'open-source';
+  current?: boolean;
   company: string;
   role: string;
   summary: string;
@@ -54,9 +55,9 @@ export const journeyMilestones: Record<JourneyLocale, JourneyMilestone[]> = {
       technologies: ['React Native', 'React', 'TypeScript'],
     },
     {
-      id: 'galaxy', year: '2025', period: 'FROM FEB 2025', kind: 'career',
+      id: 'galaxy', year: '2025', period: 'FEB 2025 — PRESENT', kind: 'career', current: true,
       company: 'Galaxy Technology Services', role: 'Mobile Developer',
-      summary: 'Worked on financial and airline mobile products through onsite client assignments. Galaxy is the employer; HDBank and VietJet Air are client projects.',
+      summary: 'I currently work at Galaxy Technology Services as a Mobile Developer. HDBank and VietJet Air were client assignments through Galaxy; the HDBank assignment ended in July 2026, but my employment with Galaxy continues.',
       assignments: [
         {period:'FEB — JUN 2025',name:'DI HDBank',description:'React Native banking experience and CMS-driven mobile screens.'},
         {period:'JUN — NOV 2025',name:'VietJet Air',description:'Mobile development and migration work from React Native to Flutter.'},
@@ -67,7 +68,7 @@ export const journeyMilestones: Record<JourneyLocale, JourneyMilestone[]> = {
     {
       id: 'open-source', year: '2026', period: '2026 / INDEPENDENT WORK', kind: 'open-source',
       company: 'Building in the open', role: 'Open-source projects · separate from employment',
-      summary: 'Turning practical lessons from mobile engineering and AI-assisted development into tools that other developers can inspect, use, and extend.',
+      summary: 'Alongside my ongoing role at Galaxy Technology Services, I build open-source tools in my personal time—sharing practical lessons from mobile engineering and AI-assisted development.',
       assignments: [
         {period:'CODE INTELLIGENCE',name:'Code Atlas',description:'Local-first repository graph, symbol navigation, and impact analysis.'},
         {period:'AI INFRASTRUCTURE',name:'Showdar Router',description:'Model routing, provider fallback, and local developer workflows.'},
@@ -112,9 +113,9 @@ export const journeyMilestones: Record<JourneyLocale, JourneyMilestone[]> = {
       technologies: ['React Native', 'React', 'TypeScript'],
     },
     {
-      id: 'galaxy', year: '2025', period: 'TỪ 02/2025', kind: 'career',
+      id: 'galaxy', year: '2025', period: '02/2025 — HIỆN TẠI', kind: 'career', current: true,
       company: 'Galaxy Technology Services', role: 'Mobile Developer',
-      summary: 'Tham gia các sản phẩm ngân hàng và hàng không thông qua hình thức onsite. Galaxy là công ty tuyển dụng; HDBank và VietJet Air là khách hàng/dự án.',
+      summary: 'Hiện mình vẫn đang làm việc tại Galaxy Technology Services với vai trò Mobile Developer. HDBank và VietJet Air là các dự án khách hàng; việc kết thúc dự án HDBank vào 07/2026 không có nghĩa là mình nghỉ Galaxy.',
       assignments: [
         {period:'02 — 06/2025',name:'DI HDBank',description:'Phát triển React Native banking và các màn hình mobile theo CMS.'},
         {period:'06 — 11/2025',name:'VietJet Air',description:'Phát triển mobile và tham gia chuyển đổi React Native sang Flutter.'},
@@ -125,7 +126,7 @@ export const journeyMilestones: Record<JourneyLocale, JourneyMilestone[]> = {
     {
       id: 'open-source', year: '2026', period: '2026 / DỰ ÁN CÁ NHÂN', kind: 'open-source',
       company: 'Xây dựng mã nguồn mở', role: 'Dự án cá nhân · không phải kinh nghiệm tuyển dụng',
-      summary: 'Biến kinh nghiệm kỹ thuật mobile và phát triển cùng AI agent thành những công cụ có thể sử dụng, kiểm tra mã nguồn và mở rộng.',
+      summary: 'Song song với công việc hiện tại tại Galaxy Technology Services, mình phát triển các công cụ mã nguồn mở cá nhân, ứng dụng kinh nghiệm mobile và AI-assisted development.',
       assignments: [
         {period:'PHÂN TÍCH CODE',name:'Code Atlas',description:'Graph repository chạy cục bộ, điều hướng symbol và phân tích ảnh hưởng thay đổi.'},
         {period:'HẠ TẦNG AI',name:'Showdar Router',description:'Định tuyến model, fallback provider và quy trình phát triển local.'},
@@ -143,31 +144,33 @@ export const journeyMilestones: Record<JourneyLocale, JourneyMilestone[]> = {
 
 export const journeyCopy = {
   en: {
-    breadcrumb:'Home', eyebrow:'THE ROAD SO FAR / 2019 — 2026',
+    breadcrumb:'Home', eyebrow:'THE ROAD SO FAR / 2019 — PRESENT',
     heading:'A career built', emphasis:'one problem at a time.',
-    intro:'From shipping mobile experiences to building open-source developer tools. The work, the transitions, and the things I learned along the way.',
-    smallLabel:'CAREER JOURNEY', snapshotLabel:'AT A GLANCE', snapshotValue:'2019 — 2026',
+    intro:'I am currently a Mobile Developer at Galaxy Technology Services. This timeline covers my earlier roles, client assignments, and open-source projects built alongside my full-time work.',
+    smallLabel:'CAREER JOURNEY', snapshotLabel:'AT A GLANCE', snapshotValue:'2019 — PRESENT',
+    currentRole:'CURRENTLY EMPLOYED', currentCompany:'Galaxy Technology Services · Mobile Developer',
     snapshotSub:'Mobile products · cross-platform engineering · open source',
     viewGithub:'Explore open-source work', viewLinkedin:'LinkedIn profile',
     scrollCue:'SCROLL TO EXPLORE', sectionTitle:'Milestones, not job titles.',
-    sectionSubtitle:'Employers and client assignments are separated for clarity. Dates reflect the latest verified career record.',
+    sectionSubtitle:'Currently employed at Galaxy Technology Services (February 2025–present). Earlier client assignments and personal open-source projects are shown separately.',
     chapter:'CHAPTER', assignments:'SELECTED PROJECTS & ASSIGNMENTS', openSource:'INDEPENDENT WORK',
     career:'EMPLOYMENT', next:'Continue exploring', nextIntro:'See the projects behind the journey.',
     viewProjects:'Browse all projects', backHome:'Back to home',
     summaryLink:'Explore full career journey',
     homepagePrompt:'FROM EXPERIENCE TO EXPERIMENTS', homepageIntro:'Explore the path from production mobile apps to open-source tools.',
     title:'Career Journey — Leo',
-    description:'Career timeline of Leo (Cao Ngoc Quy), mobile developer, from 2019 to open-source work in 2026.'
+    description:'Career journey of Leo (Cao Ngoc Quy), currently a Mobile Developer at Galaxy Technology Services since February 2025, with past roles and independent open-source projects.'
   },
   vi: {
-    breadcrumb:'Trang chủ', eyebrow:'HÀNH TRÌNH / 2019 — 2026',
+    breadcrumb:'Trang chủ', eyebrow:'HÀNH TRÌNH / 2019 — HIỆN TẠI',
     heading:'Từng chặng đường,', emphasis:'từng bài toán mới.',
-    intro:'Từ phát triển ứng dụng mobile thực tế đến xây dựng công cụ mã nguồn mở. Những dự án, bước chuyển và bài học đã định hình cách mình làm sản phẩm.',
-    smallLabel:'HÀNH TRÌNH SỰ NGHIỆP', snapshotLabel:'TỔNG QUAN', snapshotValue:'2019 — 2026',
+    intro:'Mình hiện đang làm Mobile Developer tại Galaxy Technology Services. Đây là hành trình qua những công ty trước đây, các dự án khách hàng và sản phẩm mã nguồn mở mình phát triển song song với công việc.',
+    smallLabel:'HÀNH TRÌNH SỰ NGHIỆP', snapshotLabel:'TỔNG QUAN', snapshotValue:'2019 — HIỆN TẠI',
+    currentRole:'ĐANG LÀM VIỆC', currentCompany:'Galaxy Technology Services · Mobile Developer',
     snapshotSub:'Sản phẩm mobile · kỹ thuật đa nền tảng · mã nguồn mở',
     viewGithub:'Khám phá mã nguồn mở', viewLinkedin:'Hồ sơ LinkedIn',
     scrollCue:'CUỘN ĐỂ KHÁM PHÁ', sectionTitle:'Những cột mốc thực tế.',
-    sectionSubtitle:'Công ty và dự án khách hàng được tách riêng. Thời gian dựa trên hồ sơ nghề nghiệp đã xác minh.',
+    sectionSubtitle:'Mình vẫn đang làm tại Galaxy Technology Services (02/2025–hiện tại). Các dự án khách hàng đã kết thúc và dự án cá nhân được trình bày riêng.',
     chapter:'CHẶNG', assignments:'DỰ ÁN & CÔNG VIỆC TIÊU BIỂU', openSource:'DỰ ÁN CÁ NHÂN',
     career:'KINH NGHIỆM LÀM VIỆC', next:'Tiếp tục khám phá', nextIntro:'Khám phá các dự án đằng sau hành trình này.',
     viewProjects:'Xem tất cả dự án', backHome:'Về trang chủ',
@@ -175,6 +178,6 @@ export const journeyCopy = {
     homepagePrompt:'TỪ SẢN PHẨM THỰC TẾ ĐẾN MÃ NGUỒN MỞ',
     homepageIntro:'Những bước phát triển từ ứng dụng mobile đến công cụ dành cho developer.',
     title:'Hành trình sự nghiệp — Leo',
-    description:'Hành trình nghề nghiệp của Leo (Cao Ngọc Quý), kỹ sư mobile, từ năm 2019 đến các dự án mã nguồn mở năm 2026.'
+    description:'Hành trình nghề nghiệp của Leo (Cao Ngọc Quý), hiện là Mobile Developer tại Galaxy Technology Services từ 02/2025, cùng các dự án mã nguồn mở cá nhân.'
   }
 } as const;

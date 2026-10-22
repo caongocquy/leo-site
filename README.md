@@ -91,9 +91,9 @@ The `screenshots` content field optionally supports `kind: concept` and translat
 Two static pages: `/journey/` (Vietnamese default) and `/en/journey/` (English), with links in header, footer, and homepage Experience. Inspired by Lucian UX/UI Prompt #370: the progression line lights up while scrolling, with progressive enhancement and `prefers-reduced-motion` support.
 
 Career entries are edited at `src/data/journey.ts`, paired EN/VI:
-- MGI Global (Jun 2019–Dec 2021), 45CM VINA (Jan 2022–Feb 2023), 1988s Media and Technology (Mar 2023–Aug 2024), Galaxy Technology Services (from Feb 2025), reflecting the last reviewed CV.
+- MGI Global (Jun 2019–Dec 2021), 45CM VINA (Jan 2022–Feb 2023), 1988s Media and Technology (Mar 2023–Aug 2024), Galaxy Technology Services (**Feb 2025–Present, currently employed**), reflecting the confirmed career status.
 - DI HDBank (Feb–Jun 2025), VietJet Air (Jun–Nov 2025), and HDBank (Nov 2025–Jul 2026) are **client assignments nested under Galaxy**, never misrepresented as direct employers.
-- Open-source work in 2026 is a separate milestone from employment; it links to project pages.
+- Open-source work in 2026 is a separate milestone running **alongside ongoing employment at Galaxy**, not a career transition; it links to project pages.
 
 Verify any future employment or client-date changes against the CV before updating public entries.
 

@@ -21,6 +21,7 @@ const entries = journeyMilestones[locale];
       <div class="journey-eyebrow"><span class="journey-pulse" aria-hidden="true"></span>{t.eyebrow}</div>
       <h1 id="journey-title">{t.heading}<br /><em>{t.emphasis}</em></h1>
       <p>{t.intro}</p>
+      <p class="journey-current-employment"><span class="journey-current-dot" aria-hidden="true"></span><strong>{t.currentRole}</strong><span>{t.currentCompany}</span></p>
       <div class="journey-hero-links">
         <a href={site.github} target="_blank" rel="noopener noreferrer">{t.viewGithub}<Icon name="arrow-up-right" size={15}/></a>
         <a href="https://www.linkedin.com/in/cao-ngoc-quy-173b0812a/" target="_blank" rel="noopener noreferrer">{t.viewLinkedin}<Icon name="arrow-up-right" size={15}/></a>
@@ -62,6 +63,7 @@ const entries = journeyMilestones[locale];
                 <div class="journey-card-label">
                   <span>{t.chapter} {String(index + 1).padStart(2, '0')}</span>
                   <span class="journey-kind">{entry.kind === 'career' ? t.career : t.openSource}</span>
+                  {entry.current && <span class="journey-current-chip"><span class="journey-current-dot" aria-hidden="true"></span>{t.currentRole}</span>}
                 </div>
                 <span class="journey-period">{entry.period}</span>
               </header>
@@ -116,13 +118,17 @@ const entries = journeyMilestones[locale];
   .journey-hero h1 { margin:25px 0 21px; max-width:750px; font-size: clamp(39px, 5.3vw, 72px); line-height:1.12; letter-spacing:-.06em; font-weight:660; color:var(--text-strong); }
   .journey-hero h1 em { color:var(--accent); font-style:normal; }
   .journey-hero-copy > p { max-width:590px; margin:0; font-size:15px; line-height:1.85; color:var(--muted); }
+  .journey-current-employment { display:flex; align-items:center; flex-wrap:wrap; gap:9px 12px; padding:12px 14px; margin-top:22px!important; border-radius:10px; border:1px solid var(--line-accent); background:var(--surface-alt); font-size:11px!important; line-height:1.5!important; color:var(--text)!important; }
+  .journey-current-employment strong { color:var(--accent); font-size:10px; font-weight:700; letter-spacing:.03em; }
+  .journey-current-dot { display:inline-block; width:7px; height:7px; flex:0 0 auto; border-radius:50%; background:var(--accent); }
+  .journey-current-chip { display:inline-flex; align-items:center; gap:7px; color:var(--accent); font-size:9px; letter-spacing:.03em; border:1px solid var(--line-accent); background:var(--surface-alt); border-radius:6px; padding:4px 7px; }
   .journey-hero-links { display:flex; flex-wrap:wrap; align-items:center; gap:12px 23px; margin-top:29px; }
   .journey-hero-links a { display:inline-flex; align-items:center; gap:7px; font-weight:600; color:var(--accent); font-size:12px; }
   .journey-hero-links a:hover { text-decoration:underline; text-underline-offset:4px; }
   .journey-snapshot { padding:23px 25px; min-height:265px; border:1px solid var(--line-accent); background: radial-gradient(circle at 90% 0, rgba(var(--accent-rgb),.1), transparent 60%),var(--surface); border-radius:17px; display:flex; flex-direction:column; }
   .journey-snapshot-top { display:flex; justify-content:space-between; color:var(--muted-soft); font:10px 'IBM Plex Mono',ui-monospace,monospace; letter-spacing:.1em; }
   .journey-snapshot-top span:last-child { color:var(--accent); font-size:9px; }
-  .journey-snapshot > strong { display:block; margin-top:17px; color:var(--text-strong); font: 600 clamp(29px,3.2vw,42px) 'IBM Plex Sans Variable',sans-serif; letter-spacing:-.05em; }
+  .journey-snapshot > strong { display:block; margin-top:17px; color:var(--text-strong); font: 600 clamp(24px,2.6vw,35px) 'IBM Plex Sans Variable',sans-serif; letter-spacing:-.05em; overflow-wrap:anywhere; }
   .journey-snapshot-bars { display:flex; align-items:end; gap:5px; margin:22px 0 15px; height:45px; }
   .journey-snapshot-bars i { flex:1; display:block; height:var(--h,40%); background:var(--line-accent); border-radius:4px 4px 0 0; opacity:.85; }
   .journey-snapshot-bars i:nth-child(12n+1){--h:28%}.journey-snapshot-bars i:nth-child(12n+2){--h:46%}
@@ -199,6 +205,7 @@ const entries = journeyMilestones[locale];
     .journey-crumb { margin-top:22px; }
     .journey-hero h1 { font-size:clamp(35px,9vw,51px); }
     .journey-hero-copy > p { font-size:13px; }
+    .journey-current-employment { padding:10px 12px; }
     .journey-snapshot { padding:19px; }
     .journey-milestone { padding-left:32px; }
     .journey-line { left:8px; }

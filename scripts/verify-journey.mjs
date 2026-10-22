@@ -15,9 +15,13 @@ for (const [locale, prefix, title, marker] of [
   for (const id of ['mgi', '45cm', '1988s', 'galaxy', 'open-source']) {
     assert.ok(page.includes(`href="#${id}"`), `${locale}: missing milestone anchor #${id}`);
   }
+  assert.ok(page.includes(locale === 'vi' ? '02/2025 — HIỆN TẠI' : 'FEB 2025 — PRESENT'), `${locale}: Galaxy must show ongoing employment`);
+  assert.ok(page.includes(locale === 'vi' ? 'ĐANG LÀM VIỆC' : 'CURRENTLY EMPLOYED'), `${locale}: current employer badge missing`);
+  assert.ok(page.includes('journey-current-employment') && page.includes('journey-current-chip'), `${locale}: current role must be visible in hero and Galaxy card`);
   assert.ok(page.includes('MGI Global') && page.includes('45CM VINA'), `${locale}: earlier history missing`);
   assert.ok(page.includes('1988s Media and Technology') && page.includes('Galaxy Technology Services'), `${locale}: later employment missing`);
   assert.ok(page.includes('VietJet Air') && page.includes('HDBank'), `${locale}: client assignments missing`);
+  assert.ok(page.includes(locale === 'vi' ? 'Song song với công việc hiện tại' : 'Alongside my ongoing role'), `${locale}: independent work must be concurrent, not suggest resignation`);
   assert.ok(page.includes('Code Atlas') && page.includes('Showdar Skills'), `${locale}: open-source milestone missing`);
   assert.ok(home.includes(`href="/${prefix}journey/"`), `${locale}: no homepage journey link`);
   assert.ok(page.includes(`href="/${prefix}projects/code-atlas/"`), `${locale}: project link not localized`);
