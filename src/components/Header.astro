@@ -11,7 +11,7 @@ const initialNav = pathname === '/journey/' || pathname === '/journey'
   ? 'journey'
   : pathname.startsWith('/projects/') || pathname === '/projects'
     ? 'projects'
-    : 'about';
+    : pathname === '/' ? 'about' : undefined;
 ---
 <header class="site-header" data-site-header>
   <a href={localizedPath("/", locale)} class="brand" aria-label="Leo — Home">
