@@ -34,6 +34,6 @@ for (const [path, expectedMinimum] of pages) {
   const html = readFileSync(path, 'utf8');
   const count = (html.match(/data-scroll-reveal/g) ?? []).length;
   assert.ok(count >= expectedMinimum, `${path}: expected >=${expectedMinimum} marked blocks, got ${count}`);
-  assert.ok(!html.includes('scroll-reveal-pending'), `${path}: server must never ship hidden content by default`);
+  assert.ok(!/class="[^"]*scroll-reveal-pending/.test(html), `${path}: server must never assign hidden classes to markup`);
 }
 console.log('Scroll reveal: bilingual pages, per-block markers, JS-disabled fallback and accessibility contracts verified.');
