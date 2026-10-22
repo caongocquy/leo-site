@@ -42,6 +42,14 @@ const entries = journeyMilestones[locale];
       <span class="section-eyebrow">{t.smallLabel}</span>
       <h2 id="journey-story-title">{t.sectionTitle}</h2>
       <p>{t.sectionSubtitle}</p>
+      <nav class="journey-toc" aria-label={locale === 'vi' ? 'Chuyển đến mốc nghề nghiệp' : 'Jump to a career milestone'} data-journey-toc>
+        {entries.map((entry) => (
+          <a href={`#${entry.id}`} aria-label={`${entry.year} — ${entry.company}`}>
+            <span class="journey-toc-year">{entry.year}</span>
+            <span class="journey-toc-name">{entry.company}</span>
+          </a>
+        ))}
+      </nav>
     </div>
     <div class="journey-track" data-journey-track>
       <div class="journey-line" aria-hidden="true"><div class="journey-line-progress" data-journey-progress></div></div>
@@ -130,6 +138,14 @@ const entries = journeyMilestones[locale];
   .journey-story-intro { align-self:start; position:sticky; top:35px; }
   .journey-story-intro h2 { color:var(--text-strong); font-size:clamp(29px,2.8vw,37px); line-height:1.2; letter-spacing:-.04em; font-weight:660; margin:13px 0 15px; }
   .journey-story-intro p { color:var(--muted); font-size:13px; line-height:1.85; margin:0; }
+  /* Lucian #275-inspired timeline scrollspy: always-functional anchor navigation. */
+  .journey-toc { display:flex; flex-direction:column; gap:4px; margin-top:28px; padding-left:13px; border-left:1px solid var(--line); }
+  .journey-toc a { display:flex; align-items:baseline; gap:12px; min-width:0; padding:9px 11px; margin-left:-15px; border-left:3px solid transparent; border-radius:0 7px 7px 0; font-size:11px; color:var(--muted); transition:border-color .15s ease,background-color .15s ease,color .15s ease; }
+  .journey-toc a:hover { color:var(--accent); background:var(--surface-alt); }
+  .journey-toc a[aria-current="location"] { border-left-color:var(--accent); background:var(--icon-surface); color:var(--text-strong); }
+  .journey-toc-year { font:10px 'IBM Plex Mono',ui-monospace,monospace; color:var(--accent); flex:0 0 auto; }
+  .journey-toc-name { min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
   .journey-track { --journey-progress: 0%; position:relative; min-width:0; }
   .journey-line { position:absolute; left:13px; top:23px; bottom:20px; width:2px; background:var(--line); overflow:hidden; }
   .journey-line-progress { width:100%; height:var(--journey-progress); background:var(--accent); box-shadow:0 0 8px var(--accent); transition:height .12s linear; }
@@ -174,6 +190,10 @@ const entries = journeyMilestones[locale];
     .journey-story { grid-template-columns:1fr; padding-top:52px; gap:35px; }
     .journey-story-intro { position:static; max-width:520px; }
     .journey-story-intro h2 { max-width:420px; }
+    .journey-toc { flex-direction:row; overflow-x:auto; padding:0 0 9px; margin-top:18px; border-left:0; gap:8px; scrollbar-width:thin; }
+    .journey-toc a { margin:0; padding:8px 11px; border:1px solid var(--line); border-radius:8px; flex:0 0 auto; max-width:215px; }
+    .journey-toc a[aria-current="location"] { border-color:var(--accent); }
+
   }
   @media(max-width: 520px) {
     .journey-crumb { margin-top:22px; }
@@ -200,6 +220,7 @@ const entries = journeyMilestones[locale];
   const track = document.querySelector<HTMLElement>('[data-journey-track]');
   if (track && 'IntersectionObserver' in window) {
     const milestones = track.querySelectorAll<HTMLElement>('[data-journey-item]');
+    const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('[data-journey-toc] a[href^="#"]')];
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         entry.target.classList.toggle('is-active', entry.isIntersecting);
@@ -215,6 +236,14 @@ const entries = journeyMilestones[locale];
         const cursor = window.innerHeight * .55;
         const fraction = Math.max(0, Math.min(1, (cursor - rect.top) / Math.max(1, rect.height)));
         track.style.setProperty('--journey-progress', `${(fraction * 100).toFixed(2)}%`);
+        let activeId = milestones[0]?.id;
+        milestones.forEach((item) => {
+          if (item.getBoundingClientRect().top <= cursor) activeId = item.id;
+        });
+        tocLinks.forEach((link) => {
+          if (link.hash.slice(1) === activeId) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        });
       });
     };
     window.addEventListener('scroll', updateProgress, { passive: true });
