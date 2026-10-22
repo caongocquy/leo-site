@@ -71,6 +71,11 @@ for (const [prefix, description] of [
   assert.ok(!html.includes('Leo is a mobile engineer building'), 'Old third-person English share copy must be removed');
 }
 
+// New logo vectors are owner-supplied. The previously approved OG image remains untouched.
+for (const file of ['dist/favicon.svg', 'dist/brand/leo-icon.svg', 'dist/brand/leo-horizontal-on-dark.svg', 'dist/brand/leo-horizontal-on-light.svg']) {
+  assert.ok(existsSync(file), `Missing Leo logo asset: ${file}`);
+  assert.ok(read(file).includes('<svg'), `Malformed Leo logo SVG: ${file}`);
+}
 const sitemap = read('dist/sitemap.xml');
 assert.ok(sitemap.startsWith('<?xml version="1.0" encoding="UTF-8"?>'));
 assert.equal((sitemap.match(/<loc>/g) ?? []).length, paths.length * 2, 'Sitemap must include all bilingual public routes');
