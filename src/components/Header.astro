@@ -7,7 +7,7 @@ import { localeFromPath, localizedPath, ui } from '../i18n/translations';
 const locale = localeFromPath(Astro.url.pathname);
 const t = ui(locale);
 ---
-<header class="site-header">
+<header class="site-header" data-site-header>
   <a href={localizedPath("/", locale)} class="brand" aria-label="Leo — Home">
     <span class="brand-logo" aria-hidden="true">L<span>.</span></span>
     <span class="brand-text">LEO <small>ENGINEER / BUILDER</small></span>
@@ -28,3 +28,56 @@ const t = ui(locale);
     </a>
   </div>
 </header>
+
+<script>
+  // Keep navigation sticky, hide on continued downward scroll, show on upward scroll.
+  const header = document.querySelector<HTMLElement>('[data-site-header]');
+  if (header) {
+    let previousY = Math.max(0, window.scrollY);
+    let distance = 0;
+    let direction = 0;
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const y = Math.max(0, window.scrollY);
+      const delta = y - previousY;
+      previousY = y;
+      header.classList.toggle('is-header-scrolled', y > 12);
+
+      if (y <= Math.max(120, header.offsetHeight + 24) || header.contains(document.activeElement)) {
+        header.classList.remove('is-header-hidden');
+        direction = 0;
+        distance = 0;
+        return;
+      }
+
+      if (Math.abs(delta) < 1) return;
+      const next = delta > 0 ? 1 : -1;
+      if (next !== direction) { direction = next; distance = 0; }
+      distance += Math.abs(delta);
+
+      if (direction > 0 && distance >= 24) {
+        header.classList.add('is-header-hidden');
+        distance = 0;
+      } else if (direction < 0 && distance >= 12) {
+        header.classList.remove('is-header-hidden');
+        distance = 0;
+      }
+    };
+
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    window.addEventListener('pageshow', schedule);
+    header.addEventListener('focusin', () => {
+      header.classList.remove('is-header-hidden');
+      direction = 0;
+      distance = 0;
+    });
+    update();
+  }
+</script>
