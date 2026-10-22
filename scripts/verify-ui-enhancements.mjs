@@ -69,7 +69,8 @@ assert.ok(stylesheet.includes('/* Sticky, always-visible navigation'), 'Sticky h
 assert.ok(stylesheet.includes('.header-nav a[aria-current]::after'), 'Active page underline missing');
 assert.ok(stylesheet.includes('/* Floating PDF-outline navigation'), 'Floating TOC styles missing');
 assert.ok(stylesheet.includes('.home-toc:is(:hover, :focus-within)'), 'Desktop hover and keyboard expand missing');
-assert.ok(stylesheet.includes('.home-toc[open] .home-toc-panel'), 'Mobile disclosure styles missing');
+assert.ok(stylesheet.includes('.home-toc-mobile[open] .home-toc-panel'), 'Mobile disclosure styles missing');
+assert.ok(stylesheet.includes('.home-toc-desktop { display: none; }'), 'Desktop rail must not obscure small screens');
 assert.ok(stylesheet.includes('max-width: 1279px'), 'Responsive TOC breakpoint missing');
 assert.ok(stylesheet.includes('clamp(35px, 4vw, 49px)'), 'Larger home section headings missing');
 assert.ok(!headerSource.includes('data-nav-target'), 'Page navigation must not track home sections');
@@ -100,7 +101,12 @@ for (const prefix of ['', 'en/']) {
     assert.ok(home.includes(`id="${id}"`), `Missing anchor #${id}`);
     assert.ok(home.includes(`data-toc-link="${id}"`), `Missing TOC anchor #${id}`);
   }
-  assert.equal((home.match(/data-toc-link=/g) ?? []).length, 4, 'Home must have exactly 4 TOC entries');
+  assert.equal((home.match(/data-toc-link=/g) ?? []).length, 8, 'Home should render 4 TOC items in each responsive view');
+  assert.ok(home.includes('class="home-toc-desktop"'), 'Desktop must use an always-rendered TOC');
+  assert.ok(home.includes('data-home-toc-mobile'), 'Mobile must use a native details control');
+  assert.match(home, /<details class="home-toc-mobile" data-home-toc-mobile>/, 'Mobile TOC must start collapsed');
+  assert.equal((home.match(/class="home-toc-links"/g) ?? []).length, 2, 'Desktop and mobile each need one TOC nav');
+  assert.ok(home.includes('class="home-toc-toggle"'), 'Native mobile menu summary missing');
   assert.match(home, /data-toc-link="about"[^>]*aria-current="location"/, 'TOC should initially mark About');
   assert.ok(!nav.includes('href="#'), 'Global nav must not link to homepage sections');
 }

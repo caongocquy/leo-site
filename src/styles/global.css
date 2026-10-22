@@ -721,6 +721,7 @@ html { scroll-padding-top: 108px; }
   color: var(--text);
   transition: width .2s ease;
 }
+.home-toc-mobile { display: none; }
 .home-toc-toggle { display: none; }
 .home-toc-panel {
   border: 1px solid transparent;
@@ -797,6 +798,8 @@ html { scroll-padding-top: 108px; }
     filter: none;
   }
   .home-toc:is(:hover, :focus-within) { width: auto; }
+  .home-toc-desktop { display: none; }
+  .home-toc-mobile { display: block; }
   .home-toc-toggle {
     display: flex;
     align-items: center;
@@ -815,7 +818,7 @@ html { scroll-padding-top: 108px; }
   }
   .home-toc-toggle::-webkit-details-marker { display: none; }
   .home-toc-toggle-chevron { font-size: 13px; transition: transform .18s; }
-  .home-toc[open] .home-toc-toggle-chevron { transform: rotate(180deg); }
+  .home-toc-mobile[open] .home-toc-toggle-chevron { transform: rotate(180deg); }
   .home-toc-panel, .home-toc:is(:hover, :focus-within) .home-toc-panel {
     display: none;
     position: absolute;
@@ -827,7 +830,7 @@ html { scroll-padding-top: 108px; }
     background: var(--surface);
     padding: 14px;
   }
-  .home-toc[open] .home-toc-panel { display: block; }
+  .home-toc-mobile[open] .home-toc-panel { display: block; }
   .home-toc-heading { min-height: 0; padding-bottom: 11px; }
   .home-toc-label, .home-toc:is(:hover, :focus-within) .home-toc-label {
     max-width: none;
