@@ -5,6 +5,6 @@ import { localeFromPath, localizedPath, ui } from '../i18n/translations';
 const locale = localeFromPath(Astro.url.pathname);
 const t = ui(locale);
 ---
-<BaseLayout title={`${t.notFoundTitle} — Leo`} description={t.notFoundDescription}>
+<BaseLayout noindex title={`${t.notFoundTitle} — Leo`} description={t.notFoundDescription}>
   <section class="not-found"><span class="section-eyebrow">{t.notFoundLabel}</span><h1>{t.notFoundTitle}<span class="period">.</span></h1><p>{t.notFoundIntro}</p><a class="button button-primary" href={localizedPath("/",locale)}>{t.backHome} <Icon name="arrow-right" size={15}/></a></section>
 </BaseLayout>
