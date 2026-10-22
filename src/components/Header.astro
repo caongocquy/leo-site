@@ -21,6 +21,7 @@ const initialNav = pathname === '/journey/' || pathname === '/journey'
   <nav aria-label="Main navigation" class="header-nav">
     <a data-nav-target="about" href={localizedPath("/#about",locale)} aria-current={initialNav === 'about' ? 'location' : undefined}>{t.navAbout}</a>
     <a data-nav-target="expertise" href={localizedPath("/#expertise",locale)}>{t.navExpertise}</a>
+    <a data-nav-target="experience" href={localizedPath("/#experience",locale)}>{t.navExperience}</a>
     <a data-nav-target="journey" href={localizedPath("/journey/",locale)} aria-current={initialNav === 'journey' ? 'page' : undefined}>{locale === "vi" ? "Hành trình" : "Journey"}</a>
     <a data-nav-target="projects" href={localizedPath("/projects/",locale)} aria-current={initialNav === 'projects' ? 'page' : undefined}>{t.navProjects}</a>
   </nav>
@@ -45,7 +46,7 @@ const initialNav = pathname === '/journey/' || pathname === '/journey'
     const sectionMap = [
       { id: 'about', target: 'about' },
       { id: 'expertise', target: 'expertise' },
-      { id: 'experience', target: 'journey' },
+      { id: 'experience', target: 'experience' },
       { id: 'projects', target: 'projects' },
     ];
     const sections = isHome
