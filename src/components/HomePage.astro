@@ -17,7 +17,7 @@ const atlas = projects.find((project) => project.id === 'code-atlas');
 const otherProjects = projects.filter((project) => project.id !== 'code-atlas').slice(0, 4);
 ---
 <BaseLayout>
-  <section class="hero section-grid" aria-labelledby="hero-title">
+  <section id="about" class="hero section-grid" aria-labelledby="hero-title">
     <div class="hero-copy">
       <div class="eyebrow"><span class="pulse-dot"></span> {t.hello} <span class="eyebrow-rule"></span> {t.occupation}</div>
       <h1 id="hero-title">{t.heroTitle}<span class="hero-title-break" aria-hidden="true"></span><em>{t.heroEmphasis}</em><span class="period">.</span></h1>
@@ -79,6 +79,13 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
         </article>
       ))}
     </div>
+    <div class="expertise-toolbox" data-scroll-reveal>
+      <div class="expertise-toolbox-title">
+        <span class="section-eyebrow">{t.toolbox}</span>
+        <div class="toolbox-note"><Icon name="terminal" size={14} class="toolbox-terminal" /> {t.alwaysLearning}</div>
+      </div>
+      <div class="stack-tags">{stack.map((item) => <span>{item}</span>)}</div>
+    </div>
   </section>
 
   <section id="experience" class="section-block experience-section top-lined" aria-labelledby="experience-title">
@@ -104,9 +111,5 @@ const otherProjects = projects.filter((project) => project.id !== 'code-atlas').
     <div class="projects-grid">{otherProjects.map((project) => <ProjectCard project={project} />)}</div>
   </section>
 
-  <section id="about" class="about-section top-lined" aria-labelledby="about-title">
-    <div data-scroll-reveal><span class="section-eyebrow">{t.aboutLabel}</span><h2 id="about-title">{t.aboutTitle}<br /><span>{t.aboutTitleEm}</span></h2><p>{t.aboutText}</p><a class="about-link" href={site.github} target="_blank" rel="noopener noreferrer">{t.connectGithub} <Icon name="arrow-up-right" size={15} /></a></div>
-    <div class="toolbox" data-scroll-reveal><span class="section-eyebrow">{t.toolbox}</span><div class="stack-tags">{stack.map((item) => <span>{item}</span>)}</div><div class="toolbox-note"><Icon name="terminal" size={14} class="toolbox-terminal" /> {t.alwaysLearning}</div></div>
-  </section>
   <div class="bottom-cta" data-scroll-reveal><div><span>{t.ctaPrompt}</span><h2>{t.ctaTitle} <em>{t.ctaEm}</em></h2></div><a href={site.github} target="_blank" rel="noopener noreferrer" class="button button-primary">{t.findGithub} <Icon name="arrow-up-right" size={15} /></a></div>
 </BaseLayout>

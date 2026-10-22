@@ -6,6 +6,12 @@ import LanguageSwitch from './LanguageSwitch.astro';
 import { localeFromPath, localizedPath, ui } from '../i18n/translations';
 const locale = localeFromPath(Astro.url.pathname);
 const t = ui(locale);
+const pathname = Astro.url.pathname.replace(/^\\/en(?=\\/|$)/, '') || '/';
+const initialNav = pathname === '/journey/' || pathname === '/journey'
+  ? 'journey'
+  : pathname.startsWith('/projects/') || pathname === '/projects'
+    ? 'projects'
+    : 'about';
 ---
 <header class="site-header" data-site-header>
   <a href={localizedPath("/", locale)} class="brand" aria-label="Leo — Home">
@@ -13,10 +19,10 @@ const t = ui(locale);
     <span class="brand-text">LEO <small>ENGINEER / BUILDER</small></span>
   </a>
   <nav aria-label="Main navigation" class="header-nav">
-    <a href={localizedPath("/#expertise",locale)}>{t.navExpertise}</a>
-    <a href={localizedPath("/journey/",locale)}>{locale === "vi" ? "Hành trình" : "Journey"}</a>
-    <a href={localizedPath("/projects",locale)}>{t.navProjects}</a>
-    <a href={localizedPath("/#about",locale)}>{t.navAbout}</a>
+    <a data-nav-target="about" href={localizedPath("/#about",locale)} aria-current={initialNav === 'about' ? 'location' : undefined}>{t.navAbout}</a>
+    <a data-nav-target="expertise" href={localizedPath("/#expertise",locale)}>{t.navExpertise}</a>
+    <a data-nav-target="journey" href={localizedPath("/journey/",locale)} aria-current={initialNav === 'journey' ? 'page' : undefined}>{locale === "vi" ? "Hành trình" : "Journey"}</a>
+    <a data-nav-target="projects" href={localizedPath("/projects/",locale)} aria-current={initialNav === 'projects' ? 'page' : undefined}>{t.navProjects}</a>
   </nav>
   <div class="header-actions">
     <LanguageSwitch />
@@ -30,39 +36,45 @@ const t = ui(locale);
 </header>
 
 <script>
-  // Keep navigation sticky, hide on continued downward scroll, show on upward scroll.
+  // Keep the header visible and update the active nav item on every page.
   const header = document.querySelector<HTMLElement>('[data-site-header]');
   if (header) {
-    let previousY = Math.max(0, window.scrollY);
-    let distance = 0;
-    let direction = 0;
+    const links = [...header.querySelectorAll<HTMLAnchorElement>('[data-nav-target]')];
+    const path = window.location.pathname.replace(/^\\/en(?=\\/|$)/, '') || '/';
+    const isHome = path === '/' || path === '';
+    const sectionMap = [
+      { id: 'about', target: 'about' },
+      { id: 'expertise', target: 'expertise' },
+      { id: 'experience', target: 'journey' },
+      { id: 'projects', target: 'projects' },
+    ];
+    const sections = isHome
+      ? sectionMap.map(({ id, target }) => ({ section: document.getElementById(id), target }))
+        .filter((item): item is { section: HTMLElement; target: string } => item.section !== null)
+      : [];
     let frame = 0;
 
     const update = () => {
       frame = 0;
-      const y = Math.max(0, window.scrollY);
-      const delta = y - previousY;
-      previousY = y;
-      header.classList.toggle('is-header-scrolled', y > 12);
+      header.classList.toggle('is-header-scrolled', window.scrollY > 12);
+      const current = isHome
+        ? sections.reduce((active, { section, target }) => {
+            // Anchor offset follows the current header height, including mobile wrap.
+            const probe = window.scrollY + header.offsetHeight + Math.min(90, window.innerHeight * 0.14);
+            return section.offsetTop <= probe ? target : active;
+          }, 'about')
+        : path === '/journey/' || path === '/journey'
+          ? 'journey'
+          : path.startsWith('/projects/') || path === '/projects'
+            ? 'projects'
+            : '';
 
-      if (y <= Math.max(120, header.offsetHeight + 24) || header.contains(document.activeElement)) {
-        header.classList.remove('is-header-hidden');
-        direction = 0;
-        distance = 0;
-        return;
-      }
-
-      if (Math.abs(delta) < 1) return;
-      const next = delta > 0 ? 1 : -1;
-      if (next !== direction) { direction = next; distance = 0; }
-      distance += Math.abs(delta);
-
-      if (direction > 0 && distance >= 24) {
-        header.classList.add('is-header-hidden');
-        distance = 0;
-      } else if (direction < 0 && distance >= 12) {
-        header.classList.remove('is-header-hidden');
-        distance = 0;
+      for (const link of links) {
+        if (link.dataset.navTarget === current) {
+          link.setAttribute('aria-current', isHome ? 'location' : 'page');
+        } else {
+          link.removeAttribute('aria-current');
+        }
       }
     };
 
@@ -73,11 +85,7 @@ const t = ui(locale);
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
     window.addEventListener('pageshow', schedule);
-    header.addEventListener('focusin', () => {
-      header.classList.remove('is-header-hidden');
-      direction = 0;
-      distance = 0;
-    });
+    window.addEventListener('hashchange', schedule);
     update();
   }
 </script>

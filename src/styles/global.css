@@ -660,3 +660,70 @@ html { scroll-padding-top: 108px; }
 @media (max-width: 830px) {
   html { scroll-padding-top: 150px; }
 }
+
+/* Sticky, always-visible navigation and active-page / section affordance. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  transform: none;
+  pointer-events: auto;
+  transition: background-color .22s ease, box-shadow .22s ease;
+}
+.header-nav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 2px;
+  transition: color .18s ease;
+}
+.header-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .18s ease;
+}
+.header-nav a[aria-current] { color: var(--text-strong); font-weight: 750; }
+.header-nav a[aria-current]::after { transform: scaleX(1); }
+.header-nav a:hover:not([aria-current]) { color: var(--accent); }
+
+/* Consolidate the repeated About copy into the hero; retain the skills toolbox. */
+.expertise-grid { margin-bottom: 28px; }
+.expertise-toolbox {
+  margin: 0 0 84px;
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  background: var(--surface-alt);
+  padding: 22px 25px;
+  display: grid;
+  grid-template-columns: minmax(175px, .42fr) minmax(0, 1fr);
+  gap: 20px 30px;
+  align-items: center;
+}
+.expertise-toolbox .stack-tags { margin-top: 0; }
+.expertise-toolbox-title { display: flex; flex-direction: column; gap: 8px; }
+.expertise-toolbox .toolbox-note { border: none; margin: 0; padding: 0; }
+
+/* Slightly more prominent section hierarchy without increasing hero size. */
+.section-intro h2 { font-size: clamp(35px, 4vw, 49px); }
+.collection-heading h2 { font-size: clamp(25px, 2.6vw, 31px); }
+@media (max-width: 830px) {
+  .expertise-toolbox { grid-template-columns: 1fr; gap: 18px; }
+}
+@media (max-width: 560px) {
+  .section-intro h2 { font-size: clamp(36px, 9vw, 41px); }
+  .collection-heading h2 { font-size: 27px; }
+  .expertise-toolbox { padding: 18px; margin-bottom: 64px; }
+  .header-nav a { min-height: 38px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .header-nav a, .header-nav a::after { transition: none; }
+}

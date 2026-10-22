@@ -136,3 +136,9 @@ The canonical deployment origin is `https://leo-site.quy-caongoc.workers.dev` in
 - Both 404 pages use `noindex, follow`. No unsupported ratings, metrics, testimonials or employer claims are included in structured data.
 - Verify with `npm run build && node scripts/verify-seo-geo.mjs`; GitHub Actions runs this check for every PR.
 - After merging, verify `/sitemap.xml`, `/robots.txt`, `/llms.txt`, and `/social-preview.png` on Cloudflare, then use Google Search Console and the LinkedIn Post Inspector to request a fresh crawl. Indexing and link previews are controlled by external crawlers and may be cached.
+
+## Home information hierarchy and persistent navigation
+
+The Hero at `/#about` is the only About/introduction content; there is no repeated About section below projects. The existing stack tags stay in a compact toolbox beneath Expertise. The original `#about` link continues to work.
+
+The header is **always visible** while scrolling. A compact underline and `aria-current` mark the active destination: Hero/About, Expertise, home Experience (mapped to Career Journey), and selected Projects. On Journey/Projects pages the page tab is marked server-side, including without JS; on the homepage a passive, animation-frame-throttled scrollspy updates the active section. Sticky offsets account for two-row mobile navigation. Section headings are slightly larger at desktop and mobile sizes. Existing reduced-motion behavior remains intact.

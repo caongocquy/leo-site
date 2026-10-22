@@ -62,21 +62,35 @@ assert.ok(heroSource.includes('prefers-reduced-motion: reduce'), 'Motion prefere
 
 
 const headerSource = readFileSync('src/components/Header.astro', 'utf8');
-assert.ok(headerSource.includes('data-site-header'), 'Header needs scroll behavior hook');
-assert.ok(headerSource.includes("addEventListener('scroll', schedule, { passive: true })"), 'Scroll events must be passive');
-assert.ok(headerSource.includes('requestAnimationFrame(update)'), 'Scroll events must be throttled');
-assert.ok(headerSource.includes('next !== direction'), 'Reversing scroll direction must reset travel');
-assert.ok(headerSource.includes('direction > 0 && distance >= 24'), 'Down-scroll must use a nonzero threshold');
-assert.ok(headerSource.includes('direction < 0 && distance >= 12'), 'Up-scroll must reveal navigation');
-assert.ok(headerSource.includes('header.contains(document.activeElement)'), 'Keyboard focus must show navigation');
-assert.ok(headerSource.includes("addEventListener('focusin'"), 'Focus must reveal the header');
-assert.ok(stylesheet.includes('/* Lucian #212-inspired scroll-aware sticky navigation'), 'Sticky header styles missing');
-assert.ok(stylesheet.includes('position: sticky;'), 'Header must be sticky');
-assert.ok(stylesheet.includes('.site-header.is-header-hidden:focus-within'), 'Focus-visible safeguard missing');
-assert.ok(stylesheet.includes('/* Persistently visible sticky navigation for reduced motion. */'), 'Reduced-motion fallback missing');
+const homeSource = readFileSync('src/components/HomePage.astro', 'utf8');
+assert.ok(headerSource.includes('data-site-header'), 'Header must stay sticky');
+assert.ok(headerSource.includes("addEventListener('scroll', schedule, { passive: true })"), 'Active section scroll observer must be passive');
+assert.ok(headerSource.includes('requestAnimationFrame(update)'), 'Section scroll calculations must be frame throttled');
+assert.ok(headerSource.includes('section.offsetTop <= probe'), 'Home scrollspy must follow current sections');
+assert.ok(headerSource.includes("header.offsetHeight"), 'Scrollspy must account for responsive sticky header height');
+assert.ok(!headerSource.includes('is-header-hidden'), 'Header must not auto-hide on downward scroll');
+assert.ok(stylesheet.includes('/* Sticky, always-visible navigation'), 'Persistent sticky navigation styles missing');
+assert.ok(stylesheet.includes('.header-nav a[aria-current]::after'), 'Active navigation underline is required');
+assert.ok(stylesheet.includes('position: sticky;'), 'Header must remain sticky');
+assert.ok(stylesheet.includes('clamp(35px, 4vw, 49px)'), 'Home section titles must be slightly larger');
+assert.ok(homeSource.includes('<section id="about" class="hero'), 'Hero is the introduction anchor');
+assert.ok(!homeSource.includes('class="about-section'), 'Duplicate About section must be removed');
+assert.ok(homeSource.includes('class="expertise-toolbox"'), 'Skills toolbox must be preserved under expertise');
 for (const prefix of ['', 'en/']) {
-  for (const pathname of ['index.html', 'journey/index.html', 'projects/index.html']) {
+  const home = readFileSync(`dist/${prefix}index.html`, 'utf8');
+  assert.ok(home.includes('<section id="about" class="hero'), 'Hero introduction anchor missing');
+  assert.ok(!home.includes('class="about-section'), 'About duplicated on home');
+  assert.ok(home.includes('class="expertise-toolbox"'), 'Toolbox missing on home');
+  for (const key of ['about', 'expertise', 'journey', 'projects']) {
+    assert.ok(home.includes(`data-nav-target="${key}"`), `Missing navigation target ${key}`);
+  }
+  assert.ok(home.includes('data-nav-target="about"') && home.includes('aria-current="location"'), 'Homepage should mark the introduction as active without JS');
+}
+for (const prefix of ['', 'en/']) {
+  for (const pathname of ['journey/index.html', 'projects/index.html', 'projects/code-atlas/index.html']) {
     const page = readFileSync(`dist/${prefix}${pathname}`, 'utf8');
     assert.ok(page.includes('data-site-header'), `Header missing in ${prefix}${pathname}`);
+    const current = pathname.startsWith('journey/') ? 'journey' : 'projects';
+    assert.match(page, new RegExp(`data-nav-target="${current}"[^>]*aria-current="page"`), `Active nav not SSR marked on ${prefix}${pathname}`);
   }
 }
