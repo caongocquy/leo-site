@@ -653,3 +653,10 @@ body { font-family: var(--font-ui); font-weight: 400; }
   .site-header,
   .site-header.is-header-hidden { transform: none; transition: none; pointer-events: auto; }
 }
+
+
+/* Keep hash navigation headings clear of the returning sticky header. */
+html { scroll-padding-top: 108px; }
+@media (max-width: 830px) {
+  html { scroll-padding-top: 150px; }
+}
