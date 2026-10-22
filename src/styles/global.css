@@ -625,13 +625,7 @@ body { font-family: var(--font-ui); font-weight: 400; }
 }
 
 
-/* Lucian #212-inspired scroll-aware sticky navigation. */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  transition: transform .22s cubic-bezier(.2,.7,.2,1), background-color .22s ease, box-shadow .22s ease;
-}
+/* Scrolled sticky header visual treatment. Navigation itself always remains visible. */
 .site-header.is-header-scrolled {
   background: var(--bg);
   background: color-mix(in srgb, var(--bg) 94%, transparent);
@@ -640,23 +634,218 @@ body { font-family: var(--font-ui); font-weight: 400; }
   box-shadow: 0 12px 28px -20px var(--shadow);
   border-radius: 0 0 10px 10px;
 }
-.site-header.is-header-hidden {
-  transform: translate3d(0, -110%, 0);
-  pointer-events: none;
-}
-.site-header.is-header-hidden:focus-within {
-  transform: none;
-  pointer-events: auto;
-}
-@media (prefers-reduced-motion: reduce) {
-  /* Persistently visible sticky navigation for reduced motion. */
-  .site-header,
-  .site-header.is-header-hidden { transform: none; transition: none; pointer-events: auto; }
-}
 
-
-/* Keep hash navigation headings clear of the returning sticky header. */
+/* Keep anchor destinations clear of the sticky header on mobile and desktop. */
 html { scroll-padding-top: 108px; }
 @media (max-width: 830px) {
   html { scroll-padding-top: 150px; }
+}
+
+/* Sticky, always-visible navigation and active-page / section affordance. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  transform: none;
+  pointer-events: auto;
+  transition: background-color .22s ease, box-shadow .22s ease;
+}
+.header-nav a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 8px 2px;
+  transition: color .18s ease;
+}
+.header-nav a::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  right: 2px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .18s ease;
+}
+.header-nav a[aria-current] { color: var(--text-strong); font-weight: 750; }
+.header-nav a[aria-current]::after { transform: scaleX(1); }
+.header-nav a:hover:not([aria-current]) { color: var(--accent); }
+
+/* Consolidate the repeated About copy into the hero; retain the skills toolbox. */
+.expertise-grid { margin-bottom: 28px; }
+.expertise-toolbox {
+  margin: 0 0 84px;
+  border: 1px solid var(--line-soft);
+  border-radius: 14px;
+  background: var(--surface-alt);
+  padding: 22px 25px;
+  display: grid;
+  grid-template-columns: minmax(175px, .42fr) minmax(0, 1fr);
+  gap: 20px 30px;
+  align-items: center;
+}
+.expertise-toolbox .stack-tags { margin-top: 0; }
+.expertise-toolbox-title { display: flex; flex-direction: column; gap: 8px; }
+.expertise-toolbox .toolbox-note { border: none; margin: 0; padding: 0; }
+
+/* Slightly more prominent section hierarchy without increasing hero size. */
+.section-intro h2 { font-size: clamp(35px, 4vw, 49px); }
+.collection-heading h2 { font-size: clamp(25px, 2.6vw, 31px); }
+@media (max-width: 830px) {
+  .expertise-toolbox { grid-template-columns: 1fr; gap: 18px; }
+}
+@media (max-width: 560px) {
+  .section-intro h2 { font-size: clamp(36px, 9vw, 41px); }
+  .collection-heading h2 { font-size: 27px; }
+  .expertise-toolbox { padding: 18px; margin-bottom: 64px; }
+  .header-nav a { min-height: 38px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .header-nav a, .header-nav a::after { transition: none; }
+}
+
+/* Floating PDF-outline navigation on Home; independent of the three page tabs. */
+.home-toc {
+  --toc-progress: 0%;
+  position: fixed;
+  z-index: 55;
+  /* Anchor below the sticky header, not halfway down the Hero illustration. */
+  top: max(104px, calc(env(safe-area-inset-top) + 104px));
+  right: max(0px, env(safe-area-inset-right));
+  transform: none;
+  width: 82px;
+  max-height: calc(100dvh - 116px);
+  color: var(--text);
+  transition: width .2s ease;
+}
+.home-toc-mobile { display: none; }
+.home-toc-toggle { display: none; }
+.home-toc-panel {
+  border: 1px solid transparent;
+  border-radius: 15px;
+  padding: 12px 8px;
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease;
+}
+.home-toc:is(:hover, :focus-within) { width: 228px; }
+.home-toc:is(:hover, :focus-within) .home-toc-panel {
+  border-color: var(--line);
+  padding: 15px 12px;
+  background: var(--surface);
+  box-shadow: 0 20px 48px var(--shadow);
+}
+.home-toc-heading { display: grid; justify-items: end; min-height: 64px; gap: 2px; padding-bottom: 11px; text-align: right; }
+.home-toc-eyebrow { display: none; font: 600 8px/1.5 var(--font-code); color: var(--muted-soft); letter-spacing: .08em; white-space: nowrap; }
+.home-toc:is(:hover, :focus-within) .home-toc-eyebrow { display: block; }
+.home-toc-count { font: 600 10px/1.5 var(--font-code); color: var(--accent); }
+.home-toc-heading strong { color: var(--text-strong); font-size: 11px; font-weight: 650; max-width: 100%; overflow-wrap: anywhere; line-height: 1.35; }
+.home-toc:is(:hover, :focus-within) .home-toc-heading strong { font-size: 12px; white-space: nowrap; }
+.home-toc-links { position: relative; display: grid; gap: 3px; }
+.home-toc-links::before,
+.home-toc-links::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 13px;
+  right: 4px;
+  width: 2px;
+  border-radius: 3px;
+  pointer-events: none;
+}
+.home-toc-links::before { height: calc(100% - 26px); background: var(--line); }
+.home-toc-links::after { height: calc((100% - 26px) * var(--toc-progress)); background: var(--accent); transition: height .13s ease; }
+.home-toc-link {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+  border-radius: 7px;
+  color: var(--muted);
+  font-size: 11px;
+  transition: color .18s ease, background-color .18s ease;
+}
+.home-toc-link:hover, .home-toc-link:focus-visible { color: var(--text-strong); }
+.home-toc-index { font: 500 10px var(--font-code); color: var(--muted-soft); }
+.home-toc-label {
+  max-width: 0;
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width .18s ease, opacity .18s ease;
+}
+.home-toc:is(:hover, :focus-within) .home-toc-label { max-width: 135px; opacity: 1; visibility: visible; }
+.home-toc-link[aria-current='location'] .home-toc-index,
+.home-toc-link[aria-current='location'] { color: var(--accent); font-weight: 700; }
+.home-toc-link[aria-current='location'] .home-toc-marker { background: var(--accent); height: 29px; }
+.home-toc-marker { display: block; width: 10px; height: 12px; border-radius: 4px; background: var(--line-accent); flex: 0 0 auto; transition: height .18s ease, background-color .18s ease; }
+.home-toc:is(:hover, :focus-within) .home-toc-link { padding-inline: 9px 0; }
+.home-toc:is(:hover, :focus-within) .home-toc-link:hover { background: var(--surface-alt); }
+
+/* Only show the fixed outline when there is room for it beside the content. */
+@media (max-width: 1439px) {
+  .home-toc {
+    top: auto;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    transform: none;
+    width: auto;
+    max-height: none;
+    filter: none;
+  }
+  .home-toc:is(:hover, :focus-within) { width: auto; }
+  .home-toc-desktop { display: none; }
+  .home-toc-mobile { display: block; }
+  .home-toc-toggle {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 44px;
+    padding: 10px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--line-accent);
+    background: var(--surface);
+    box-shadow: 0 8px 28px var(--shadow);
+    font-size: 12px;
+    font-weight: 650;
+    color: var(--text-strong);
+    cursor: pointer;
+    list-style: none;
+  }
+  .home-toc-toggle::-webkit-details-marker { display: none; }
+  .home-toc-toggle-chevron { font-size: 13px; transition: transform .18s; }
+  .home-toc-mobile[open] .home-toc-toggle-chevron { transform: rotate(180deg); }
+  .home-toc-panel, .home-toc:is(:hover, :focus-within) .home-toc-panel {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 12px);
+    width: min(280px, calc(100vw - 32px));
+    border: 1px solid var(--line-accent);
+    box-shadow: 0 18px 52px var(--shadow);
+    background: var(--surface);
+    padding: 14px;
+  }
+  .home-toc-mobile[open] .home-toc-panel { display: block; }
+  .home-toc-heading { min-height: 0; padding-bottom: 11px; }
+  .home-toc-label, .home-toc:is(:hover, :focus-within) .home-toc-label {
+    max-width: none;
+    opacity: 1;
+    visibility: visible;
+  }
+  .home-toc-link { min-height: 42px; padding: 0 9px; }
+  .home-toc-link[aria-current='location'] { background: var(--surface-alt); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-toc, .home-toc-panel, .home-toc-link, .home-toc-label,
+  .home-toc-marker, .home-toc-links::after, .home-toc-toggle-chevron { transition: none; }
 }

@@ -123,3 +123,30 @@ Home, Projects, Project Detail and Journey use one progressive-enhancement compo
 - Keyboard focus reveals pending interactive blocks. Motion preference and print always show all content. No ongoing scroll handler, heavy animation library, or recurring animation.
 - Extend coverage by adding `data-scroll-reveal` to a content block; do not add it to the fixed header, modal dialog or nested containers that would duplicate animations.
 - Run `node scripts/verify-scroll-reveal.mjs` after `npm run build`.
+
+## Production SEO, GEO and social previews
+
+The canonical deployment origin is `https://leo-site.quy-caongoc.workers.dev` in `astro.config.mjs`. Change it everywhere (site config, `public/robots.txt`, `public/llms.txt`, social preview metadata, and tests) when using a custom domain; do not point canonicals at two different hosts.
+
+- `src/pages/sitemap.xml.ts` builds `/sitemap.xml` from published project content, with Vietnamese, English and x-default hreflang alternates. Public routes only; 404s are not listed.
+- `public/robots.txt` allows crawl and references the sitemap. The Vietnamese home is the default locale at `/`; English is under `/en/`.
+- `BaseLayout.astro` emits per-route canonical, Open Graph title/description/URL, absolute PNG share image and dimensions, Twitter summary large image card, and JSON-LD for `WebSite`, `Person`, `WebPage`, `BreadcrumbList`. Project pages add `SoftwareSourceCode` referencing the public source repository. Employment at Galaxy is marked current; client assignments remain separate.
+- The share card uses the **user-uploaded** `public/social-preview.png`, copied unchanged by Astro into `dist/social-preview.png`. The source image is **1731×909 PNG** and OG metadata reads its actual dimensions. No build-time image generation, placeholder artwork or extra Sharp dependency.
+- `public/llms.txt` is an optional human/agent-readable navigation summary. Google Search says it does **not** use llms.txt for ranking or AI search inclusion: see https://developers.google.com/search/docs/fundamentals/ai-optimization-guide
+- Both 404 pages use `noindex, follow`. No unsupported ratings, metrics, testimonials or employer claims are included in structured data.
+- Verify with `npm run build && node scripts/verify-seo-geo.mjs`; GitHub Actions runs this check for every PR.
+- After merging, verify `/sitemap.xml`, `/robots.txt`, `/llms.txt`, and `/social-preview.png` on Cloudflare, then use Google Search Console and the LinkedIn Post Inspector to request a fresh crawl. Indexing and link previews are controlled by external crawlers and may be cached.
+
+## Home information hierarchy and persistent navigation
+
+The Hero at `/#about` is the only About/introduction content; there is no repeated About section below projects. The existing stack tags stay in a compact toolbox beneath Expertise. The original `#about` link continues to work.
+
+The sticky header remains visible while scrolling and only highlights the current **page** (Home, Journey, Projects). The four Home sections are separately tracked in the floating table of contents. Section headings are slightly larger at desktop and mobile sizes.
+
+## Home floating table of contents
+
+The sticky header now has **three page-level destinations**: Home, Journey, and Projects. Only the URL controls its `aria-current="page"` indicator. Home-only section links are instead presented through `HomeSectionNavigator.astro` (About/Hero, Expertise, Experience, Selected Work).
+
+At desktop widths (1440px+), the compact **right-side vertical outline** is top-aligned just below the sticky header, fitting into the right-side gutter without sitting across the Hero artwork. It always shows the active section name above its progress rail. It expands into a PDF-style outline on hover or keyboard focus; anchors support native hash navigation. The tracker uses passive scroll listeners, `requestAnimationFrame`, and a header-aware selection probe. At narrower widths, the rail becomes a native `<details>` disclosure button near the bottom right; click-outside, link selection, and Escape dismiss the panel. Native `<details>` and anchors work without JavaScript. Reduced-motion preferences disable rail animation and smooth scroll.
+
+Run `npm run build && node scripts/verify-ui-enhancements.mjs && node scripts/verify-home-toc.mjs` for bilingual markup and behavior-helper checks. The TOC is intentionally absent from Journey, Projects and project detail pages.

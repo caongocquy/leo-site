@@ -1,0 +1,139 @@
+---
+import { localeFromPath, ui } from '../i18n/translations';
+
+const locale = localeFromPath(Astro.url.pathname);
+const t = ui(locale);
+const sections = [
+  { id: 'about', label: t.navAbout },
+  { id: 'expertise', label: t.navExpertise },
+  { id: 'experience', label: t.navExperience },
+  { id: 'projects', label: locale === 'vi' ? 'Dự án nổi bật' : 'Selected work' },
+];
+const title = locale === 'vi' ? 'TRONG TRANG NÀY' : 'ON THIS PAGE';
+const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
+---
+<aside class="home-toc" data-home-toc>
+  <div class="home-toc-desktop">
+  <div class="home-toc-panel">
+    <div class="home-toc-heading">
+      <span class="home-toc-eyebrow">{title}</span>
+      <span class="home-toc-count" data-toc-count>01 / 04</span>
+      <strong data-toc-current>{sections[0].label}</strong>
+    </div>
+    <nav class="home-toc-links" aria-label={mobileTitle}>
+      {sections.map((item, index) => (
+        <a
+          class="home-toc-link"
+          href={`#${item.id}`}
+          data-toc-link={item.id}
+          aria-label={`${String(index + 1).padStart(2, '0')}. ${item.label}`}
+          aria-current={index === 0 ? 'location' : undefined}
+        >
+          <span class="home-toc-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <span class="home-toc-label" aria-hidden="true">{item.label}</span>
+          <span class="home-toc-marker" aria-hidden="true"></span>
+        </a>
+      ))}
+    </nav>
+  </div>
+  </div>
+  <details class="home-toc-mobile" data-home-toc-mobile>
+    <summary class="home-toc-toggle">
+      <span class="home-toc-toggle-icon" aria-hidden="true">☷</span>
+      <span>{mobileTitle}</span>
+      <span class="home-toc-toggle-chevron" aria-hidden="true">⌃</span>
+    </summary>
+  <div class="home-toc-panel">
+    <div class="home-toc-heading">
+      <span class="home-toc-eyebrow">{title}</span>
+      <span class="home-toc-count" data-toc-count>01 / 04</span>
+      <strong data-toc-current>{sections[0].label}</strong>
+    </div>
+    <nav class="home-toc-links" aria-label={mobileTitle}>
+      {sections.map((item, index) => (
+        <a
+          class="home-toc-link"
+          href={`#${item.id}`}
+          data-toc-link={item.id}
+          aria-label={`${String(index + 1).padStart(2, '0')}. ${item.label}`}
+          aria-current={index === 0 ? 'location' : undefined}
+        >
+          <span class="home-toc-index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+          <span class="home-toc-label" aria-hidden="true">{item.label}</span>
+          <span class="home-toc-marker" aria-hidden="true"></span>
+        </a>
+      ))}
+    </nav>
+  </div>
+  </details>
+</aside>
+
+<script>
+  import { getActiveSection, getDocumentProgress } from '../utils/homeToc.mjs';
+
+  const toc = document.querySelector<HTMLElement>('[data-home-toc]');
+  if (toc) {
+    const header = document.querySelector<HTMLElement>('[data-site-header]');
+    const links = [...toc.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
+    const desktopLinks = [...toc.querySelectorAll<HTMLAnchorElement>('.home-toc-desktop [data-toc-link]')];
+    const mobileDisclosure = toc.querySelector<HTMLDetailsElement>('[data-home-toc-mobile]');
+    const currentLabels = [...toc.querySelectorAll<HTMLElement>('[data-toc-current]')];
+    const currentCounts = [...toc.querySelectorAll<HTMLElement>('[data-toc-count]')];
+    const entries = desktopLinks.map((link) => ({
+      id: link.dataset.tocLink ?? '',
+      link,
+      section: document.getElementById(link.dataset.tocLink ?? ''),
+    })).filter((entry): entry is { id: string; link: HTMLAnchorElement; section: HTMLElement } => entry.section !== null);
+    let frame = 0;
+    let previousId = '';
+
+    const update = () => {
+      frame = 0;
+      if (!entries.length) return;
+      const offset = (header?.getBoundingClientRect().height ?? 0) + Math.min(100, window.innerHeight * 0.18);
+      const sectionTops = entries.map((entry) => entry.section.getBoundingClientRect().top);
+      const index = getActiveSection(sectionTops, offset);
+      const active = entries[index];
+      if (active && active.id !== previousId) {
+        previousId = active.id;
+        for (const link of links) {
+          if (link.dataset.tocLink === active.id) link.setAttribute('aria-current', 'location');
+          else link.removeAttribute('aria-current');
+        }
+        const label = active.link.querySelector('.home-toc-label')?.textContent ?? '';
+        for (const element of currentLabels) element.textContent = label;
+        for (const element of currentCounts) element.textContent = `${String(index + 1).padStart(2, '0')} / ${String(entries.length).padStart(2, '0')}`;
+      }
+      const progress = getDocumentProgress(window.scrollY, document.documentElement.scrollHeight, window.innerHeight);
+      toc.style.setProperty('--toc-progress', `${(progress * 100).toFixed(1)}%`);
+    };
+
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    window.addEventListener('pageshow', schedule);
+    window.addEventListener('hashchange', schedule);
+
+    // Native details supports mobile disclosure without JavaScript.
+    toc.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a[data-toc-link]') && mobileDisclosure) {
+        mobileDisclosure.open = false;
+      }
+    });
+    document.addEventListener('pointerdown', (event) => {
+      if (mobileDisclosure?.open && !mobileDisclosure.contains(event.target as Node)) {
+        mobileDisclosure.open = false;
+      }
+    });
+    mobileDisclosure?.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && mobileDisclosure.open) {
+        mobileDisclosure.open = false;
+        mobileDisclosure.querySelector<HTMLElement>('summary')?.focus();
+      }
+    });
+    update();
+  }
+</script>

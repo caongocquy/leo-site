@@ -13,7 +13,7 @@ const { project } = Astro.props;
 const localized = projectI18n(project, locale);
 const { Content } = await render(project);
 ---
-<BaseLayout title={`${project.data.title} — Leo`} description={localized.summary}>
+<BaseLayout title={`${project.data.title} — Leo`} description={localized.summary} projectSchema={{ name: project.data.title, summary: localized.summary, repository: project.data.repository, keywords: project.data.tags }}>
   <div class="detail-breadcrumb"><a href={localizedPath("/projects",locale)}><Icon name="arrow-left" size={14}/> {t.allProjects}</a><span>/</span><span>{project.data.title}</span></div>
   <article class="project-detail">
     <div class="detail-intro" data-scroll-reveal><div class="detail-intro-copy"><span class="section-eyebrow">{project.data.category === "React Native" ? t.categoryMobile : t.categoryTools} / {t.detailOpenSource}</span><h1>{project.data.title}<span class="period">.</span></h1><h2>{localized.subtitle}</h2><p>{localized.summary}</p><div class="detail-actions"><a class="button button-primary" href={project.data.repository} target="_blank" rel="noopener noreferrer">{t.sourceGithub} <Icon name="arrow-up-right" size={15}/></a>{project.data.packageUrl && <a class="button button-outline" href={project.data.packageUrl} target="_blank" rel="noopener noreferrer">{t.npmPackage} <Icon name="arrow-up-right" size={15}/></a>}</div></div><div class="detail-aside"><span class="section-eyebrow">{t.technology}</span><div class="stack-tags">{project.data.tags.map(tag => <span>{tag}</span>)}</div><div class="detail-aside-footer">{t.builtOpen}</div></div></div>

@@ -1,0 +1,31 @@
+# Leo — Cao Ngoc Quy
+
+> Official portfolio of Leo (Cao Ngoc Quy), a Mobile Developer currently employed at Galaxy Technology Services, working with React Native, Flutter, TypeScript and open-source developer tooling.
+
+Website: https://leo-site.quy-caongoc.workers.dev/
+GitHub: https://github.com/caongocquy
+
+## Languages
+
+- Vietnamese home (default): https://leo-site.quy-caongoc.workers.dev/
+- English home: https://leo-site.quy-caongoc.workers.dev/en/
+
+## Career
+
+- Vietnamese journey: https://leo-site.quy-caongoc.workers.dev/journey/
+- English journey: https://leo-site.quy-caongoc.workers.dev/en/journey/
+
+Galaxy Technology Services is Leo's current employer (February 2025–present).
+HDBank and VietJet Air were client assignments through Galaxy. Completion of the HDBank assignment in July 2026 does not indicate that Leo left Galaxy.
+Open-source repositories listed below are independent projects developed alongside ongoing employment.
+
+## Open-source work
+
+- Code Atlas — repository code graph, symbol navigation and impact analysis: https://leo-site.quy-caongoc.workers.dev/projects/code-atlas/
+  - Source: https://github.com/caongocquy/code-atlas
+- Showdar Router — local model routing, provider fallback and coding workflows: https://leo-site.quy-caongoc.workers.dev/projects/showdar-router/
+- Showdar Skills — composable coding-agent engineering skills: https://leo-site.quy-caongoc.workers.dev/projects/showdar-skills/
+- React Native OTP Input Kit — OTP inputs and resend countdown: https://leo-site.quy-caongoc.workers.dev/projects/react-native-otp-input-kit/
+- React Native Splash View — Lottie-based splash screen: https://leo-site.quy-caongoc.workers.dev/projects/react-native-splash-view/
+
+For the latest verifiable project status, consult the linked public project pages and their official source repositories. This is a navigation aid for reading agents, not a substitute for website HTML or verified technical documentation.

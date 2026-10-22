@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://leo-site.quy-caongoc.workers.dev/sitemap.xml

@@ -61,22 +61,65 @@ assert.ok(heroSource.includes('@keyframes hero-arrive'), 'Hero entrance keyframe
 assert.ok(heroSource.includes('prefers-reduced-motion: reduce'), 'Motion preference must be supported');
 
 
+
 const headerSource = readFileSync('src/components/Header.astro', 'utf8');
-assert.ok(headerSource.includes('data-site-header'), 'Header needs scroll behavior hook');
-assert.ok(headerSource.includes("addEventListener('scroll', schedule, { passive: true })"), 'Scroll events must be passive');
-assert.ok(headerSource.includes('requestAnimationFrame(update)'), 'Scroll events must be throttled');
-assert.ok(headerSource.includes('next !== direction'), 'Reversing scroll direction must reset travel');
-assert.ok(headerSource.includes('direction > 0 && distance >= 24'), 'Down-scroll must use a nonzero threshold');
-assert.ok(headerSource.includes('direction < 0 && distance >= 12'), 'Up-scroll must reveal navigation');
-assert.ok(headerSource.includes('header.contains(document.activeElement)'), 'Keyboard focus must show navigation');
-assert.ok(headerSource.includes("addEventListener('focusin'"), 'Focus must reveal the header');
-assert.ok(stylesheet.includes('/* Lucian #212-inspired scroll-aware sticky navigation'), 'Sticky header styles missing');
-assert.ok(stylesheet.includes('position: sticky;'), 'Header must be sticky');
-assert.ok(stylesheet.includes('.site-header.is-header-hidden:focus-within'), 'Focus-visible safeguard missing');
-assert.ok(stylesheet.includes('/* Persistently visible sticky navigation for reduced motion. */'), 'Reduced-motion fallback missing');
+const homeSource = readFileSync('src/components/HomePage.astro', 'utf8');
+const tocSource = readFileSync('src/components/HomeSectionNavigator.astro', 'utf8');
+assert.ok(stylesheet.includes('/* Sticky, always-visible navigation'), 'Sticky header CSS missing');
+assert.ok(stylesheet.includes('.header-nav a[aria-current]::after'), 'Active page underline missing');
+assert.ok(stylesheet.includes('/* Floating PDF-outline navigation'), 'Floating TOC styles missing');
+assert.ok(stylesheet.includes('.home-toc:is(:hover, :focus-within)'), 'Desktop hover and keyboard expand missing');
+assert.ok(stylesheet.includes('.home-toc-mobile[open] .home-toc-panel'), 'Mobile disclosure styles missing');
+assert.ok(stylesheet.includes('.home-toc-desktop { display: none; }'), 'Desktop rail must not obscure small screens');
+assert.ok(stylesheet.includes('max-width: 1439px'), 'TOC must collapse before it obscures desktop content');
+assert.ok(stylesheet.includes('top: max(104px, calc(env(safe-area-inset-top) + 104px))'), 'Desktop TOC must sit below the header instead of covering the Hero');
+assert.ok(!stylesheet.slice(stylesheet.indexOf('/* Floating PDF-outline navigation'), stylesheet.indexOf('.home-toc-mobile { display: none; }')).includes('translateY(-50%)'), 'Desktop TOC cannot be vertically centered');
+assert.ok(stylesheet.includes('right: max(0px, env(safe-area-inset-right))'), 'Desktop TOC must hug the right viewport gutter');
+assert.ok(stylesheet.includes('width: 82px'), 'Collapsed outline must fit into a narrow right gutter');
+assert.ok(stylesheet.includes('clamp(35px, 4vw, 49px)'), 'Larger home section headings missing');
+assert.ok(!headerSource.includes('data-nav-target'), 'Page navigation must not track home sections');
+assert.ok(headerSource.includes('data-nav-page="home"'), 'Global Home page link missing');
+assert.ok(headerSource.includes('data-nav-page="journey"'), 'Global Journey page link missing');
+assert.ok(headerSource.includes('data-nav-page="projects"'), 'Global Projects page link missing');
+assert.ok(headerSource.includes("addEventListener('scroll', schedule, { passive: true })"), 'Header scroll effect should remain passive');
+assert.ok(!headerSource.includes('is-header-hidden'), 'Sticky header must stay visible');
+assert.ok(homeSource.includes('<HomeSectionNavigator />'), 'Home-only TOC missing');
+assert.ok(homeSource.includes('id="about" class="hero'), 'Hero introduction anchor missing');
+assert.ok(!homeSource.includes('class="about-section'), 'Duplicate About section must stay removed');
+assert.ok(homeSource.includes('class="expertise-toolbox"'), 'Tech stack must stay under Expertise');
+assert.ok(tocSource.includes("getActiveSection(sectionTops, offset)"), 'TOC scrollspy missing');
+assert.ok(tocSource.includes("getDocumentProgress(window.scrollY"), 'Vertical progress missing');
+assert.ok(tocSource.includes("addEventListener('scroll', schedule, { passive: true })"), 'TOC scroll events must be passive');
+assert.ok(tocSource.includes('requestAnimationFrame(update)'), 'TOC scroll events must be throttled');
+assert.ok(tocSource.includes("event.key === 'Escape'"), 'Mobile disclosure must close on Escape');
+assert.ok(tocSource.includes('closest(\'a[data-toc-link]\')'), 'TOC must close after selecting anchor');
+
 for (const prefix of ['', 'en/']) {
-  for (const pathname of ['index.html', 'journey/index.html', 'projects/index.html']) {
+  const home = readFileSync(`dist/${prefix}index.html`, 'utf8');
+  assert.ok(home.includes('data-home-toc'), `TOC missing from ${prefix}home`);
+  const nav = home.match(/<nav[^>]*class="header-nav"[^>]*>(.*?)<\/nav>/s)?.[1];
+  assert.ok(nav, `Global nav missing from ${prefix}home`);
+  assert.equal((nav.match(/data-nav-page=/g) ?? []).length, 3, 'Global header should show exactly 3 page links');
+  assert.match(nav, /data-nav-page="home"[^>]*aria-current="page"/, 'Home page must be active on Home');
+  for (const id of ['about', 'expertise', 'experience', 'projects']) {
+    assert.ok(home.includes(`id="${id}"`), `Missing anchor #${id}`);
+    assert.ok(home.includes(`data-toc-link="${id}"`), `Missing TOC anchor #${id}`);
+  }
+  assert.equal((home.match(/data-toc-link=/g) ?? []).length, 8, 'Home should render 4 TOC items in each responsive view');
+  assert.ok(home.includes('class="home-toc-desktop"'), 'Desktop must use an always-rendered TOC');
+  assert.ok(home.includes('data-home-toc-mobile'), 'Mobile must use a native details control');
+  assert.match(home, /<details class="home-toc-mobile" data-home-toc-mobile>/, 'Mobile TOC must start collapsed');
+  assert.equal((home.match(/class="home-toc-links"/g) ?? []).length, 2, 'Desktop and mobile each need one TOC nav');
+  assert.ok(home.includes('class="home-toc-toggle"'), 'Native mobile menu summary missing');
+  assert.match(home, /data-toc-link="about"[^>]*aria-current="location"/, 'TOC should initially mark About');
+  assert.ok(!nav.includes('href="#'), 'Global nav must not link to homepage sections');
+}
+for (const prefix of ['', 'en/']) {
+  for (const pathname of ['journey/index.html', 'projects/index.html', 'projects/code-atlas/index.html']) {
     const page = readFileSync(`dist/${prefix}${pathname}`, 'utf8');
-    assert.ok(page.includes('data-site-header'), `Header missing in ${prefix}${pathname}`);
+    assert.ok(page.includes('data-site-header'), `Header missing on ${prefix}${pathname}`);
+    assert.ok(!page.includes('data-home-toc'), `TOC must not appear on ${prefix}${pathname}`);
+    const current = pathname.startsWith('journey/') ? 'journey' : 'projects';
+    assert.match(page, new RegExp(`data-nav-page="${current}"[^>]*aria-current="page"`), `Active page is wrong on ${prefix}${pathname}`);
   }
 }
