@@ -15,8 +15,7 @@ const currentPage = path === '/' ? 'home'
 ---
 <header class="site-header" data-site-header>
   <a href={localizedPath('/', locale)} class="brand" aria-label="Leo — Home">
-    <span class="brand-logo" aria-hidden="true">L<span>.</span></span>
-    <span class="brand-text">LEO <small>ENGINEER / BUILDER</small></span>
+    <img class="brand-image brand-image-on-dark" src="/brand/leo-horizontal-on-dark.svg" alt="" width="920" height="240" decoding="async" /><img class="brand-image brand-image-on-light" src="/brand/leo-horizontal-on-light.svg" alt="" width="920" height="240" decoding="async" />
   </a>
   <nav aria-label={locale === 'vi' ? 'Điều hướng chính' : 'Main navigation'} class="header-nav">
     <a data-nav-page="home" href={localizedPath('/', locale)} aria-current={currentPage === 'home' ? 'page' : undefined}>{t.home}</a>
