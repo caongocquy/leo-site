@@ -156,3 +156,7 @@ Run `npm run build && node scripts/verify-ui-enhancements.mjs && node scripts/ve
 The Journey timeline uses `minmax(0,1fr)` for its single-column mobile grid, explicit min-size boundaries on nested cards, word wrapping for long content and an independently horizontally scrollable career-year chip strip. This avoids the page-level horizontal overflow seen in iPhone Safari.
 
 At <=830px, the sticky header becomes a balanced utility row (brand, locale/theme/GitHub) plus a three-column segmented page navigation (Home/Journey/Projects). The active page is a filled surface instead of a thin underline. At <=420px the brand tagline is hidden so controls keep their touch targets without forcing sideways scrolling. Desktop navigation is unchanged. Verify the page at 320, 375, 390, 430 and 768 CSS px in both languages; test iOS Safari separately from Chromium.
+
+## Bilingual Home labels and section numbering
+
+The page-level Home tab is labeled **Giới thiệu** in Vietnamese and **About Me** in English. The Home table of contents and visible section eyebrow labels use the same order: `01` Hero/Introduction, `02` Expertise, `03` Experience, `04` Selected Work. The Hero greeting remains the introduction text with a subtle `01 /` prefix. Only small eyebrow and numbered section-label typography increased; large section headings and mobile layout are intentionally unchanged. Bilingual generated-page assertions guard the wording and ordering.
