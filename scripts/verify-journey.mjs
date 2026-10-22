@@ -32,4 +32,16 @@ for (const [locale, prefix, title, marker] of [
 const journeySource = read('src/components/JourneyPage.astro');
 assert.ok(journeySource.includes('prefers-reduced-motion'), 'Journey must support reduced motion');
 assert.ok(journeySource.includes("setAttribute('aria-current', 'location')"), 'Scrollspy must identify active milestone accessibly');
+// Mobile grid sizing should not let its timeline or horizontal year chips widen the viewport.
+for (const rule of [
+  'grid-template-columns:minmax(0, 1fr); padding-top:52px',
+  'grid-template-columns:minmax(0, 1fr); gap:30px',
+  'width:100%; max-width:100%; overflow-x:auto',
+  'scroll-snap-type:x proximity',
+  'min-width: 0;',
+  'overflow-wrap: anywhere;',
+]) {
+  assert.ok(journeySource.includes(rule), `Missing iPhone overflow safeguard: ${rule}`);
+}
+assert.ok(!journeySource.includes('.journey-story { grid-template-columns:1fr;'), '1fr auto minimum can push timeline outside the screen');
 console.log('Career Journey: bilingual routes, chronology, accessible scrollspy and client distinction verified.');

@@ -4,7 +4,7 @@ export const site = {
   role: 'Mobile Engineer & Open-source Builder',
   github: 'https://github.com/caongocquy',
   githubRepositories: 'https://github.com/caongocquy?tab=repositories',
-  description: 'Leo is a mobile engineer building thoughtful mobile experiences and open-source tools for developers.',
+  description: "I'm Leo, a Mobile Engineer. I build mobile apps and open-source tools that help developers understand and improve code.",
 } as const;
 
 export const expertise = [

@@ -68,6 +68,11 @@ const tocSource = readFileSync('src/components/HomeSectionNavigator.astro', 'utf
 assert.ok(stylesheet.includes('/* Sticky, always-visible navigation'), 'Sticky header CSS missing');
 assert.ok(stylesheet.includes('.header-nav a[aria-current]::after'), 'Active page underline missing');
 assert.ok(stylesheet.includes('/* Floating PDF-outline navigation'), 'Floating TOC styles missing');
+assert.ok(stylesheet.includes('/* Mobile header: single utility row + compact three-way segmented page navigation. */'), 'Mobile segmented navigation missing');
+assert.ok(stylesheet.includes('grid-template-columns: repeat(3, minmax(0, 1fr));'), 'Mobile navigation must use three equal-width tabs');
+assert.ok(stylesheet.includes('.header-nav a[aria-current="page"]'), 'Selected mobile page must have its own active surface');
+assert.ok(stylesheet.includes('.brand-text small { display: none; }'), 'Compact iPhone brand must fit next to switches');
+assert.ok(stylesheet.includes('.header-nav a::after { display: none; }'), 'Desktop active underline should not appear inside mobile tabs');
 assert.ok(stylesheet.includes('.home-toc:is(:hover, :focus-within)'), 'Desktop hover and keyboard expand missing');
 assert.ok(stylesheet.includes('.home-toc-mobile[open] .home-toc-panel'), 'Mobile disclosure styles missing');
 assert.ok(stylesheet.includes('.home-toc-desktop { display: none; }'), 'Desktop rail must not obscure small screens');
