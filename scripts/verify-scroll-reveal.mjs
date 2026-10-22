@@ -32,7 +32,7 @@ const pages = [
 ];
 for (const [path, expectedMinimum] of pages) {
   const html = readFileSync(path, 'utf8');
-  const count = (html.match(/data-scroll-reveal(?:\\s|>)/g) ?? []).length;
+  const count = (html.match(/data-scroll-reveal/g) ?? []).length;
   assert.ok(count >= expectedMinimum, `${path}: expected >=${expectedMinimum} marked blocks, got ${count}`);
   assert.ok(!html.includes('scroll-reveal-pending'), `${path}: server must never ship hidden content by default`);
 }

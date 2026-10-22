@@ -112,3 +112,14 @@ GitHub Actions and `.node-version` use Node.js 24; Astro 7.4+ requires at least 
 ## Scroll-aware sticky header
 
 Inspired by [Lucian #212](https://lucianlabs.dev/uxui-prompt/#212). The header stays visible at the page top, hides after 24px of intentional downward scrolling, and returns after 12px of upward scrolling. It keeps a stable layout via `position: sticky` and a GPU-friendly transform; scroll events are passive and gated by `requestAnimationFrame`. Focus into any header control reveals the menu, while `prefers-reduced-motion` keeps it always visible without transition. JavaScript-disabled browsers get a standard sticky header.
+
+## Scroll reveal for content blocks
+
+Home, Projects, Project Detail and Journey use one progressive-enhancement component (`src/components/ScrollReveal.astro`) inspired by the existing Lucian #216 hero entrance.
+
+- Static HTML stays **fully readable without JavaScript**. Only elements that start below the visible viewport receive an ephemeral, JavaScript-managed opacity class.
+- The native `IntersectionObserver` reveals each marked block once when it nears the viewport. Subtle 20px upward movement and 620ms fade, with bounded 75ms staggering within card grids.
+- Animates `translate` rather than `transform` so existing card hover transforms, timeline scrollspy, modal transforms, and sticky navigation are not overridden.
+- Keyboard focus reveals pending interactive blocks. Motion preference and print always show all content. No ongoing scroll handler, heavy animation library, or recurring animation.
+- Extend coverage by adding `data-scroll-reveal` to a content block; do not add it to the fixed header, modal dialog or nested containers that would duplicate animations.
+- Run `node scripts/verify-scroll-reveal.mjs` after `npm run build`.
