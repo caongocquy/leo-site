@@ -107,3 +107,8 @@ GitHub Actions and `.node-version` use Node.js 24; Astro 7.4+ requires at least 
 - Hero headline communicates both production mobile engineering and open-source developer tools. Actions lead to selected projects and Career Journey.
 - Lucian #275 inspired Journey scrollspy uses plain, accessible milestone links that work without JavaScript; scroll position adds `aria-current="location"` when supported. On mobile the milestones become a horizontally scrollable rail.
 - Public site default is Vietnamese; English is under `/en/`. When assigning a real site origin in `astro.config.mjs`, the layout emits localized canonical/alternate URLs and `x-default` points to Vietnamese.
+
+
+## Scroll-aware sticky header
+
+Inspired by [Lucian #212](https://lucianlabs.dev/uxui-prompt/#212). The header stays visible at the page top, hides after 24px of intentional downward scrolling, and returns after 12px of upward scrolling. It keeps a stable layout via `position: sticky` and a GPU-friendly transform; scroll events are passive and gated by `requestAnimationFrame`. Focus into any header control reveals the menu, while `prefers-reduced-motion` keeps it always visible without transition. JavaScript-disabled browsers get a standard sticky header.
