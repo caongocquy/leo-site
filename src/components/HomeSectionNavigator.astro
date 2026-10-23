@@ -46,13 +46,14 @@ const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
     </nav>
   </div>
   </div>
-  <details class="home-toc-mobile" data-home-toc-mobile>
+  <details class="home-toc-mobile" data-home-toc-mobile open>
     <summary class="home-toc-toggle">
       <span class="home-toc-toggle-icon" aria-hidden="true">☰</span>
       <span>{mobileTitle}</span>
       <span class="home-toc-toggle-chevron" aria-hidden="true">×</span>
     </summary>
   <div class="home-toc-panel">
+    <button type="button" class="home-toc-close" data-toc-close aria-label={locale === "vi" ? "Đóng mục lục" : "Close contents"}>×</button>
     <div class="home-toc-heading">
       <span class="home-toc-eyebrow">{title}</span>
       <span class="home-toc-count" data-toc-count>01 / 04</span>
@@ -86,6 +87,13 @@ const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
     const links = [...toc.querySelectorAll<HTMLAnchorElement>('[data-toc-link]')];
     const desktopLinks = [...toc.querySelectorAll<HTMLAnchorElement>('.home-toc-desktop [data-toc-link]')];
     const mobileDisclosure = toc.querySelector<HTMLDetailsElement>('[data-home-toc-mobile]');
+    const openButton = document.querySelector<HTMLButtonElement>('[data-toc-open]');
+    const closeButton = toc.querySelector<HTMLButtonElement>('[data-toc-close]');
+    const sync = () => openButton?.setAttribute('aria-expanded', String(Boolean(mobileDisclosure?.open)));
+    openButton?.addEventListener('click', () => { if (mobileDisclosure) mobileDisclosure.open = true; sync(); });
+    closeButton?.addEventListener('click', () => { if (mobileDisclosure) mobileDisclosure.open = false; sync(); openButton?.focus(); });
+    mobileDisclosure?.addEventListener('toggle', sync);
+    sync();
     const currentLabels = [...toc.querySelectorAll<HTMLElement>('[data-toc-current]')];
     const currentCounts = [...toc.querySelectorAll<HTMLElement>('[data-toc-count]')];
     const entries = desktopLinks.map((link) => ({
@@ -130,10 +138,11 @@ const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
     toc.addEventListener('click', (event) => {
       if ((event.target as Element).closest('a[data-toc-link]') && mobileDisclosure) {
         mobileDisclosure.open = false;
+        sync();
       }
     });
     document.addEventListener('pointerdown', (event) => {
-      if (mobileDisclosure?.open && !mobileDisclosure.contains(event.target as Node)) {
+      if (mobileDisclosure?.open && !mobileDisclosure.contains(event.target as Node) && !openButton?.contains(event.target as Node)) {
         mobileDisclosure.open = false;
       }
     });
