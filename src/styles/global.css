@@ -1156,3 +1156,25 @@ html[data-theme="light"] .brand-image-on-dark { display:none; }
 @media (prefers-reduced-motion: reduce) {
   .contact-fan-link, .contact-fan-plus, .home-toc-mobile .home-toc-panel { transition: none !important; animation: none !important; }
 }
+
+
+/* V3: PDF outline button in header; drawer starts open and closes explicitly. */
+.header-toc-button { display: inline-grid; place-items: center; flex: none; width: 42px; height: 42px; margin-right: 10px; background: var(--surface); color: var(--text-strong); border: 1px solid var(--line); border-radius: 10px; cursor: pointer; }
+.header-toc-button:hover, .header-toc-button[aria-expanded="true"] { border-color: var(--line-accent); }
+.home-toc { pointer-events: none; }
+.home-toc-mobile { pointer-events: none; }
+.home-toc-mobile .home-toc-toggle { display: none !important; }
+.home-toc-mobile[open]::before { pointer-events: auto; }
+.home-toc-mobile[open] .home-toc-panel { pointer-events: auto; }
+.home-toc-close { position: absolute; top: max(20px, env(safe-area-inset-top)); right: 18px; border: 1px solid var(--line); color: var(--text-strong); background: var(--surface-alt); width: 42px; height: 42px; border-radius: 10px; font-size: 26px; cursor: pointer; }
+.home-toc-close:hover { background: var(--surface-hover); }
+.home-toc-mobile .home-toc-panel { visibility: hidden; transform: translateX(-105%); pointer-events: none; }
+.home-toc-mobile[open] .home-toc-panel { visibility: visible; transform: translateX(0); pointer-events: auto; }
+@media (max-width: 600px) { .header-toc-button { width: 36px; height: 36px; margin-right: 5px; } }
+
+/* Quarter-circle contact fan: equal-radius arc, no uneven bottom row. */
+.contact-fan[open] .contact-fan-link:nth-child(1) { transform: translate(-6px,-136px) scale(1); }
+.contact-fan[open] .contact-fan-link:nth-child(2) { transform: translate(-72px,-116px) scale(1); }
+.contact-fan[open] .contact-fan-link:nth-child(3) { transform: translate(-116px,-72px) scale(1); }
+.contact-fan[open] .contact-fan-link:nth-child(4) { transform: translate(-136px,-6px) scale(1); }
+@media (max-width: 390px) { .contact-fan[open] .contact-fan-link:nth-child(4) { transform: translate(-136px,-6px) scale(1); } }
