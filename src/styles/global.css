@@ -1071,3 +1071,88 @@ html[data-theme="light"] .brand-image-on-dark { display:none; }
 @media (prefers-reduced-motion: reduce) {
   .contact-fan-link, .home-toc-mobile .home-toc-toggle-chevron { transition: none; }
 }
+
+
+/* V2: actual slide-in left drawer instead of a floating TOC popover. */
+.home-toc, .home-toc:is(:hover, :focus-within) { z-index: 70; }
+.home-toc-mobile[open]::before {
+  content: ''; position: fixed; inset: 0; z-index: 0;
+  background: rgba(0, 0, 0, .52);
+  animation: leo-toc-fade .22s ease both;
+}
+.home-toc-mobile[open] .home-toc-toggle {
+  position: relative; z-index: 2;
+}
+.home-toc-mobile .home-toc-panel,
+.home-toc:is(:hover, :focus-within) .home-toc-mobile .home-toc-panel {
+  display: flex; flex-direction: column;
+  position: fixed; top: 0; bottom: 0; left: 0; right: auto;
+  width: min(340px, 86vw); height: 100dvh; max-height: none;
+  padding: max(72px, calc(env(safe-area-inset-top) + 72px)) 24px 28px;
+  border-radius: 0 20px 20px 0; border: 0; border-right: 1px solid var(--line);
+  background: var(--surface); box-shadow: 18px 0 60px var(--shadow);
+  overflow-y: auto; visibility: hidden;
+  transform: translateX(-105%);
+  transition: transform .28s cubic-bezier(.2,.85,.2,1), visibility .28s;
+  pointer-events: none;
+}
+.home-toc-mobile[open] .home-toc-panel,
+.home-toc:is(:hover, :focus-within) .home-toc-mobile[open] .home-toc-panel {
+  visibility: visible; transform: translateX(0); pointer-events: auto;
+}
+.home-toc-mobile .home-toc-heading { justify-items: start; text-align: left; min-height: auto; padding-bottom: 24px; }
+.home-toc-mobile .home-toc-eyebrow { display: block; font-size: 11px; }
+.home-toc-mobile .home-toc-heading strong { font-size: 22px; }
+.home-toc-mobile .home-toc-links { gap: 8px; }
+.home-toc-mobile .home-toc-links::before,
+.home-toc-mobile .home-toc-links::after { right: 4px; }
+.home-toc-mobile .home-toc-link { justify-content: flex-start; gap: 14px; font-size: 15px; min-height: 52px; }
+.home-toc-mobile .home-toc-marker { margin-left: auto; }
+@keyframes leo-toc-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* V2: radial fan motion and circular brand icons from Lucian #011. */
+.contact-fan-trigger {
+  width: 58px; height: 58px; min-height: 58px; padding: 0;
+  justify-content: center; border-radius: 50%; transition: transform .25s ease;
+}
+.contact-fan-trigger-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.contact-fan-plus { transition: transform .32s cubic-bezier(.2,.85,.2,1); }
+.contact-fan[open] .contact-fan-plus { transform: rotate(45deg); }
+.contact-fan-actions {
+  position: absolute; inset: 0; bottom: auto; right: auto;
+  display: block; width: 58px; height: 58px; pointer-events: none;
+}
+.contact-fan-link {
+  position: absolute; top: 3px; left: 3px;
+  padding: 0; width: 52px; height: 52px; min-width: 52px; min-height: 52px;
+  display: grid; place-items: center;
+  border-radius: 50%; opacity: 0;
+  transform: translate(0,0) scale(.25);
+  box-shadow: 0 8px 22px var(--shadow);
+  transition: opacity .18s ease, transform .38s cubic-bezier(.16,1.2,.3,1);
+  transition-delay: 0ms;
+}
+.contact-fan-icon, .contact-fan-icon svg { display: block; width: 22px; height: 22px; }
+.contact-fan-label {
+  position: absolute; right: 58px; top: 50%; transform: translateY(-50%);
+  padding: 4px 9px; border-radius: 7px; white-space: nowrap;
+  background: var(--surface); border: 1px solid var(--line); opacity: 0;
+  pointer-events: none; transition: opacity .15s;
+}
+.contact-fan-link:hover .contact-fan-label, .contact-fan-link:focus-visible .contact-fan-label { opacity: 1; }
+.contact-fan[open] .contact-fan-actions { pointer-events: auto; }
+.contact-fan[open] .contact-fan-link { opacity: 1; pointer-events: auto; transition-delay: calc(var(--fan-index) * 45ms); }
+.contact-fan[open] .contact-fan-link:nth-child(1) { transform: translate(-8px,-84px) scale(1); }
+.contact-fan[open] .contact-fan-link:nth-child(2) { transform: translate(-75px,-75px) scale(1); }
+.contact-fan[open] .contact-fan-link:nth-child(3) { transform: translate(-92px,-8px) scale(1); }
+.contact-fan[open] .contact-fan-link:nth-child(4) { transform: translate(-155px,-18px) scale(1); }
+.contact-fan-facebook { color: #1877f2; }
+.contact-fan-gmail { color: #db4437; }
+.contact-fan-linkedin { color: #0a66c2; }
+.contact-fan-zalo { color: #0068ff; }
+@media (max-width: 390px) {
+  .contact-fan[open] .contact-fan-link:nth-child(4) { transform: translate(-143px,-18px) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-fan-link, .contact-fan-plus, .home-toc-mobile .home-toc-panel { transition: none !important; animation: none !important; }
+}
