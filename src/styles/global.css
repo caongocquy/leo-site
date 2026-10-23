@@ -1240,3 +1240,18 @@ html[data-theme="light"] .brand-image-on-dark { display:none; }
 @media (max-width: 390px) {
   .contact-fan[open] .contact-fan-link:nth-child(4) { transform: translate(-100px,-6px) scale(1); }
 }
+
+
+/* V6: compact radial contact fan; smaller icons preserve gaps without increasing radius. */
+.contact-fan-link {
+  width: 42px; height: 42px; min-width: 42px; min-height: 42px;
+  top: 8px; left: 8px;
+}
+.contact-fan-icon, .contact-fan-icon svg { width: 19px; height: 19px; }
+.contact-fan[open] .contact-fan-link:nth-child(1) { transform: translate(-4px,-112px) scale(1); }
+.contact-fan[open] .contact-fan-link:nth-child(2) { transform: translate(-60px,-96px) scale(1); }
+.contact-fan[open] .contact-fan-link:nth-child(3) { transform: translate(-96px,-60px) scale(1); }
+.contact-fan[open] .contact-fan-link:nth-child(4) { transform: translate(-112px,-4px) scale(1); }
+@media (max-width: 390px) {
+  .contact-fan[open] .contact-fan-link:nth-child(4) { transform: translate(-112px,-4px) scale(1); }
+}
