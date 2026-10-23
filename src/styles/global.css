@@ -1178,3 +1178,37 @@ html[data-theme="light"] .brand-image-on-dark { display:none; }
 .contact-fan[open] .contact-fan-link:nth-child(3) { transform: translate(-116px,-72px) scale(1); }
 .contact-fan[open] .contact-fan-link:nth-child(4) { transform: translate(-136px,-6px) scale(1); }
 @media (max-width: 390px) { .contact-fan[open] .contact-fan-link:nth-child(4) { transform: translate(-136px,-6px) scale(1); } }
+
+
+/* V4: compact PDF contents popover at the top-left, no drawer/overlay. */
+.home-toc, .home-toc:is(:hover, :focus-within) {
+  top: max(76px, calc(env(safe-area-inset-top) + 76px));
+  left: max(16px, env(safe-area-inset-left)); bottom: auto; right: auto;
+  width: auto; max-height: calc(100dvh - 92px);
+  z-index: 69; pointer-events: none;
+}
+.home-toc-mobile[open]::before { display: none !important; }
+.home-toc-mobile .home-toc-panel,
+.home-toc:is(:hover, :focus-within) .home-toc-mobile .home-toc-panel {
+  position: static; display: none; width: min(292px, calc(100vw - 32px));
+  height: auto; max-height: calc(100dvh - 100px); overflow-y: auto;
+  padding: 18px; border: 1px solid var(--line-accent);
+  border-radius: 14px; background: var(--surface);
+  box-shadow: 0 18px 52px var(--shadow);
+  transform: none; transition: none; visibility: visible; pointer-events: none;
+}
+.home-toc-mobile[open] .home-toc-panel,
+.home-toc:is(:hover, :focus-within) .home-toc-mobile[open] .home-toc-panel {
+  display: block; transform: none; pointer-events: auto;
+}
+.home-toc-mobile .home-toc-heading { padding: 0 44px 12px 0; }
+.home-toc-close { top: 10px; right: 10px; }
+.header-toc-button[aria-expanded="true"] { background: var(--surface-hover); }
+
+/* Keep circular icons above surrounding content, avoid tooltip covering Facebook. */
+.contact-fan { z-index: 100; isolation: isolate; }
+.contact-fan-link { background: var(--surface); z-index: 2; }
+.contact-fan-link:hover, .contact-fan-link:focus-visible { z-index: 5; }
+.contact-fan-label { display: none; }
+.contact-fan-link:hover .contact-fan-label,
+.contact-fan-link:focus-visible .contact-fan-label { display: block; z-index: 6; opacity: 1; }
