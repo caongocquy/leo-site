@@ -1,0 +1,41 @@
+---
+import { localeFromPath } from '../i18n/translations';
+const vi = localeFromPath(Astro.url.pathname) === 'vi';
+const contacts = [
+  { key: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/quy.caongoc/', glyph: 'f' },
+  { key: 'gmail', label: 'Gmail', href: 'mailto:quy.caongoc@gmail.com', glyph: '@' },
+  { key: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/cao-ngoc-quy-173b0812a/', glyph: 'in' },
+  { key: 'zalo', label: 'Zalo', href: 'https://zalo.me/0973689453', glyph: 'Z' },
+];
+---
+<details class="contact-fan" data-contact-fan>
+  <summary class="contact-fan-trigger" aria-label={vi ? 'Mở liên hệ' : 'Open contact options'}>
+    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5 9 9 0 0 1-4-.9L3 21l1.9-5.5A9 9 0 0 1 4 11.5 8.5 8.5 0 0 1 12.5 3 8.5 8.5 0 0 1 21 11.5Z"/><path d="M8.5 11.5h8"/></svg>
+    <span>{vi ? 'Liên hệ' : 'Contact'}</span>
+  </summary>
+  <nav class="contact-fan-actions" aria-label={vi ? 'Kênh liên hệ' : 'Contact channels'}>
+    {contacts.map((contact, index) => (
+      <a class={`contact-fan-link contact-fan-${contact.key}`} href={contact.href}
+        target={contact.key === 'gmail' ? undefined : '_blank'}
+        rel={contact.key === 'gmail' ? undefined : 'noopener noreferrer'}
+        style={`--fan-index:${index}`}
+        aria-label={contact.label} title={contact.label}>
+        <span aria-hidden="true">{contact.glyph}</span><span class="contact-fan-label">{contact.label}</span>
+      </a>
+    ))}
+  </nav>
+</details>
+<script>
+  const fan = document.querySelector<HTMLDetailsElement>('[data-contact-fan]');
+  if (fan) {
+    document.addEventListener('pointerdown', (event) => {
+      if (fan.open && !fan.contains(event.target as Node)) fan.open = false;
+    });
+    fan.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && fan.open) {
+        fan.open = false;
+        fan.querySelector<HTMLElement>('summary')?.focus();
+      }
+    });
+  }
+</script>
