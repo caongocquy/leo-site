@@ -983,3 +983,91 @@ html[data-theme="light"] .brand-image-on-dark { display:none; }
 @media (max-width: 360px) {
   .site-header .brand-image { width:102px; }
 }
+
+
+/* Left hamburger outline, independent of viewport width. */
+.home-toc, .home-toc:is(:hover, :focus-within) {
+  top: auto; right: auto; left: max(16px, env(safe-area-inset-left));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  width: auto; max-height: none; z-index: 55;
+}
+.home-toc-desktop { display: none !important; }
+.home-toc-mobile { display: block; }
+.home-toc-toggle {
+  display: flex; align-items: center; gap: 9px;
+  min-height: 48px; padding: 10px 14px; cursor: pointer;
+  list-style: none; border: 1px solid var(--line-accent);
+  border-radius: 999px; background: var(--surface);
+  box-shadow: 0 8px 28px var(--shadow);
+  font-size: 12px; font-weight: 650; color: var(--text-strong);
+}
+.home-toc-toggle::-webkit-details-marker { display: none; }
+.home-toc-sidebar .home-toc-panel,
+.home-toc:is(:hover, :focus-within) .home-toc-sidebar .home-toc-panel {
+  display: none; position: absolute;
+  left: 0; right: auto; bottom: calc(100% + 12px);
+  width: min(280px, calc(100vw - 32px));
+  border: 1px solid var(--line-accent);
+  border-radius: 15px; box-shadow: 0 18px 52px var(--shadow);
+  background: var(--surface); padding: 14px;
+}
+.home-toc-sidebar[open] .home-toc-panel,
+.home-toc:is(:hover, :focus-within) .home-toc-sidebar[open] .home-toc-panel { display: block; }
+.home-toc-sidebar .home-toc-heading { min-height: 0; padding-bottom: 11px; }
+.home-toc-sidebar .home-toc-label,
+.home-toc:is(:hover, :focus-within) .home-toc-sidebar .home-toc-label {
+  max-width: none; opacity: 1; visibility: visible;
+}
+.home-toc-sidebar .home-toc-link { min-height: 44px; padding: 0 9px; }
+.home-toc-sidebar .home-toc-link[aria-current='location'] { background: var(--surface-alt); }
+.home-toc-sidebar[open] .home-toc-toggle-chevron { transform: none; }
+
+/* Lucian #011-inspired contact fan, anchored bottom-right. */
+.contact-fan {
+  position: fixed; right: max(16px, env(safe-area-inset-right));
+  bottom: max(16px, env(safe-area-inset-bottom));
+  z-index: 60; color: var(--text-strong);
+}
+.contact-fan-trigger {
+  position: relative; z-index: 2;
+  min-height: 48px; padding: 10px 16px;
+  display: flex; align-items: center; gap: 9px;
+  border-radius: 999px; background: var(--accent);
+  color: var(--accent-ink); font-size: 13px; font-weight: 700;
+  cursor: pointer; box-shadow: 0 8px 28px var(--shadow);
+  list-style: none; user-select: none;
+}
+.contact-fan-trigger::-webkit-details-marker { display: none; }
+.contact-fan-trigger:focus-visible,
+.contact-fan-link:focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 4px; }
+.contact-fan-actions {
+  position: absolute; right: 0; bottom: calc(100% + 12px);
+  display: grid; gap: 9px; justify-items: end;
+}
+.contact-fan-link {
+  display: flex; align-items: center; gap: 9px;
+  min-height: 44px; min-width: 44px; padding: 6px 13px;
+  border-radius: 999px; border: 1px solid var(--line-accent);
+  background: var(--surface); box-shadow: 0 10px 28px var(--shadow);
+  font-weight: 700; font-size: 14px;
+  opacity: 0; transform: translateY(12px) scale(.88);
+  pointer-events: none;
+  transition: opacity .18s ease, transform .24s ease;
+  transition-delay: 0ms;
+}
+.contact-fan-link > span:first-child { font-weight: 800; min-width: 18px; text-align: center; }
+.contact-fan-label { font-size: 12px; font-weight: 600; }
+.contact-fan[open] .contact-fan-link {
+  opacity: 1; transform: translateY(0) scale(1); pointer-events: auto;
+  transition-delay: calc(var(--fan-index) * 35ms);
+}
+.contact-fan-link:hover { background: var(--surface-hover); }
+@media (max-width: 390px) {
+  .home-toc, .home-toc:is(:hover, :focus-within) { left: max(10px, env(safe-area-inset-left)); }
+  .contact-fan { right: max(10px, env(safe-area-inset-right)); }
+  .home-toc-toggle { padding: 10px 12px; }
+  .contact-fan-trigger { padding: 10px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-fan-link, .home-toc-sidebar .home-toc-toggle-chevron { transition: none; }
+}
