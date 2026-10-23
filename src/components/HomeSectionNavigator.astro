@@ -46,7 +46,7 @@ const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
     </nav>
   </div>
   </div>
-  <details id="home-outline" class="home-toc-mobile" data-home-toc-mobile open>
+  <details id="home-outline" class="home-toc-mobile" data-home-toc-mobile>
     <summary class="home-toc-toggle">
       <span class="home-toc-toggle-icon" aria-hidden="true">☰</span>
       <span>{mobileTitle}</span>
@@ -90,7 +90,7 @@ const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
     const openButton = document.querySelector<HTMLButtonElement>('[data-toc-open]');
     const closeButton = toc.querySelector<HTMLButtonElement>('[data-toc-close]');
     const sync = () => openButton?.setAttribute('aria-expanded', String(Boolean(mobileDisclosure?.open)));
-    openButton?.addEventListener('click', () => { if (mobileDisclosure) mobileDisclosure.open = true; sync(); });
+    openButton?.addEventListener('click', () => { if (mobileDisclosure) mobileDisclosure.open = !mobileDisclosure.open; sync(); });
     closeButton?.addEventListener('click', () => { if (mobileDisclosure) mobileDisclosure.open = false; sync(); openButton?.focus(); });
     mobileDisclosure?.addEventListener('toggle', sync);
     sync();
