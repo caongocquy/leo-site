@@ -171,9 +171,10 @@ for (const prefix of ['', 'en/']) {
   assert.equal((home.match(/data-toc-link=/g) ?? []).length, 8, 'Home should render 4 TOC items in each responsive view');
   assert.ok(home.includes('class="home-toc-desktop"'), 'Desktop must use an always-rendered TOC');
   assert.ok(home.includes('data-home-toc-mobile'), 'Mobile must use a native details control');
-  assert.match(home, /<details class="home-toc-mobile" data-home-toc-mobile>/, 'Mobile TOC must start collapsed');
+  assert.match(home, /<details id="home-outline" class="home-toc-mobile" data-home-toc-mobile open>/, 'TOC sidebar must start open');
   assert.equal((home.match(/class="home-toc-links"/g) ?? []).length, 2, 'Desktop and mobile each need one TOC nav');
-  assert.ok(home.includes('class="home-toc-toggle"'), 'Native mobile menu summary missing');
+  assert.ok(home.includes('data-toc-close'), 'Sidebar close button missing');
+  assert.ok(home.includes('data-toc-open'), 'Header PDF-style menu toggle missing');
   assert.match(home, /data-toc-link="about"[^>]*aria-current="location"/, 'TOC should initially mark About');
   assert.ok(!nav.includes('href="#'), 'Global nav must not link to homepage sections');
 }
