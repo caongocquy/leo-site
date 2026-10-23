@@ -22,6 +22,7 @@ const title = locale === 'vi' ? 'TRONG TRANG NÀY' : 'ON THIS PAGE';
 const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
 ---
 <aside class="home-toc" data-home-toc>
+  <button type="button" class="floating-toc-button" data-toc-open aria-controls="home-outline" aria-expanded="false" aria-label={locale === "vi" ? "Mở mục lục" : "Open table of contents"} title={mobileTitle}><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 8h8M9 12h8M9 16h8M6.5 8h.1M6.5 12h.1M6.5 16h.1"/></svg></button>
   <div class="home-toc-desktop">
   <div class="home-toc-panel">
     <div class="home-toc-heading">
