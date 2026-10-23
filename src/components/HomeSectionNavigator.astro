@@ -22,7 +22,7 @@ const title = locale === 'vi' ? 'TRONG TRANG NÀY' : 'ON THIS PAGE';
 const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
 ---
 <aside class="home-toc" data-home-toc>
-  <div class="home-toc-desktop">
+  <div class="home-toc-desktop" hidden>
   <div class="home-toc-panel">
     <div class="home-toc-heading">
       <span class="home-toc-eyebrow">{title}</span>
@@ -46,11 +46,11 @@ const mobileTitle = locale === 'vi' ? 'Mục lục' : 'On this page';
     </nav>
   </div>
   </div>
-  <details class="home-toc-mobile" data-home-toc-mobile>
+  <details class="home-toc-mobile home-toc-sidebar" data-home-toc-mobile>
     <summary class="home-toc-toggle">
-      <span class="home-toc-toggle-icon" aria-hidden="true">☷</span>
+      <span class="home-toc-toggle-icon" aria-hidden="true">☰</span>
       <span>{mobileTitle}</span>
-      <span class="home-toc-toggle-chevron" aria-hidden="true">⌃</span>
+      <span class="home-toc-toggle-chevron" aria-hidden="true">×</span>
     </summary>
   <div class="home-toc-panel">
     <div class="home-toc-heading">
