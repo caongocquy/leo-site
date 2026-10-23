@@ -1002,8 +1002,8 @@ html[data-theme="light"] .brand-image-on-dark { display:none; }
   font-size: 12px; font-weight: 650; color: var(--text-strong);
 }
 .home-toc-toggle::-webkit-details-marker { display: none; }
-.home-toc-sidebar .home-toc-panel,
-.home-toc:is(:hover, :focus-within) .home-toc-sidebar .home-toc-panel {
+.home-toc-mobile .home-toc-panel,
+.home-toc:is(:hover, :focus-within) .home-toc-mobile .home-toc-panel {
   display: none; position: absolute;
   left: 0; right: auto; bottom: calc(100% + 12px);
   width: min(280px, calc(100vw - 32px));
@@ -1011,16 +1011,16 @@ html[data-theme="light"] .brand-image-on-dark { display:none; }
   border-radius: 15px; box-shadow: 0 18px 52px var(--shadow);
   background: var(--surface); padding: 14px;
 }
-.home-toc-sidebar[open] .home-toc-panel,
-.home-toc:is(:hover, :focus-within) .home-toc-sidebar[open] .home-toc-panel { display: block; }
-.home-toc-sidebar .home-toc-heading { min-height: 0; padding-bottom: 11px; }
-.home-toc-sidebar .home-toc-label,
-.home-toc:is(:hover, :focus-within) .home-toc-sidebar .home-toc-label {
+.home-toc-mobile[open] .home-toc-panel,
+.home-toc:is(:hover, :focus-within) .home-toc-mobile[open] .home-toc-panel { display: block; }
+.home-toc-mobile .home-toc-heading { min-height: 0; padding-bottom: 11px; }
+.home-toc-mobile .home-toc-label,
+.home-toc:is(:hover, :focus-within) .home-toc-mobile .home-toc-label {
   max-width: none; opacity: 1; visibility: visible;
 }
-.home-toc-sidebar .home-toc-link { min-height: 44px; padding: 0 9px; }
-.home-toc-sidebar .home-toc-link[aria-current='location'] { background: var(--surface-alt); }
-.home-toc-sidebar[open] .home-toc-toggle-chevron { transform: none; }
+.home-toc-mobile .home-toc-link { min-height: 44px; padding: 0 9px; }
+.home-toc-mobile .home-toc-link[aria-current='location'] { background: var(--surface-alt); }
+.home-toc-mobile[open] .home-toc-toggle-chevron { transform: none; }
 
 /* Lucian #011-inspired contact fan, anchored bottom-right. */
 .contact-fan {
@@ -1069,5 +1069,5 @@ html[data-theme="light"] .brand-image-on-dark { display:none; }
   .contact-fan-trigger { padding: 10px 12px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .contact-fan-link, .home-toc-sidebar .home-toc-toggle-chevron { transition: none; }
+  .contact-fan-link, .home-toc-mobile .home-toc-toggle-chevron { transition: none; }
 }
