@@ -1212,3 +1212,31 @@ html[data-theme="light"] .brand-image-on-dark { display:none; }
 .contact-fan-label { display: none; }
 .contact-fan-link:hover .contact-fan-label,
 .contact-fan-link:focus-visible .contact-fan-label { display: block; z-index: 6; opacity: 1; }
+
+
+/* V5: independent top-right floating outline, not part of the sticky header. */
+.home-toc, .home-toc:is(:hover, :focus-within) {
+  position: fixed; top: max(86px, calc(env(safe-area-inset-top) + 86px));
+  right: max(16px, env(safe-area-inset-right)); left: auto; bottom: auto;
+  width: auto; pointer-events: none;
+}
+.floating-toc-button {
+  display: grid; place-items: center; width: 44px; height: 44px;
+  margin-left: auto; border: 1px solid var(--line-accent);
+  border-radius: 11px; background: var(--surface); color: var(--text-strong);
+  box-shadow: 0 8px 26px var(--shadow); cursor: pointer; pointer-events: auto;
+}
+.floating-toc-button:hover, .floating-toc-button[aria-expanded="true"] { background: var(--surface-hover); }
+.home-toc-mobile .home-toc-panel,
+.home-toc:is(:hover, :focus-within) .home-toc-mobile .home-toc-panel {
+  position: absolute; top: 52px; right: 0; left: auto; bottom: auto;
+}
+.home-toc-mobile[open] .home-toc-panel { pointer-events: auto; }
+/* Bring the four contact actions closer to the main button while preserving a smooth arc. */
+.contact-fan[open] .contact-fan-link:nth-child(1) { transform: translate(-6px,-100px) scale(1); }
+.contact-fan[open] .contact-fan-link:nth-child(2) { transform: translate(-52px,-88px) scale(1); }
+.contact-fan[open] .contact-fan-link:nth-child(3) { transform: translate(-88px,-52px) scale(1); }
+.contact-fan[open] .contact-fan-link:nth-child(4) { transform: translate(-100px,-6px) scale(1); }
+@media (max-width: 390px) {
+  .contact-fan[open] .contact-fan-link:nth-child(4) { transform: translate(-100px,-6px) scale(1); }
+}
