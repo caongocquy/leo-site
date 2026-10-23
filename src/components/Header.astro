@@ -14,6 +14,7 @@ const currentPage = path === '/' ? 'home'
   : undefined;
 ---
 <header class="site-header" data-site-header>
+  {currentPage === "home" && <button type="button" class="header-toc-button" data-toc-open aria-controls="home-outline" aria-expanded="true" aria-label={locale === "vi" ? "Mở mục lục" : "Open table of contents"} title={locale === "vi" ? "Mục lục" : "Contents"}><svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 8h8M9 12h8M9 16h8M6.5 8h.1M6.5 12h.1M6.5 16h.1"/></svg></button>}
   <a href={localizedPath('/', locale)} class="brand" aria-label="Leo — Home">
     <img class="brand-image brand-image-on-dark" src="/brand/leo-horizontal-on-dark.svg" alt="" width="920" height="240" decoding="async" /><img class="brand-image brand-image-on-light" src="/brand/leo-horizontal-on-light.svg" alt="" width="920" height="240" decoding="async" />
   </a>
