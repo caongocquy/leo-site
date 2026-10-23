@@ -174,7 +174,7 @@ for (const prefix of ['', 'en/']) {
   assert.match(home, /<details id="home-outline" class="home-toc-mobile" data-home-toc-mobile>/, 'PDF TOC popover must start collapsed');
   assert.equal((home.match(/class="home-toc-links"/g) ?? []).length, 2, 'Desktop and mobile each need one TOC nav');
   assert.ok(home.includes('data-toc-close'), 'Sidebar close button missing');
-  assert.ok(home.includes('data-toc-open'), 'Header PDF-style menu toggle missing');
+  assert.ok(home.includes('class="floating-toc-button" data-toc-open'), 'Top-right floating PDF-style TOC control missing');
   assert.match(home, /data-toc-link="about"[^>]*aria-current="location"/, 'TOC should initially mark About');
   assert.ok(!nav.includes('href="#'), 'Global nav must not link to homepage sections');
 }
