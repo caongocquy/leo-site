@@ -1,0 +1,44 @@
+---
+import { localeFromPath } from '../i18n/translations';
+const vi = localeFromPath(Astro.url.pathname) === 'vi';
+const contacts = [
+  { key: 'facebook', label: 'Facebook', href: 'https://www.facebook.com/quy.caongoc/', glyph: 'facebook' },
+  { key: 'gmail', label: 'Gmail', href: 'mailto:quy.caongoc@gmail.com', glyph: 'gmail' },
+  { key: 'linkedin', label: 'LinkedIn', href: 'https://www.linkedin.com/in/cao-ngoc-quy-173b0812a/', glyph: 'linkedin' },
+  { key: 'zalo', label: 'Zalo', href: 'https://zalo.me/0973689453', glyph: 'zalo' },
+];
+---
+<details class="contact-fan" data-contact-fan>
+  <summary class="contact-fan-trigger" aria-label={vi ? 'Mở liên hệ' : 'Open contact options'}>
+    <svg class="contact-fan-plus" viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+    <span class="contact-fan-trigger-label">{vi ? 'Liên hệ' : 'Contact'}</span>
+  </summary>
+  <nav class="contact-fan-actions" aria-label={vi ? 'Kênh liên hệ' : 'Contact channels'}>
+    {contacts.map((contact, index) => (
+      <a class={`contact-fan-link contact-fan-${contact.key}`} href={contact.href}
+        target={contact.key === 'gmail' ? undefined : '_blank'}
+        rel={contact.key === 'gmail' ? undefined : 'noopener noreferrer'}
+        style={`--fan-index:${index}`}
+        aria-label={contact.label} title={contact.label}>
+        <span class="contact-fan-icon" aria-hidden="true">{contact.key === 'facebook' ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="21" height="21" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3V2Z"/></svg> :
+          contact.key === 'gmail' ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="21" height="21" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="m3.5 7 8.5 6 8.5-6"/></svg> :
+          contact.key === 'linkedin' ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="21" height="21" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="3"/><path d="M7 10v7M7 7v.1M11 17v-7h3v1a3 3 0 0 1 5 2v4"/></svg> :
+          contact.key === 'zalo' ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" width="21" height="21" aria-hidden="true"><path d="M5 7.5A7 7 0 0 1 12 4h1a7 7 0 0 1 0 14h-3l-4 2v-4A7 7 0 0 1 5 7.5Z"/><path d="M8.5 9h6l-6 6h6"/></svg> : null}</span><span class="contact-fan-label">{contact.label}</span>
+      </a>
+    ))}
+  </nav>
+</details>
+<script>
+  const fan = document.querySelector<HTMLDetailsElement>('[data-contact-fan]');
+  if (fan) {
+    document.addEventListener('pointerdown', (event) => {
+      if (fan.open && !fan.contains(event.target as Node)) fan.open = false;
+    });
+    fan.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && fan.open) {
+        fan.open = false;
+        fan.querySelector<HTMLElement>('summary')?.focus();
+      }
+    });
+  }
+</script>
